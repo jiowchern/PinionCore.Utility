@@ -18,12 +18,13 @@ namespace Regulus.Utility
         [XmlAttribute("y")]
 
         public float Y;
+        public static readonly Vector2 Zero = new Vector2(0,0);
 
         public float Magnitude
         {
             get { return (float)Math.Sqrt(X * X + Y * Y); }
         }
-
+        
         public Vector2(float x, float y)
         {
             X = x;

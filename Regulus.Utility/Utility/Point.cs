@@ -1,4 +1,6 @@
-﻿namespace Regulus.Utility
+﻿using System;
+
+namespace Regulus.Utility
 {
 
 
@@ -15,6 +17,11 @@
             // TODO: Complete member initialization
             X = x;
             Y = y;
+        }
+
+        public Vector2 ToVector2()
+        {
+            return new Vector2(X,Y);
         }
     }
 }
