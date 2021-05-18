@@ -13,22 +13,30 @@ namespace Regulus.Remote
 
         private event Action<T> _Unsupply;
 
-        private readonly List<T> _Entitys = new List<T>();
+        private readonly List<T> _Entitys ;
 
-        private readonly List<WeakReference> _Returns = new List<WeakReference>();
+        private readonly List<WeakReference> _Returns ;
 
-        private readonly List<T> _Waits = new List<T>();
+        private readonly List<T> _Waits ;
 
+        
+        public TProvider()
+        {
+            _Waits = new List<T>();
+            _Returns = new List<WeakReference>();
+            _Entitys = new List<T>();
+        }
         event Action<T> INotifier<T>.Supply
         {
             add
             {
+                
                 _Supply += value;
 
                 lock (_Entitys)
                 {
                     foreach (T e in _Entitys.ToArray())
-                    {
+                    {                        
                         value(e);
                     }
                 }
@@ -105,6 +113,7 @@ namespace Regulus.Remote
                     _Entitys.Add(entity);
                 if (_Supply != null)
                 {
+                    
                     _Supply.Invoke(entity);
                 }
             }
