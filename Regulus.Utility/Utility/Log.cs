@@ -53,7 +53,7 @@ namespace Regulus.Utility
             _Executer.Shutdown();
         }
 
-        public void WriteInfoNoDelay(string message)
+        public void WriteInfoImmediate(string message)
         {
             new LogWritter(LogWritter.TYPE.INFO, () => message, _AsyncRecord).Write();
         }
