@@ -45,7 +45,7 @@ namespace Regulus.Remote
     ///     接收或傳送遠端來的資料
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public sealed class Value<T> : IValue
+    public sealed class Value<T> : IValue 
     {
         private event Action<T> _OnValue;
 
