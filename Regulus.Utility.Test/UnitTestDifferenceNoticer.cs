@@ -7,7 +7,7 @@ namespace RegulusLibraryTest
 
     public class UnitTestDifferenceNoticer
     {
-        [Xunit.Fact]
+        [NUnit.Framework.Test]
         public void DifferenceNoticerTestSet()
         {
             List<int[]> joinResult = new List<int[]>();
@@ -34,12 +34,12 @@ namespace RegulusLibraryTest
 
             int[][] vertifyJoin = joinResult.ToArray();
             int[][] vertifyLeft = leftResult.ToArray();
-            Xunit.Assert.True(Regulus.Utility.ValueHelper.DeepEqual(vertifyJoin[0], new[] { 1, 2, 3, 4, 5 }));
-            Xunit.Assert.True(Regulus.Utility.ValueHelper.DeepEqual(vertifyJoin[1], new[] { 6 }));
-            Xunit.Assert.True(Regulus.Utility.ValueHelper.DeepEqual(vertifyLeft[1], new[] { 1 }));
+            NUnit.Framework.Assert.True(Regulus.Utility.ValueHelper.DeepEqual(vertifyJoin[0], new[] { 1, 2, 3, 4, 5 }));
+            NUnit.Framework.Assert.True(Regulus.Utility.ValueHelper.DeepEqual(vertifyJoin[1], new[] { 6 }));
+            NUnit.Framework.Assert.True(Regulus.Utility.ValueHelper.DeepEqual(vertifyLeft[1], new[] { 1 }));
         }
 
-        [Xunit.Fact]
+        [NUnit.Framework.Test]
         public void DifferenceNoticerTestSetWithParam()
         {
             List<int[]> joinResult = new List<int[]>();
@@ -66,9 +66,9 @@ namespace RegulusLibraryTest
 
             int[][] vertifyJoin = joinResult.ToArray();
             int[][] vertifyLeft = leftResult.ToArray();
-            Xunit.Assert.True(Regulus.Utility.ValueHelper.DeepEqual(vertifyJoin[0], new[] { 1, 2, 3, 4, 5 }));
-            Xunit.Assert.True(Regulus.Utility.ValueHelper.DeepEqual(vertifyJoin[1], new[] { 6 }));
-            Xunit.Assert.True(Regulus.Utility.ValueHelper.DeepEqual(vertifyLeft[1], new[] { 1 }));
+            NUnit.Framework.Assert.True(Regulus.Utility.ValueHelper.DeepEqual(vertifyJoin[0], new[] { 1, 2, 3, 4, 5 }));
+            NUnit.Framework.Assert.True(Regulus.Utility.ValueHelper.DeepEqual(vertifyJoin[1], new[] { 6 }));
+            NUnit.Framework.Assert.True(Regulus.Utility.ValueHelper.DeepEqual(vertifyLeft[1], new[] { 1 }));
         }
     }
 

@@ -6,7 +6,7 @@ namespace RegulusLibraryTest
 
     public class RemotingValueResultTest
     {
-        [Xunit.Fact(Timeout = 5000)]
+        [NUnit.Framework.Test,NUnit.Framework.Timeout(5000)]
         
 
         public void TestRemotingValueResult()

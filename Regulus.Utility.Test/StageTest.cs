@@ -3,7 +3,7 @@
     using NSubstitute;
     public class StageTest
     {
-        [Xunit.Fact]
+        [NUnit.Framework.Test]
         public void MachineTest()
         {
 

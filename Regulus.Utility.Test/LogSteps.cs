@@ -64,7 +64,7 @@ namespace RegulusLibraryTest
 
             for (int i = 0; i < chars2.Length; ++i)
             {
-                Xunit.Assert.Equal(chars1[i], chars2[i]);
+                NUnit.Framework.Assert.AreEqual(chars1[i], chars2[i]);
             }
         }
 
@@ -78,7 +78,7 @@ namespace RegulusLibraryTest
                 ;
             }
 
-            Xunit.Assert.Equal(p0, _OutMessage);
+            NUnit.Framework.Assert.AreEqual(p0, _OutMessage);
         }
     }
 }

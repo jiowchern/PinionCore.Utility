@@ -1,4 +1,4 @@
-﻿using Xunit;
+﻿using NUnit.Framework;
 
 namespace Regulus.Utility.Tests
 {
@@ -16,7 +16,7 @@ namespace Regulus.Utility.Tests
     {
 
 
-        [Xunit.Fact]
+        [NUnit.Framework.Test]
         public void InvokeTest1()
         {
             TestInvoker testEvent = new TestInvoker();
@@ -28,7 +28,7 @@ namespace Regulus.Utility.Tests
             Assert.True(ok);
         }
 
-        [Xunit.Fact]
+        [NUnit.Framework.Test]
         public void InvokeTest2()
         {
             TestInvoker testEvent = new TestInvoker();

@@ -8,7 +8,7 @@ namespace RegulusLibraryTest
 
     public class IniTest
     {
-        [Xunit.Fact]
+        [NUnit.Framework.Test]
         public void TestIni()
         {
             string data = @"[WindowSettings]
@@ -25,16 +25,16 @@ Directory =
             Ini ini = new Ini(data);
 
             string name = ini.Read("WindowSettings", "Window Name");
-            Xunit.Assert.Equal("Jabberwocky", name);
+            NUnit.Framework.Assert.AreEqual("Jabberwocky", name);
 
             string max = ini.Read("WindowSettings", "Window Maximized");
-            Xunit.Assert.Equal("false", max);
+            NUnit.Framework.Assert.AreEqual("false", max);
 
             string dir = ini.Read("Logging", "Directory");
-            Xunit.Assert.Equal(@"C:\Rosetta Stone\Logs", dir);
+            NUnit.Framework.Assert.AreEqual(@"C:\Rosetta Stone\Logs", dir);
 
             string dir2 = ini.Read("Logging2", "Directory");
-            Xunit.Assert.True(string.IsNullOrWhiteSpace(dir2));
+            NUnit.Framework.Assert.True(string.IsNullOrWhiteSpace(dir2));
         }
     }
 }

@@ -8,17 +8,17 @@ namespace RegulusLibraryTest
 
     public class DosKeyTest
     {
-        [Xunit.Fact]
+        [NUnit.Framework.Test]
         public void TestPrevInit()
         {
             Doskey dosKey = new Doskey(10);
 
             string record1 = dosKey.TryGetPrev();
 
-            Xunit.Assert.Null(record1);
+            NUnit.Framework.Assert.Null(record1);
         }
 
-        [Xunit.Fact]
+        [NUnit.Framework.Test]
         public void TestPrev()
         {
             Doskey dosKey = new Doskey(10);
@@ -31,13 +31,13 @@ namespace RegulusLibraryTest
             string record3 = dosKey.TryGetPrev();
             string record4 = dosKey.TryGetPrev();
 
-            Xunit.Assert.Equal("in3", record1);
-            Xunit.Assert.Equal("in2", record2);
-            Xunit.Assert.Equal("in1", record3);
-            Xunit.Assert.Equal(null, record4);
+            NUnit.Framework.Assert.AreEqual("in3", record1);
+            NUnit.Framework.Assert.AreEqual("in2", record2);
+            NUnit.Framework.Assert.AreEqual("in1", record3);
+            NUnit.Framework.Assert.AreEqual(null, record4);
         }
 
-        [Xunit.Fact]
+        [NUnit.Framework.Test]
         public void TestNext()
         {
             Doskey dosKey = new Doskey(10);
@@ -55,17 +55,17 @@ namespace RegulusLibraryTest
             string record7 = dosKey.TryGetNext();
             string record8 = dosKey.TryGetNext();
 
-            Xunit.Assert.Equal("in3", record1);
-            Xunit.Assert.Equal("in2", record2);
-            Xunit.Assert.Equal("in1", record3);
-            Xunit.Assert.Equal(null, record4);
-            Xunit.Assert.Equal("in2", record5);
-            Xunit.Assert.Equal("in3", record6);
-            Xunit.Assert.Equal(null, record7);
-            Xunit.Assert.Equal(null, record8);
+            NUnit.Framework.Assert.AreEqual("in3", record1);
+            NUnit.Framework.Assert.AreEqual("in2", record2);
+            NUnit.Framework.Assert.AreEqual("in1", record3);
+            NUnit.Framework.Assert.AreEqual(null, record4);
+            NUnit.Framework.Assert.AreEqual("in2", record5);
+            NUnit.Framework.Assert.AreEqual("in3", record6);
+            NUnit.Framework.Assert.AreEqual(null, record7);
+            NUnit.Framework.Assert.AreEqual(null, record8);
         }
 
-        [Xunit.Fact]
+        [NUnit.Framework.Test]
         public void TestNextPrev()
         {
             Doskey dosKey = new Doskey(3);
@@ -86,17 +86,17 @@ namespace RegulusLibraryTest
             string record7 = dosKey.TryGetPrev();
             string record8 = dosKey.TryGetPrev();
 
-            Xunit.Assert.Equal(null, record1);
-            Xunit.Assert.Equal("in6", record2);
-            Xunit.Assert.Equal(null, record3);
-            Xunit.Assert.Equal("in5", record4);
-            Xunit.Assert.Equal("in6", record5);
-            Xunit.Assert.Equal("in5", record6);
-            Xunit.Assert.Equal("in4", record7);
-            Xunit.Assert.Equal(null, record8);
+            NUnit.Framework.Assert.AreEqual(null, record1);
+            NUnit.Framework.Assert.AreEqual("in6", record2);
+            NUnit.Framework.Assert.AreEqual(null, record3);
+            NUnit.Framework.Assert.AreEqual("in5", record4);
+            NUnit.Framework.Assert.AreEqual("in6", record5);
+            NUnit.Framework.Assert.AreEqual("in5", record6);
+            NUnit.Framework.Assert.AreEqual("in4", record7);
+            NUnit.Framework.Assert.AreEqual(null, record8);
         }
 
-        [Xunit.Fact]
+        [NUnit.Framework.Test]
         public void TestPrevLimit()
         {
             Doskey dosKey = new Doskey(2);
@@ -109,10 +109,10 @@ namespace RegulusLibraryTest
             string record3 = dosKey.TryGetPrev();
             string record4 = dosKey.TryGetPrev();
 
-            Xunit.Assert.Equal("in3", record1);
-            Xunit.Assert.Equal("in2", record2);
-            Xunit.Assert.Equal(null, record3);
-            Xunit.Assert.Equal(null, record4);
+            NUnit.Framework.Assert.AreEqual("in3", record1);
+            NUnit.Framework.Assert.AreEqual("in2", record2);
+            NUnit.Framework.Assert.AreEqual(null, record3);
+            NUnit.Framework.Assert.AreEqual(null, record4);
         }
     }
 }

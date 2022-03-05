@@ -1,5 +1,5 @@
 ﻿using NSubstitute;
-using Xunit;
+using NUnit.Framework;
 
 namespace Regulus.Utility.Tests
 {
@@ -8,7 +8,7 @@ namespace Regulus.Utility.Tests
     
     public class StatusMachineTests
     {
-        [Xunit.Fact]
+        [NUnit.Framework.Test]
         public void PushOne()
         {
 
@@ -24,7 +24,7 @@ namespace Regulus.Utility.Tests
 
         }
 
-        [Xunit.Fact]
+        [NUnit.Framework.Test]
         public void Change()
         {
 
