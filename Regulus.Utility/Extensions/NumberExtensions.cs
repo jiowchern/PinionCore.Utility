@@ -2,7 +2,7 @@
 
 namespace Regulus.Extensions
 {
-    public static class NumberExtensions
+   public static class NumberExtensions
     {
         public static IEnumerable<int> GetSeries(this int count) 
         {
