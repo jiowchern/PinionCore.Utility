@@ -1,9 +1,8 @@
 ﻿using Regulus.Utility;
 using System.Linq;
 
-namespace Regulus.Extension.Tests
+namespace Regulus.Extensions.Tests
 {
-
     public class TypeExtensionTests
     {
         [NUnit.Framework.Test]

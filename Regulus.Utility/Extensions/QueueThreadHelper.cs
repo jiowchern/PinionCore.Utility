@@ -1,4 +1,4 @@
-namespace Regulus.Extension
+namespace Regulus.Extensions
 {
     public static class QueueThreadHelper
     {

@@ -3,7 +3,7 @@ using System;
 using System.Data;
 using System.Linq;
 
-namespace Regulus.Extension
+namespace Regulus.Extensions
 {
     public static class System_Data_DataTable
     {

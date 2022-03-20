@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 
-namespace Regulus.Extension
+namespace Regulus.Extensions
 {
     public static class Linq
     {

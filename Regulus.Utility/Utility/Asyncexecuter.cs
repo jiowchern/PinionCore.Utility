@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Regulus.Extension
+namespace Regulus.Extensions
 {
     public static class EmptyDelegate
     {

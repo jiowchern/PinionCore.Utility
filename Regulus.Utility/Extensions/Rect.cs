@@ -2,7 +2,7 @@
 
 using Regulus.Utility;
 
-namespace Regulus.Extension
+namespace Regulus.Extensions
 {
 
 

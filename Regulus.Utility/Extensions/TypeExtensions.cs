@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Regulus.Extension
+namespace Regulus.Extensions
 {
-    public static class TypeExtension
+    public static class TypeExtensions
     {
         public static Rect ToRect(this IEnumerable<Vector2> points)
         {

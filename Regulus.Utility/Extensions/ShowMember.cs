@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Regulus.Extension
+namespace Regulus.Extensions
 {
     public static class ShowMember
     {
