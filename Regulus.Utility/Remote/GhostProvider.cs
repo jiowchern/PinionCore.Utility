@@ -79,14 +79,14 @@ namespace Regulus.Remote
             _RemoveReturns(id);
         }
 
-        IReadOnlyCollection<IGhost> IProvider.Ghosts
+       /* IReadOnlyCollection<IGhost> IProvider.Ghosts
         {
             get
             {
                 IEnumerable<T> all = _Entitys.Concat(_Waits).Concat(from r in _Returns where r.IsAlive select (T)r.Target);
                 return (from entity in all select (IGhost)entity).ToArray();
             }
-        }
+        }*/
 
         void IProvider.ClearGhosts()
         {
