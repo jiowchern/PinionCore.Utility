@@ -5,18 +5,12 @@ namespace Regulus.Remote
 {
 
 
-    /// <summary>
-    ///     接收或傳送遠端來的資料
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
+    
     public sealed class Value<T> : IValue ,  IAwaitable<T>
     {
         private event Action<T> _OnValue;
         Action _Continuation;
-
-        /// <summary>
-        ///     如果有設定資料則會發生此事件
-        /// </summary>
+    
         public event Action<T> OnValue
         {
             add
@@ -135,12 +129,7 @@ namespace Regulus.Remote
             
             return true;
         }
-
-        /// <summary>
-        ///     取得資料
-        /// </summary>
-        /// <param name="val"></param>
-        /// <returns>如果有資料則傳回真</returns>
+       
         public bool TryGetValue(out T val)
         {
             if (_Empty == false)
