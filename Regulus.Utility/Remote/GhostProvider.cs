@@ -122,12 +122,17 @@ namespace Regulus.Remote
             lock (_Entitys)
             {
                 T entity = (from e in _Entitys where (e as IGhost).GetID() == id select e).FirstOrDefault();
-                if (entity != null && _Unsupply != null)
+                if(entity != null)
+                {
+                    _Entitys.Remove(entity);
+                }
+                
+                if (_Unsupply != null)
                 {
                     _Unsupply.Invoke(entity);
                 }
 
-                _Entitys.Remove(entity);
+                
             }
         }
 
