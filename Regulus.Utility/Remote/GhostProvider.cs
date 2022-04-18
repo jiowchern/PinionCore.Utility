@@ -125,12 +125,14 @@ namespace Regulus.Remote
                 if(entity != null)
                 {
                     _Entitys.Remove(entity);
+
+                    if (_Unsupply != null)
+                    {
+                        _Unsupply.Invoke(entity);
+                    }
                 }
                 
-                if (_Unsupply != null)
-                {
-                    _Unsupply.Invoke(entity);
-                }
+                
 
                 
             }
