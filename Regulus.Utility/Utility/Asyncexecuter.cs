@@ -20,8 +20,6 @@ namespace Regulus.Utility
 {
 
 
-
-
     public class AsyncExecuter
     {
         private readonly System.Collections.Concurrent.ConcurrentQueue<Action> _Tasks;
