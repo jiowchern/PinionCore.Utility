@@ -1,4 +1,6 @@
-﻿namespace Regulus.Utility
+﻿using System.Threading.Tasks;
+
+namespace Regulus.Utility
 {
     public class AutoPowerRegulator
     {
@@ -19,7 +21,7 @@
         {
                     
             long ticks = _Counter.Ticks;
-            _PowerRegulator.Operate(ticks - _PreviousTicks);
+            _PowerRegulator.Operate(ticks - _PreviousTicks).Wait();
             _PreviousTicks = ticks;
         }
     }

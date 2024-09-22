@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace Regulus.Utility
 {
@@ -7,10 +8,7 @@ namespace Regulus.Utility
         private readonly FPSCounter _FPS;
 
         private readonly int _LowPower;
-
-
-        private SpinWait _SpinWait;
-
+        readonly SpinWait _SpinWait;
 
         private long _Busy;
 
@@ -42,8 +40,8 @@ namespace Regulus.Utility
 
         public PowerRegulator()
         {
-
             _SpinWait = new SpinWait();
+
             _SpinCount = 0;
             _WorkCount = 0;
             _Busy = 0;
@@ -51,20 +49,21 @@ namespace Regulus.Utility
             _FPS = new FPSCounter();
         }
 
-        public void Operate(long busy)
-        {            
+        public async Task Operate(long busy)
+        {
+            
             _FPS.Update();
 
             if (_Busy <= busy && _FPS.Value >= _LowPower)
-            {
-                System.Threading.Thread.Sleep(1);
+            {                
                 _SpinCount++;
+                
+                System.Threading.Thread.Sleep(0);            
             }
             else
-            {
-                //System.Threading.Thread.Sleep(0);
-                //_SpinWait.Reset();
+            {                
                 _WorkCount++;
+                _SpinWait.SpinOnce();                
             }
             _Busy = busy;
         }
