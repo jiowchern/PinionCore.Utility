@@ -32,6 +32,8 @@ namespace Regulus.Memorys
             }
         }
 
+        ArraySegment<byte> Buffer.Bytes => new ArraySegment<byte>(_array, 0, _count);
+
         public byte this[int index]
         {
             get

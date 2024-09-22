@@ -22,11 +22,10 @@ namespace Regulus.Memorys
             foreach (var kvp in _chunkPools)
             {
                 int bufferSize = kvp.Key;
-                if (bufferSize >= size)
-                {
-                    var chunkPool = kvp.Value;
-                    return chunkPool.Alloc(size);
-                }
+                if (bufferSize < size)
+                    continue;
+                var chunkPool = kvp.Value;
+                return chunkPool.Alloc(size);
             }
 
             // 如果没有合适的缓冲区大小，直接分配一个 DirectBuffer

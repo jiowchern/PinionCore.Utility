@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 
 namespace Regulus.Memorys
 {
@@ -8,16 +9,18 @@ namespace Regulus.Memorys
     {
         private readonly ChunkPool _chunkPool;
         private readonly ArraySegment<byte> _array;
+        
         private bool _disposed;
-        private int _count; 
-        private readonly object _syncRoot = new object();
+        private int _count;
 
+        public readonly byte[] Page;
         internal PooledBuffer(ChunkPool chunkPool, ArraySegment<byte> segment )
         {
             _chunkPool = chunkPool;
             _array = segment;
             _disposed = false;
             _count = 0;
+            Page = segment.Array;
         }
 
 
@@ -28,12 +31,11 @@ namespace Regulus.Memorys
         {
             get
             {
-                lock (_syncRoot)
-                {
-                    return _count;
-                }
+                return _count;
             }
         }
+
+        ArraySegment<byte> Buffer.Bytes => new ArraySegment<byte>(_array.Array, _array.Offset, _count); 
 
         public byte this[int index]
         {
@@ -45,10 +47,7 @@ namespace Regulus.Memorys
                 if (index < 0 || index >= Count)
                     throw new ArgumentOutOfRangeException(nameof(index));
 
-                lock (_syncRoot)
-                {
-                    return _array.Array[_array.Offset + index];
-                }
+                return _array.Array[_array.Offset + index];
             }
             set
             {
@@ -58,10 +57,7 @@ namespace Regulus.Memorys
                 if (index < 0 || index >= Count)
                     throw new ArgumentOutOfRangeException(nameof(index));
 
-                lock (_syncRoot)
-                {
-                    _array.Array[_array.Offset + index] = value;
-                }
+                _array.Array[_array.Offset + index] = value;
             }
         }
 
@@ -87,19 +83,17 @@ namespace Regulus.Memorys
         {
             if (!_disposed)
             {
-                lock (_syncRoot)
-                {
-                    _disposed = true;
-                    _count = 0;
-                    _chunkPool.Return(this);
-                }
+                // clean _array                
+                _disposed = true;
+                _count = 0;
+                _chunkPool.Return(this);
             }
         }
 
-        internal void SetCount(int count)
+        internal void Reset(int count)
         {
-            lock (_syncRoot)
-                _count = count;
+            _disposed = false;
+            _count = count;
         }
     }
 }

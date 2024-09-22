@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Regulus.Memorys
 {
@@ -31,7 +32,7 @@ namespace Regulus.Memorys
                     throw new InvalidOperationException("Failed to allocate buffer after allocating a new page.");
                 }
             }
-            buffer.SetCount(count);
+            buffer.Reset(count);
             return buffer;
         }
 
@@ -55,6 +56,11 @@ namespace Regulus.Memorys
 
         public void Return(PooledBuffer buffer)
         {
+            lock (_pageLock)
+            {
+                if (!_pages.Any(p => p == buffer.Page))
+                    return;
+            }
             _availableBuffers.Add(buffer);
         }
     }
