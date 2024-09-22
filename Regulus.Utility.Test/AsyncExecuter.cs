@@ -1,7 +1,11 @@
-﻿using NUnit.Framework;
+﻿using NSubstitute;
+using NUnit.Framework;
 
 using Regulus.Collection;
 
+namespace Regulus.Utility.Tests
+{
+}
 namespace RegulusLibraryTest
 {
 

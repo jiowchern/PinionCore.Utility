@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Regulus.Utility
@@ -7,8 +8,7 @@ namespace Regulus.Utility
     {
         private readonly FPSCounter _FPS;
 
-        private readonly int _LowPower;
-        readonly SpinWait _SpinWait;
+        private readonly int _LowPower;        
 
         private long _Busy;
 
@@ -21,16 +21,16 @@ namespace Regulus.Utility
             get { return _FPS.Value; }
         }
 
-        public float Power => _GetSample();
+        public double Power => _GetSample();
 
-        private float _GetSample()
+        private double _GetSample()
         {
             long count = _WorkCount + _SpinCount;
             if (count == 0)
                 return 0;
 
             double power = _WorkCount / (double)count;
-            return (float)power;
+            return power;
         }
 
         public PowerRegulator(int low_power) : this()
@@ -39,8 +39,7 @@ namespace Regulus.Utility
         }
 
         public PowerRegulator()
-        {
-            _SpinWait = new SpinWait();
+        {            
 
             _SpinCount = 0;
             _WorkCount = 0;
@@ -57,13 +56,13 @@ namespace Regulus.Utility
             if (_Busy <= busy && _FPS.Value >= _LowPower)
             {                
                 _SpinCount++;
-                
-                System.Threading.Thread.Sleep(0);            
+
+                var ms = (int)TimeSpan.FromTicks(busy - _Busy).TotalMilliseconds;
+                await System.Threading.Tasks.Task.Delay(ms);
             }
             else
             {                
-                _WorkCount++;
-                _SpinWait.SpinOnce();                
+                _WorkCount++;                
             }
             _Busy = busy;
         }
