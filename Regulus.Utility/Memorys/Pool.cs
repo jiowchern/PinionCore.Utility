@@ -1,19 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Regulus.Memorys
 {
     public class Pool
     {
         private readonly SortedList<int, ChunkPool> _chunkPools;
+        public readonly IReadOnlyDictionary<int, Chankable> Chunks;
 
         public Pool(IEnumerable<ChunkSetting> chunkSettings)
         {
             _chunkPools = new SortedList<int, ChunkPool>();
+            
             foreach (var setting in chunkSettings)
             {
                 _chunkPools.Add(setting.Size, new ChunkPool(setting.Size, setting.Count));
             }
+            Chunks = _chunkPools.Select(kvp => kvp.Value as Chankable).ToDictionary(kvp => kvp.Size);
         }
 
         public Buffer Alloc(int size)

@@ -23,7 +23,14 @@ namespace Regulus.Memorys
             Page = segment.Array;
         }
 
-
+        ~PooledBuffer()
+        {
+            if (!_disposed)
+            {
+                _disposed = true;
+                _chunkPool.Return(_array);
+            }
+        }
 
         public int Capacity => _array.Count;
 
@@ -35,7 +42,15 @@ namespace Regulus.Memorys
             }
         }
 
-        ArraySegment<byte> Buffer.Bytes => new ArraySegment<byte>(_array.Array, _array.Offset, _count); 
+        ArraySegment<byte> Buffer.Bytes => _Create();
+
+        private ArraySegment<byte> _Create()
+        {
+            if (_disposed)
+                throw new ObjectDisposedException(nameof(PooledBuffer));
+
+            return new ArraySegment<byte>(_array.Array, _array.Offset, _count);
+        }
 
         public byte this[int index]
         {

@@ -5,7 +5,12 @@ using System.Linq;
 
 namespace Regulus.Memorys
 {
-    internal class ChunkPool
+    public interface Chankable
+    {
+        int Size { get; }
+        int AvailableCount { get; }
+    }
+    internal class ChunkPool : Chankable
     {
         private readonly int _bufferSize;
         private readonly int _buffersPerPage;
@@ -13,6 +18,10 @@ namespace Regulus.Memorys
         private readonly ConcurrentBag<PooledBuffer> _availableBuffers;
         private readonly List<byte[]> _pages;
         private readonly object _pageLock = new object();
+
+        int Chankable.Size => _bufferSize;
+
+        int Chankable.AvailableCount => _availableBuffers.Count;
 
         public ChunkPool(int bufferSize, int buffersPerPage)
         {
@@ -62,6 +71,18 @@ namespace Regulus.Memorys
                 if (!_pages.Any(p => p == buffer.Page))
                     return;
             }
+            _availableBuffers.Add(buffer);
+        }
+
+        internal void Return(ArraySegment<byte> bytes)
+        {
+            lock (_pageLock)
+            {
+                if (!_pages.Any(p => p == bytes.Array))
+                    return;
+            }
+
+            var buffer = new PooledBuffer(this, bytes);
             _availableBuffers.Add(buffer);
         }
     }

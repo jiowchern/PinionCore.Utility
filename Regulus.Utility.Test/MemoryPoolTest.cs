@@ -1,4 +1,6 @@
-﻿namespace Regulus.Utility.Tests
+﻿using System;
+
+namespace Regulus.Utility.Tests
 {
     public class MemoryPoolTest
     {
@@ -14,6 +16,25 @@
             NUnit.Framework.Assert.AreEqual(16 , buffer.Capacity); 
             NUnit.Framework.Assert.AreEqual(12, buffer.Count); 
             disposable.Dispose();
+        }
+
+        [NUnit.Framework.Test]
+        public void Test16Dispose()
+        {
+            var pool = new Regulus.Memorys.Pool(new[] { new Regulus.Memorys.ChunkSetting(4, 1000), new Regulus.Memorys.ChunkSetting(8, 1000), new Regulus.Memorys.ChunkSetting(16, 1000) });
+            var buffer = pool.Alloc(12);
+            NUnit.Framework.Assert.AreEqual(16, buffer.Capacity);
+            NUnit.Framework.Assert.AreEqual(12, buffer.Count);
+            var chunk = pool.Chunks[buffer.Capacity];
+
+            var availableCount1 = chunk.AvailableCount;
+
+            buffer.Dispose();
+           
+
+            var availableCount2 = chunk.AvailableCount;
+            var result = availableCount2 - availableCount1;
+            NUnit.Framework.Assert.AreEqual(1, result);
         }
 
         [NUnit.Framework.Test]
