@@ -5,16 +5,12 @@ using System.Collections.Generic;
 namespace Regulus.Memorys
 {
     
-    public class Buf 
+    public static class BufferExtensions
     {
-        public readonly ArraySegment<byte> Bytes;
-        public Buf(ArraySegment<byte> bytes)
+        public static Buffer AsBuffer(this byte[] buffer)
         {
-            System.Memory<byte> memory = new System.Memory<byte>(bytes.Array, bytes.Offset, bytes.Count);
-            memory.Pin();
-            Bytes = bytes;
+            return new DirectBuffer(buffer);
         }
-
     }
     public interface Buffer : IDisposable ,IEnumerable<byte> , IReadOnlyCollection<byte> 
     {

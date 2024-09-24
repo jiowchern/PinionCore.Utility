@@ -9,9 +9,9 @@ namespace Regulus.Memorys
     {
         private readonly ChunkPool _chunkPool;
         private readonly ArraySegment<byte> _array;
-        
+        ArraySegment<byte> _Buffer;
         private bool _disposed;
-        private int _count;
+        
 
         public readonly byte[] Page;
         internal PooledBuffer(ChunkPool chunkPool, ArraySegment<byte> segment )
@@ -19,8 +19,13 @@ namespace Regulus.Memorys
             _chunkPool = chunkPool;
             _array = segment;
             _disposed = false;
-            _count = 0;
+            _SetCount(0);
             Page = segment.Array;
+        }
+
+        private void _SetCount(int count)
+        {
+            _Buffer = new ArraySegment<byte>(_array.Array, _array.Offset, count);   
         }
 
         ~PooledBuffer()
@@ -38,7 +43,7 @@ namespace Regulus.Memorys
         {
             get
             {
-                return _count;
+                return _Buffer.Count;
             }
         }
 
@@ -49,7 +54,7 @@ namespace Regulus.Memorys
             if (_disposed)
                 throw new ObjectDisposedException(nameof(PooledBuffer));
 
-            return new ArraySegment<byte>(_array.Array, _array.Offset, _count);
+            return _Buffer;
         }
 
         public byte this[int index]
@@ -100,7 +105,7 @@ namespace Regulus.Memorys
             {
                 // clean _array                
                 _disposed = true;
-                _count = 0;
+                _SetCount(0);
                 _chunkPool.Return(this);
             }
         }
@@ -108,7 +113,7 @@ namespace Regulus.Memorys
         internal void Reset(int count)
         {
             _disposed = false;
-            _count = count;
+            _SetCount(count);
         }
     }
 }

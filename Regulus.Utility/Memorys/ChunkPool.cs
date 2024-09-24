@@ -32,28 +32,28 @@ namespace Regulus.Memorys
         }
 
         public Buffer Alloc(int count)
-        {
-            lock (_pageLock)
-            {
-                if (_availableBuffers.IsEmpty)
-                {
-                    AllocatePage();
-                }
-            }
+        {            
+            GeneratePage();
                 
             if (!_availableBuffers.TryTake(out PooledBuffer buffer))
             {
-                throw new InvalidOperationException("Failed to allocate buffer after allocating a new page.");                
+                return new DirectBuffer(_bufferSize);
             }
             buffer.Reset(count);
             return buffer;
         }
 
-        private void AllocatePage()
+        private void GeneratePage()
         {
-            int pageSize = _bufferSize * _buffersPerPage;
-            byte[] page = new byte[pageSize];
-            _pages.Add(page);
+            byte[] page = null;
+            lock (_pageLock)
+            {
+                if (_availableBuffers.Count > 1)
+                    return;
+                int pageSize = _bufferSize * _buffersPerPage;
+                page = new byte[pageSize];
+                _pages.Add(page);
+            }
 
             for (int i = 0; i < _buffersPerPage; i++)
             {
@@ -62,6 +62,7 @@ namespace Regulus.Memorys
                 var buffer = new PooledBuffer(this, segment);
                 _availableBuffers.Add(buffer);
             }
+
         }
 
         public void Return(PooledBuffer buffer)

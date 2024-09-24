@@ -10,13 +10,26 @@ namespace Regulus.Memorys
         private bool _disposed;
         private int _count;
         private readonly object _syncRoot = new object();
-
+        ArraySegment<byte> _Buffer;
+        internal DirectBuffer(byte[] buff)
+        {
+            _array = buff;
+            Capacity = buff.Length;
+            _disposed = false;
+            _SetCount(buff.Length);
+        }
         internal DirectBuffer(int size)
         {
             _array = new byte[size];
             Capacity = size;
             _disposed = false;
-            _count = 0;
+            _SetCount(size);
+        }
+
+        private void _SetCount(int count)
+        {
+            _count = count;
+            _Buffer = new ArraySegment<byte>(_array, 0, _count);
         }
 
         public int Capacity { get; }
@@ -32,7 +45,7 @@ namespace Regulus.Memorys
             }
         }
 
-        ArraySegment<byte> Buffer.Bytes => new ArraySegment<byte>(_array, 0, _count);
+        ArraySegment<byte> Buffer.Bytes => _Buffer;
 
         public byte this[int index]
         {
@@ -100,7 +113,8 @@ namespace Regulus.Memorys
         public void Dispose()
         {
             _disposed = true;
-            _count = 0;
+            
+            _SetCount(0);
             // 对于直接分配的缓冲区，Dispose 时不需要执行任何操作
         }
     }
