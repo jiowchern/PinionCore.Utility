@@ -5,11 +5,6 @@ using System.Linq;
 
 namespace Regulus.Memorys
 {
-    public interface Chankable
-    {
-        int Size { get; }
-        int AvailableCount { get; }
-    }
     internal class ChunkPool : Chankable
     {
         private readonly int _bufferSize;
@@ -18,10 +13,16 @@ namespace Regulus.Memorys
         private readonly ConcurrentBag<PooledBuffer> _availableBuffers;
         private readonly List<byte[]> _pages;
         private readonly object _pageLock = new object();
-
-        int Chankable.Size => _bufferSize;
+        int _DefaultAllocationThreshold;
+        int _AllocCount;
+        int _Dealloc;
+        int Chankable.BufferSize => _bufferSize;
 
         int Chankable.AvailableCount => _availableBuffers.Count;
+
+        int Chankable.DefaultAllocationThreshold => _DefaultAllocationThreshold;
+
+        int Chankable.PageSize => _pages.Count;
 
         public ChunkPool(int bufferSize, int buffersPerPage)
         {
@@ -36,8 +37,9 @@ namespace Regulus.Memorys
             GeneratePage();
                 
             if (!_availableBuffers.TryTake(out PooledBuffer buffer))
-            {
-                return new DirectBuffer(_bufferSize);
+            {                
+                System.Threading.Interlocked.Increment(ref _DefaultAllocationThreshold);                                    
+                return new DirectBuffer(count);
             }
             buffer.Reset(count);
             return buffer;
@@ -48,11 +50,11 @@ namespace Regulus.Memorys
             byte[] page = null;
             lock (_pageLock)
             {
-                if (_availableBuffers.Count > 1)
+                if (_availableBuffers.Count > _DefaultAllocationThreshold)
                     return;
                 int pageSize = _bufferSize * _buffersPerPage;
                 page = new byte[pageSize];
-                _pages.Add(page);
+                _pages.Add(page);                
             }
 
             for (int i = 0; i < _buffersPerPage; i++)
@@ -61,6 +63,7 @@ namespace Regulus.Memorys
                 var segment = new ArraySegment<byte>(page, offset, _bufferSize);
                 var buffer = new PooledBuffer(this, segment);
                 _availableBuffers.Add(buffer);
+                
             }
 
         }

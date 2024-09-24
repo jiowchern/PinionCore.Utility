@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace Regulus.Utility.Tests
 {
@@ -25,7 +26,7 @@ namespace Regulus.Utility.Tests
             var buffer = pool.Alloc(12);
             NUnit.Framework.Assert.AreEqual(16, buffer.Capacity);
             NUnit.Framework.Assert.AreEqual(12, buffer.Count);
-            var chunk = pool.Chunks[buffer.Capacity];
+            var chunk = pool.Chunks.Single( c=>c.BufferSize == buffer.Capacity);
 
             var availableCount1 = chunk.AvailableCount;
 

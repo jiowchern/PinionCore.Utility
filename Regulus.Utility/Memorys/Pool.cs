@@ -4,10 +4,11 @@ using System.Linq;
 
 namespace Regulus.Memorys
 {
-    public class Pool
+    public class Pool : IPool
     {
         private readonly SortedList<int, ChunkPool> _chunkPools;
-        public readonly IReadOnlyDictionary<int, Chankable> Chunks;
+        
+        public readonly IReadOnlyCollection<Chankable> Chunks;
 
         public Pool(IEnumerable<ChunkSetting> chunkSettings)
         {
@@ -17,7 +18,7 @@ namespace Regulus.Memorys
             {
                 _chunkPools.Add(setting.Size, new ChunkPool(setting.Size, setting.Count));
             }
-            Chunks = _chunkPools.Select(kvp => kvp.Value as Chankable).ToDictionary(kvp => kvp.Size);
+            Chunks = _chunkPools.Select(kvp => kvp.Value as Chankable).ToList();
         }
 
         public Buffer Alloc(int size)

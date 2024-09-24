@@ -112,10 +112,8 @@ namespace Regulus.Memorys
 
         public void Dispose()
         {
-            _disposed = true;
-            
-            _SetCount(0);
-            // 对于直接分配的缓冲区，Dispose 时不需要执行任何操作
+            _disposed = true;            
+            _SetCount(0);           
         }
     }
 }
