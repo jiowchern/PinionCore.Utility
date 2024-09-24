@@ -11,11 +11,12 @@ namespace Regulus.Memorys
         private readonly ArraySegment<byte> _array;
         ArraySegment<byte> _Buffer;
         private bool _disposed;
-        
+        public readonly object _Sync;
 
         public readonly byte[] Page;
         internal PooledBuffer(ChunkPool chunkPool, ArraySegment<byte> segment )
         {
+            _Sync = new object();
             _chunkPool = chunkPool;
             _array = segment;
             _disposed = false;
@@ -51,8 +52,12 @@ namespace Regulus.Memorys
 
         private ArraySegment<byte> _Create()
         {
-            if (_disposed)
-                throw new ObjectDisposedException(nameof(PooledBuffer));
+            lock (_Sync)
+            {
+                if (_disposed)
+                    throw new ObjectDisposedException(nameof(PooledBuffer));
+            }
+                
 
             return _Buffer;
         }
@@ -61,23 +66,31 @@ namespace Regulus.Memorys
         {
             get
             {
-                if (_disposed)
-                    throw new ObjectDisposedException(nameof(PooledBuffer));
+                lock (_Sync)
+                {
+                    if (_disposed)
+                        throw new ObjectDisposedException(nameof(PooledBuffer));
 
-                if (index < 0 || index >= Count)
-                    throw new ArgumentOutOfRangeException(nameof(index));
+                    if (index < 0 || index >= Count)
+                        throw new ArgumentOutOfRangeException(nameof(index));
 
-                return _array.Array[_array.Offset + index];
+                    return _array.Array[_array.Offset + index];
+                }
+                
             }
             set
             {
-                if (_disposed)
-                    throw new ObjectDisposedException(nameof(PooledBuffer));
+                lock (_Sync)
+                {
+                    if (_disposed)
+                        throw new ObjectDisposedException(nameof(PooledBuffer));
 
-                if (index < 0 || index >= Count)
-                    throw new ArgumentOutOfRangeException(nameof(index));
+                    if (index < 0 || index >= Count)
+                        throw new ArgumentOutOfRangeException(nameof(index));
 
-                _array.Array[_array.Offset + index] = value;
+                    _array.Array[_array.Offset + index] = value;
+                }
+                    
             }
         }
 
@@ -85,13 +98,17 @@ namespace Regulus.Memorys
 
         public IEnumerator<byte> GetEnumerator()
         {
-            if (_disposed)
-                throw new ObjectDisposedException(nameof(PooledBuffer));
-
-            for (int i = 0; i < Count; i++)
+            lock (_Sync)
             {
-                yield return _array.Array[_array.Offset + i];
+                if (_disposed)
+                    throw new ObjectDisposedException(nameof(PooledBuffer));
+
+                for (int i = 0; i < Count; i++)
+                {
+                    yield return _array.Array[_array.Offset + i];
+                }
             }
+            
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -101,19 +118,27 @@ namespace Regulus.Memorys
 
         public void Dispose()
         {
-            if (!_disposed)
+            lock(_Sync)
             {
-                // clean _array                
-                _disposed = true;
-                _SetCount(0);
-                _chunkPool.Return(this);
+                if (!_disposed)
+                {
+                    // clean _array                
+                   // _disposed = true;
+                    //_SetCount(0);
+                    //_chunkPool.Return(this);
+                }
             }
+            
         }
 
         internal void Reset(int count)
         {
-            _disposed = false;
-            _SetCount(count);
+            lock (_Sync)
+            {
+                _disposed = false;
+                _SetCount(count);
+            }
+                
         }
     }
 }
