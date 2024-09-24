@@ -12,7 +12,7 @@ namespace Regulus.Memorys
             return new DirectBuffer(buffer);
         }
     }
-    public interface Buffer : IDisposable ,IEnumerable<byte> , IReadOnlyCollection<byte> 
+    public interface Buffer : IEnumerable<byte> , IReadOnlyCollection<byte> 
     {
         // chank size 
         int Capacity { get; }

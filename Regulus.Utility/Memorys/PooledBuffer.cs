@@ -116,20 +116,7 @@ namespace Regulus.Memorys
             return GetEnumerator();
         }
 
-        public void Dispose()
-        {
-            lock(_Sync)
-            {
-                if (!_disposed)
-                {
-                    // clean _array                
-                   // _disposed = true;
-                    //_SetCount(0);
-                    //_chunkPool.Return(this);
-                }
-            }
-            
-        }
+        
 
         internal void Reset(int count)
         {

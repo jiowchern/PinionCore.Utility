@@ -11,15 +11,15 @@ namespace Regulus.Utility.Tests
         {           
             var pool = new Regulus.Memorys.Pool(new[] { new Regulus.Memorys.ChunkSetting(4,1000) , new Regulus.Memorys.ChunkSetting(8, 1000), new Regulus.Memorys.ChunkSetting(16, 1000) } );
             var buffer = pool.Alloc(12);
-            System.IDisposable disposable = buffer;
+            
             
             
             NUnit.Framework.Assert.AreEqual(16 , buffer.Capacity); 
             NUnit.Framework.Assert.AreEqual(12, buffer.Count); 
-            disposable.Dispose();
+            
         }
 
-        [NUnit.Framework.Test]
+        /*[NUnit.Framework.Test]
         public void Test16Dispose()
         {
             var pool = new Regulus.Memorys.Pool(new[] { new Regulus.Memorys.ChunkSetting(4, 1000), new Regulus.Memorys.ChunkSetting(8, 1000), new Regulus.Memorys.ChunkSetting(16, 1000) });
@@ -36,17 +36,17 @@ namespace Regulus.Utility.Tests
             var availableCount2 = chunk.AvailableCount;
             var result = availableCount2 - availableCount1;
             NUnit.Framework.Assert.AreEqual(1, result);
-        }
+        }*/
 
         [NUnit.Framework.Test]
         public void Test123()
         {
             var pool = new Regulus.Memorys.Pool(new[] { new Regulus.Memorys.ChunkSetting(4, 1000), new Regulus.Memorys.ChunkSetting(8, 1000), new Regulus.Memorys.ChunkSetting(16, 1000) });
             var buffer = pool.Alloc(123);
-            System.IDisposable disposable = buffer;
+            
             
             NUnit.Framework.Assert.AreEqual(123, buffer.Capacity);
-            disposable.Dispose();
+            
         }
     }
 }

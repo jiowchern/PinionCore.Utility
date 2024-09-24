@@ -110,10 +110,6 @@ namespace Regulus.Memorys
             return GetEnumerator();
         }
 
-        public void Dispose()
-        {
-            _disposed = true;            
-            _SetCount(0);           
-        }
+        
     }
 }
