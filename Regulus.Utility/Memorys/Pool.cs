@@ -6,6 +6,7 @@ namespace Regulus.Memorys
 {
     public class Pool : IPool
     {
+        public static readonly Buffer Empty = new DirectBuffer(0);
         private readonly SortedList<int, ChunkPool> _chunkPools;
         
         public readonly IReadOnlyCollection<Chankable> Chunks;
