@@ -6,30 +6,25 @@ namespace Regulus.Memorys
 {
     internal class DirectBuffer : Buffer
     {
-        private readonly byte[] _array;
+        
         private bool _disposed;
-        private int _count;
+        
         private readonly object _syncRoot = new object();
         ArraySegment<byte> _Buffer;
-        internal DirectBuffer(byte[] buff)
+        internal DirectBuffer(ArraySegment<byte> buff)
         {
-            _array = buff;
-            Capacity = buff.Length;
+            _Buffer = buff;            
+            Capacity = buff.Count;
             _disposed = false;
-            _SetCount(buff.Length);
+            
         }
-        internal DirectBuffer(int size)
+        internal DirectBuffer(byte[] buff) : this(new ArraySegment<byte>(buff))
         {
-            _array = new byte[size];
-            Capacity = size;
-            _disposed = false;
-            _SetCount(size);
+            
         }
-
-        private void _SetCount(int count)
+        internal DirectBuffer(int size) : this(new byte[size])
         {
-            _count = count;
-            _Buffer = new ArraySegment<byte>(_array, 0, _count);
+            
         }
 
         public int Capacity { get; }
@@ -40,7 +35,7 @@ namespace Regulus.Memorys
             {
                 lock (_syncRoot)
                 {
-                    return _count;
+                    return _Buffer.Count;
                 }
             }
         }
@@ -59,7 +54,7 @@ namespace Regulus.Memorys
 
                 lock (_syncRoot)
                 {
-                    return _array[index];
+                    return _Buffer.Array[_Buffer.Offset + index];
                 }
             }
             set
@@ -72,28 +67,12 @@ namespace Regulus.Memorys
 
                 lock (_syncRoot)
                 {
-                    _array[index] = value;
+                    _Buffer.Array[_Buffer.Offset + index] = value;
                 }
             }
         }
 
-        public int Write(ArraySegment<byte> buffer)
-        {
-            if (_disposed)
-                throw new ObjectDisposedException(nameof(DirectBuffer));
-
-            lock (_syncRoot)
-            {
-                int bytesToWrite = Math.Min(buffer.Count, Capacity - _count);
-                if (bytesToWrite <= 0)
-                    return 0;
-
-                System.Buffer.BlockCopy(buffer.Array, buffer.Offset, _array, _count, bytesToWrite);
-                _count += bytesToWrite;
-                return bytesToWrite;
-            }
-        }
-
+       
         public IEnumerator<byte> GetEnumerator()
         {
             if (_disposed)
@@ -101,7 +80,7 @@ namespace Regulus.Memorys
 
             for (int i = 0; i < Count; i++)
             {
-                yield return _array[i];
+                yield return _Buffer.Array[_Buffer.Offset + i];
             }
         }
 

@@ -1,7 +1,17 @@
-﻿namespace Regulus.Memorys
+﻿using System;
+
+namespace Regulus.Memorys
 {
     public static class PoolProvider
     {
+        public readonly static Pool DriectShared = Direct();
+
+        private static Pool Direct()
+        {
+            return new Regulus.Memorys.Pool(
+                new Regulus.Memorys.ChunkSetting[0]);
+        }
+
         public readonly static Pool Shared = Default();
         public static Pool Default()
         {

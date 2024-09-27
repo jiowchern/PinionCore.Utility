@@ -1,7 +1,83 @@
-﻿namespace Regulus.Serialization
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+
+namespace Regulus.Serialization
 {
     public class Varint
     {
+
+        public static readonly byte Endian = 0x80;
+
+        
+        public static ArraySegment<byte> FindVarint(ref ArraySegment<byte> bytes)
+        {
+            
+            for (int i = 0; i < bytes.Count; i++)
+            {
+
+                var value = bytes.Array[bytes.Offset + i];
+                if (value < Endian)
+                {
+                    return new ArraySegment<byte>(bytes.Array, bytes.Offset, i + 1);
+                }
+            }
+            return new ArraySegment<byte>(bytes.Array, bytes.Offset, 0);
+        }
+
+        public struct Package
+        {
+            public ArraySegment<byte> Head;
+            public ArraySegment<byte> Body;
+        }
+        public static IEnumerable<Package> FindPackages(ArraySegment<byte> bytes)
+        {
+            int offset = bytes.Offset;
+            int end = bytes.Offset + bytes.Count;
+
+            while (offset < end)
+            {
+                // 使用 BufferToNumber 来解析 varint
+                int dataLength;
+                int bytesRead = BufferToNumber(bytes.Array, offset, out dataLength);
+
+                if (bytesRead == 0)
+                {
+                    // varint 不完整，无法继续读取
+                    yield break;
+                }
+                else if (bytesRead < 0)
+                {
+                    // 发生溢出，停止处理
+                    yield break;
+                }
+
+                // 计算数据段的位置和长度
+                int dataOffset = offset + bytesRead;
+                int dataCount = dataLength;
+
+                if (dataOffset + dataCount > end)
+                {
+                    // 剩余的字节不足以组成一个完整的数据段，不返回不完整的对
+                    yield break;
+                }
+
+                // 创建 varint 和数据的 ArraySegment
+                var varintSegment = new ArraySegment<byte>(bytes.Array, offset, bytesRead);
+                var dataSegment = new ArraySegment<byte>(bytes.Array, dataOffset, dataCount);
+
+                // 返回完整的 varint-data 对
+                yield return new Package
+                {
+                    Head = varintSegment,
+                    Body = dataSegment
+                };
+
+                // 更新偏移量，继续处理下一个对
+                offset = dataOffset + dataCount;
+            }
+        }
+
 
 
         public static int NumberToBuffer(byte[] buffer, int offset, int value)
@@ -11,9 +87,9 @@
         public static int NumberToBuffer(byte[] buffer, int offset, ulong value)
         {
             int i = 0;
-            while (value >= 0x80)
+            while (value >= Endian)
             {
-                buffer[offset + i] = (byte)(value | 0x80);
+                buffer[offset + i] = (byte)(value | Endian);
                 value >>= 7;
                 i++;
             }
@@ -28,7 +104,7 @@
         public static int GetByteCount(ulong value)
         {
             int i;
-            for (i = 0; i < 9 && value >= 0x80; i++, value >>= 7) { }
+            for (i = 0; i < 9 && value >= Endian; i++, value >>= 7) { }
             return i + 1;
         }
         public static int BufferToNumber(Regulus.Memorys.Buffer buffer, int offset, out int value)
@@ -46,7 +122,7 @@
             for (int i = 0; i < buffer.Count - offset; i++)
             {
                 ulong bufferValue = buffer[offset + i];
-                if (bufferValue < 0x80)
+                if (bufferValue < Endian)
                 {
                     if (i > 9 || i == 9 && bufferValue > 1)
                     {
@@ -77,7 +153,7 @@
             for (int i = 0; i < buffer.Length - offset; i++)
             {
                 ulong bufferValue = buffer[offset + i];
-                if (bufferValue < 0x80)
+                if (bufferValue < Endian)
                 {
                     if (i > 9 || i == 9 && bufferValue > 1)
                     {
