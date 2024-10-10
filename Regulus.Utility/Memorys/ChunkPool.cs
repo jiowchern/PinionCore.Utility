@@ -14,8 +14,7 @@ namespace Regulus.Memorys
         private readonly List<byte[]> _pages;
         private readonly object _pageLock = new object();
         int _DefaultAllocationThreshold;
-        int _AllocCount;
-        int _Dealloc;
+       
         int Chankable.BufferSize => _bufferSize;
 
         int Chankable.AvailableCount => _availableBuffers.Count;

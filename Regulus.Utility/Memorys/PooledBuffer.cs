@@ -8,9 +8,9 @@ namespace Regulus.Memorys
     internal class PooledBuffer : Buffer
     {
         private readonly ChunkPool _chunkPool;
-        private readonly ArraySegment<byte> _array;
+        private readonly ArraySegment<byte> _Base;
         ArraySegment<byte> _Buffer;
-        private bool _disposed;
+        private bool _IsDisposed;
         public readonly object _Sync;
 
         public readonly byte[] Page;
@@ -18,27 +18,30 @@ namespace Regulus.Memorys
         {
             _Sync = new object();
             _chunkPool = chunkPool;
-            _array = segment;
-            _disposed = false;
+            _Base = segment;
+            _IsDisposed = false;
             _SetCount(0);
             Page = segment.Array;
         }
 
         private void _SetCount(int count)
         {
-            _Buffer = new ArraySegment<byte>(_array.Array, _array.Offset, count);   
+            if(count > _Base.Count)
+                throw new ArgumentOutOfRangeException(nameof(count));
+
+            _Buffer = new ArraySegment<byte>(_Base.Array, _Base.Offset, count);   
         }
 
         ~PooledBuffer()
         {
-            if (!_disposed)
+            if (!_IsDisposed)
             {
-                _disposed = true;
-                _chunkPool.Return(_array);
+                _IsDisposed = true;
+                _chunkPool.Return(_Base);
             }
         }
 
-        public int Capacity => _array.Count;
+        public int Capacity => _Base.Count;
 
         public int Count
         {
@@ -54,7 +57,7 @@ namespace Regulus.Memorys
         {
             lock (_Sync)
             {
-                if (_disposed)
+                if (_IsDisposed)
                     throw new ObjectDisposedException(nameof(PooledBuffer));
             }
                 
@@ -68,13 +71,21 @@ namespace Regulus.Memorys
             {
                 lock (_Sync)
                 {
-                    if (_disposed)
+                    if (_IsDisposed)
                         throw new ObjectDisposedException(nameof(PooledBuffer));
 
                     if (index < 0 || index >= Count)
                         throw new ArgumentOutOfRangeException(nameof(index));
+                    try
+                    {
+                        return _Buffer.Array[_Buffer.Offset + index];
+                    }
+                    catch (Exception e)
+                    {
 
-                    return _array.Array[_array.Offset + index];
+                        throw e;
+                    }
+                    
                 }
                 
             }
@@ -82,13 +93,22 @@ namespace Regulus.Memorys
             {
                 lock (_Sync)
                 {
-                    if (_disposed)
+                    if (_IsDisposed)
                         throw new ObjectDisposedException(nameof(PooledBuffer));
 
                     if (index < 0 || index >= Count)
                         throw new ArgumentOutOfRangeException(nameof(index));
 
-                    _array.Array[_array.Offset + index] = value;
+                    try
+                    {
+                        _Buffer.Array[_Buffer.Offset + index] = value;
+                    }
+                    catch (Exception e)
+                    {
+
+                        throw e ;
+                    }
+                    
                 }
                     
             }
@@ -100,12 +120,12 @@ namespace Regulus.Memorys
         {
             lock (_Sync)
             {
-                if (_disposed)
+                if (_IsDisposed)
                     throw new ObjectDisposedException(nameof(PooledBuffer));
 
                 for (int i = 0; i < Count; i++)
                 {
-                    yield return _array.Array[_array.Offset + i];
+                    yield return _Buffer.Array[_Buffer.Offset + i];
                 }
             }
             
@@ -122,7 +142,7 @@ namespace Regulus.Memorys
         {
             lock (_Sync)
             {
-                _disposed = false;
+                _IsDisposed = false;
                 _SetCount(count);
             }
                 
