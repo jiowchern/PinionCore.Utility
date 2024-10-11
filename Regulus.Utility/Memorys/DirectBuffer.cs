@@ -18,7 +18,7 @@ namespace Regulus.Memorys
             _disposed = false;
             
         }
-        internal DirectBuffer(byte[] buff) : this(new ArraySegment<byte>(buff))
+        internal DirectBuffer(byte[] buff) : this(new ArraySegment<byte>(buff,0,buff.Length))
         {
             
         }

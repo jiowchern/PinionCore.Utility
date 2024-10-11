@@ -4,7 +4,7 @@ namespace Regulus.Memorys
 {
     public static class PoolProvider
     {
-        public readonly static Pool DriectShared = Direct();
+        public readonly static Pool DirectShared = Direct();
 
         private static Pool Direct()
         {
