@@ -1,1 +1,1 @@
-# Regulus.Utility
+# PinionCore.Utility

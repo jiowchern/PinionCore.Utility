@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34701.34
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PinionCore.Utility", "PinionCore.Utility\PinionCore.Utility.csproj", "{13041DD1-612E-4287-9D22-4DD2D23BB07A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PinionCore.Utility.Test", "PinionCore.Utility.Test\PinionCore.Utility.Test.csproj", "{07E9C023-CCDA-4F34-80BD-6F44481E3B3D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{13041DD1-612E-4287-9D22-4DD2D23BB07A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13041DD1-612E-4287-9D22-4DD2D23BB07A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13041DD1-612E-4287-9D22-4DD2D23BB07A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13041DD1-612E-4287-9D22-4DD2D23BB07A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07E9C023-CCDA-4F34-80BD-6F44481E3B3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07E9C023-CCDA-4F34-80BD-6F44481E3B3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07E9C023-CCDA-4F34-80BD-6F44481E3B3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07E9C023-CCDA-4F34-80BD-6F44481E3B3D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6C3ACC4F-E91C-4972-804E-F320A9D34123}
+	EndGlobalSection
+EndGlobal
