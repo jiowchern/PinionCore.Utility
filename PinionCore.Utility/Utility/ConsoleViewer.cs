@@ -1,4 +1,4 @@
-namespace PinionCore.Utility
+﻿namespace PinionCore.Utility
 {
     public class ConsoleViewer : Console.IViewer
     {

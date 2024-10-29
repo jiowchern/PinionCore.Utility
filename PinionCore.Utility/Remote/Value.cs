@@ -1,16 +1,16 @@
-using System;
+﻿using System;
 using System.Runtime.CompilerServices;
 
 namespace PinionCore.Remote
 {
 
 
-    
-    public sealed class Value<T> : IValue ,  IAwaitable<T>
+
+    public sealed class Value<T> : IValue, IAwaitable<T>
     {
         private event Action<T> _OnValue;
         Action _Continuation;
-    
+
         public event Action<T> OnValue
         {
             add
@@ -26,7 +26,7 @@ namespace PinionCore.Remote
             remove { _OnValue -= value; }
         }
 
-        
+
 
         private readonly bool _Interface;
 
@@ -34,7 +34,7 @@ namespace PinionCore.Remote
 
         private T _Value;
 
-        
+
         public static Value<T> Empty
         {
             get { return default(T); }
@@ -49,7 +49,7 @@ namespace PinionCore.Remote
             _Interface = typeof(T).IsInterface;
         }
 
-        
+
         public Value(T val) : this()
         {
             _Empty = false;
@@ -65,7 +65,7 @@ namespace PinionCore.Remote
             return _Value;
         }
 
-       
+
 
         bool IValue.SetValue(object val)
         {
@@ -112,7 +112,7 @@ namespace PinionCore.Remote
             return _Empty == false;
         }
 
-        
+
         public bool SetValue(T val)
         {
             if (_Empty == false)
@@ -126,10 +126,10 @@ namespace PinionCore.Remote
             {
                 _OnValue(_Value);
             }
-            
+
             return true;
         }
-       
+
         public bool TryGetValue(out T val)
         {
             if (_Empty == false)

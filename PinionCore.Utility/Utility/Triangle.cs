@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 
@@ -69,10 +69,10 @@ namespace PinionCore.Utility
 
         public T[] Rotation(float angle)
         {
-            List<T> rotaters = new List<T>();
+            var rotaters = new List<T>();
             foreach (T t in tris)
             {
-                T tri = new T();
+                var tri = new T();
                 tri.Points = _RotatePoint(t.Points, _Center, angle);
                 rotaters.Add(tri);
             }
@@ -82,7 +82,7 @@ namespace PinionCore.Utility
 
         public Vector2[] _RotatePoint(Vector2[] points, Vector2 centroid, double angle)
         {
-            List<Vector2> ret = new List<Vector2>();
+            var ret = new List<Vector2>();
             foreach (Vector2 point in points)
             {
                 ret.Add(_RotatePoint(point, centroid, angle));
@@ -93,9 +93,9 @@ namespace PinionCore.Utility
 
         public Vector2 _RotatePoint(Vector2 point, Vector2 centroid, double angle)
         {
-            double x = centroid.X + ((point.X - centroid.X) * Math.Cos(angle) - (point.Y - centroid.Y) * Math.Sin(angle));
+            var x = centroid.X + ((point.X - centroid.X) * Math.Cos(angle) - (point.Y - centroid.Y) * Math.Sin(angle));
 
-            double y = centroid.Y + ((point.X - centroid.X) * Math.Sin(angle) + (point.Y - centroid.Y) * Math.Cos(angle));
+            var y = centroid.Y + ((point.X - centroid.X) * Math.Sin(angle) + (point.Y - centroid.Y) * Math.Cos(angle));
 
             return new Vector2((float)x, (float)y);
         }

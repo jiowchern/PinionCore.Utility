@@ -1,22 +1,16 @@
-using System;
-using System.Linq;
-
-namespace PinionCore.Utility.Tests
+﻿namespace PinionCore.Utility.Tests
 {
     public class MemoryPoolTest
     {
-        
+
         [NUnit.Framework.Test]
         public void Test16()
-        {           
-            var pool = new PinionCore.Memorys.Pool(new[] { new PinionCore.Memorys.ChunkSetting(4,1000) , new PinionCore.Memorys.ChunkSetting(8, 1000), new PinionCore.Memorys.ChunkSetting(16, 1000) } );
-            var buffer = pool.Alloc(12);
-            
-            
-            
-            NUnit.Framework.Assert.AreEqual(16 , buffer.Capacity); 
-            NUnit.Framework.Assert.AreEqual(12, buffer.Count); 
-            
+        {
+            var pool = new PinionCore.Memorys.Pool(new[] { new PinionCore.Memorys.ChunkSetting(4, 1000), new PinionCore.Memorys.ChunkSetting(8, 1000), new PinionCore.Memorys.ChunkSetting(16, 1000) });
+            Memorys.Buffer buffer = pool.Alloc(12);
+
+            NUnit.Framework.Assert.AreEqual(16, buffer.Capacity);
+            NUnit.Framework.Assert.AreEqual(12, buffer.Count);
         }
 
         /*[NUnit.Framework.Test]
@@ -42,11 +36,11 @@ namespace PinionCore.Utility.Tests
         public void Test123()
         {
             var pool = new PinionCore.Memorys.Pool(new[] { new PinionCore.Memorys.ChunkSetting(4, 1000), new PinionCore.Memorys.ChunkSetting(8, 1000), new PinionCore.Memorys.ChunkSetting(16, 1000) });
-            var buffer = pool.Alloc(123);
-            
-            
+            Memorys.Buffer buffer = pool.Alloc(123);
+
+
             NUnit.Framework.Assert.AreEqual(123, buffer.Capacity);
-            
+
         }
     }
 }

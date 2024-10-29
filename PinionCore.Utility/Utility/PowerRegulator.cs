@@ -1,5 +1,4 @@
-using System;
-using System.Threading;
+﻿using System;
 using System.Threading.Tasks;
 
 namespace PinionCore.Utility
@@ -8,7 +7,7 @@ namespace PinionCore.Utility
     {
         private readonly FPSCounter _FPS;
 
-        private readonly int _LowPower;        
+        private readonly int _LowPower;
 
         private long _Busy;
 
@@ -25,11 +24,11 @@ namespace PinionCore.Utility
 
         private double _GetSample()
         {
-            long count = _WorkCount + _SpinCount;
+            var count = _WorkCount + _SpinCount;
             if (count == 0)
                 return 0;
 
-            double power = _WorkCount / (double)count;
+            var power = _WorkCount / (double)count;
             return power;
         }
 
@@ -39,7 +38,7 @@ namespace PinionCore.Utility
         }
 
         public PowerRegulator()
-        {            
+        {
 
             _SpinCount = 0;
             _WorkCount = 0;
@@ -50,19 +49,19 @@ namespace PinionCore.Utility
 
         public async Task Operate(long busy)
         {
-            
+
             _FPS.Update();
 
             if (_Busy <= busy && _FPS.Value >= _LowPower)
-            {                
+            {
                 _SpinCount++;
 
                 var ms = (int)TimeSpan.FromTicks(busy - _Busy).TotalMilliseconds;
                 await System.Threading.Tasks.Task.Delay(ms);
             }
             else
-            {                
-                _WorkCount++;                
+            {
+                _WorkCount++;
             }
             _Busy = busy;
         }

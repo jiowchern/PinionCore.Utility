@@ -1,12 +1,12 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace PinionCore.Extensions
 {
-   public static class NumberExtensions
+    public static class NumberExtensions
     {
-        public static IEnumerable<int> GetSeries(this int count) 
+        public static IEnumerable<int> GetSeries(this int count)
         {
-            for (int i = 0 ; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
                 yield return i;
             }

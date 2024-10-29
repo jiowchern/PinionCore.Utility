@@ -1,9 +1,9 @@
-using System;
+﻿using System;
 using System.Linq.Expressions;
 
 namespace PinionCore.Utility
 {
-    public sealed class Log  
+    public sealed class Log
     {
         public readonly static Log Instance = Singleton<Log>.Instance;
         public delegate void RecordCallback(string message);

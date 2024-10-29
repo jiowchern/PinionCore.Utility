@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 
 
@@ -103,10 +103,10 @@ namespace PinionCore.Utility
         public static Rect Merge(params Rect[] bounds)
         {
 
-            float left = (from b in bounds select b.Left).Min();
-            float right = (from b in bounds select b.Right).Max();
-            float top = (from b in bounds select b.Top).Min();
-            float bottom = (from b in bounds select b.Bottom).Max();
+            var left = (from b in bounds select b.Left).Min();
+            var right = (from b in bounds select b.Right).Max();
+            var top = (from b in bounds select b.Top).Min();
+            var bottom = (from b in bounds select b.Bottom).Max();
             return new Rect(left, top, right - left, bottom - top);
         }
     }

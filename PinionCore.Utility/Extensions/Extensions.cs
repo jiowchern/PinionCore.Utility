@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Security.Cryptography;
 
 namespace PinionCore.Extensions
@@ -7,7 +7,7 @@ namespace PinionCore.Extensions
     {
         public static byte[] ToMd5(this string source)
         {
-            MD5 md5 = MD5.Create();
+            var md5 = MD5.Create();
             return md5.ComputeHash(System.Text.Encoding.ASCII.GetBytes(source));
         }
 

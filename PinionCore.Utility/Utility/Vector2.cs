@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Xml.Serialization;
 
 
@@ -18,13 +18,13 @@ namespace PinionCore.Utility
         [XmlAttribute("y")]
 
         public float Y;
-        public static readonly Vector2 Zero = new Vector2(0,0);
+        public static readonly Vector2 Zero = new Vector2(0, 0);
 
         public float Magnitude
         {
             get { return (float)Math.Sqrt(X * X + Y * Y); }
         }
-        
+
         public Vector2(float x, float y)
         {
             X = x;
@@ -43,14 +43,14 @@ namespace PinionCore.Utility
 
         public void Normalize()
         {
-            float magnitude = Magnitude;
+            var magnitude = Magnitude;
             X = X / magnitude;
             Y = Y / magnitude;
         }
 
         public Vector2 GetNormalized()
         {
-            float magnitude = Magnitude;
+            var magnitude = Magnitude;
 
             return new Vector2(X / magnitude, Y / magnitude);
         }
@@ -108,7 +108,7 @@ namespace PinionCore.Utility
 
         public override bool Equals(object obj)
         {
-            Vector2 v = (Vector2)obj;
+            var v = (Vector2)obj;
 
             return X == v.X && Y == v.Y;
         }
@@ -151,7 +151,7 @@ namespace PinionCore.Utility
         public static Vector2 AngleToVector(float angle)
         {
             angle %= 360;
-            double radians = angle * 0.0174532924;
+            var radians = angle * 0.0174532924;
             return new Vector2((float)Math.Cos(radians), (float)-Math.Sin(radians));
         }
 

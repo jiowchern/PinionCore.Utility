@@ -1,9 +1,9 @@
+﻿using System;
+using System.Linq;
+using System.Net;
 using NSubstitute;
 using PinionCore.Remote;
 using PinionCore.Utility;
-using System;
-using System.Linq;
-using System.Net;
 using PinionCore.Utility.CommandExtension;
 
 namespace PinionCoreLibraryTest
@@ -61,7 +61,7 @@ namespace PinionCoreLibraryTest
         public void TestCommandRegisterEvent3()
         {
             IDummy dummy = NSubstitute.Substitute.For<IDummy>();
-            Command command = new Command();
+            var command = new Command();
             command.RegisterEvent += (cmd, ret, args) =>
             {
                 NUnit.Framework.Assert.AreEqual("m", cmd);
@@ -82,7 +82,7 @@ namespace PinionCoreLibraryTest
         public void TestCommandRegisterEvent4()
         {
             IDummy dummy = NSubstitute.Substitute.For<IDummy>();
-            Command command = new Command();
+            var command = new Command();
             command.RegisterEvent += (cmd, ret, args) =>
             {
                 NUnit.Framework.Assert.AreEqual("m", cmd);
@@ -126,7 +126,7 @@ namespace PinionCoreLibraryTest
         [NUnit.Framework.Test]
         public void TestCommandAnalysisWithParameters1()
         {
-            Command.Analysis analysis = new Command.Analysis("login [ account ,    password, result]");
+            var analysis = new Command.Analysis("login [ account ,    password, result]");
 
             NUnit.Framework.Assert.AreEqual("login", analysis.Command);
             NUnit.Framework.Assert.AreEqual("result", analysis.Parameters[2]);
@@ -137,7 +137,7 @@ namespace PinionCoreLibraryTest
         [NUnit.Framework.Test]
         public void TestCommandAnalysisWithParameters2()
         {
-            Command.Analysis analysis = new Command.Analysis("login [ account ,    password][ result ]");
+            var analysis = new Command.Analysis("login [ account ,    password][ result ]");
 
             NUnit.Framework.Assert.AreEqual("login", analysis.Command);
             NUnit.Framework.Assert.AreEqual("result", analysis.Return);
@@ -149,7 +149,7 @@ namespace PinionCoreLibraryTest
         [NUnit.Framework.Test]
         public void TestCommandAnalysisWithParameters3()
         {
-            Command.Analysis analysis = new Command.Analysis("login-0.AAA [ account ,    password, result]");
+            var analysis = new Command.Analysis("login-0.AAA [ account ,    password, result]");
 
             NUnit.Framework.Assert.AreEqual("login-0.AAA", analysis.Command);
             NUnit.Framework.Assert.AreEqual("result", analysis.Parameters[2]);
@@ -160,7 +160,7 @@ namespace PinionCoreLibraryTest
         [NUnit.Framework.Test]
         public void TestCommandAnalysisNoParameters()
         {
-            Command.Analysis analysis = new Command.Analysis("login");
+            var analysis = new Command.Analysis("login");
 
             NUnit.Framework.Assert.AreEqual("login", analysis.Command);
             NUnit.Framework.Assert.AreEqual(0, analysis.Parameters.Length);
@@ -171,8 +171,8 @@ namespace PinionCoreLibraryTest
         {
             ICallTester callTester = Substitute.For<ICallTester>();
 
-            Command command = new Command();
-            CommandRegister<ICallTester> cr = new CommandRegister<ICallTester>(command, caller => caller.Function1());
+            var command = new Command();
+            var cr = new CommandRegister<ICallTester>(command, caller => caller.Function1());
 
             cr.Register(0, callTester);
             command.Run("0Function1", new string[0]);
@@ -184,8 +184,8 @@ namespace PinionCoreLibraryTest
         public void TestCommandRegister1()
         {
             // data
-            Command command = new Command();
-            CommandRegister<ICallTester, int> cr = new CommandRegister<ICallTester, int>(
+            var command = new Command();
+            var cr = new CommandRegister<ICallTester, int>(
 
                 command,
                 (caller, arg1) => caller.Function2(arg1));
@@ -207,8 +207,8 @@ namespace PinionCoreLibraryTest
         [NUnit.Framework.Test]
         public void TestCommandRegister2()
         {
-            Command command = new Command();
-            CommandRegisterReturn<ICallTester, int> cr = new CommandRegisterReturn<ICallTester, int>(
+            var command = new Command();
+            var cr = new CommandRegisterReturn<ICallTester, int>(
 
                 command,
                 caller => caller.Function3(),
@@ -227,9 +227,9 @@ namespace PinionCoreLibraryTest
         [NUnit.Framework.Test]
         public void TestCommandRegister3()
         {
-            Command command = new Command();
-            int result = 0;
-            CommandRegisterReturn<ICallTester, int, byte, float, int> cr = new CommandRegisterReturn<ICallTester, int, byte, float, int>(
+            var command = new Command();
+            var result = 0;
+            var cr = new CommandRegisterReturn<ICallTester, int, byte, float, int>(
 
                 command,
                 (caller, arg1, arg2, arg3) => caller.Function4(arg1, arg2, arg3),
@@ -254,9 +254,9 @@ namespace PinionCoreLibraryTest
         [NUnit.Framework.Test]
         public void TestCommandRegister4()
         {
-            Command command = new Command();
-            int result = 0;
-            CommandRegisterReturn<ICallTester, int> cr = new CommandRegisterReturn<ICallTester, int>(
+            var command = new Command();
+            var result = 0;
+            var cr = new CommandRegisterReturn<ICallTester, int>(
 
                 command,
                 (caller) => caller.Function5,
@@ -277,7 +277,7 @@ namespace PinionCoreLibraryTest
         {
             object outVal;
             Command.TryConversion("127.0.0.1:12345", out outVal, typeof(System.Net.IPEndPoint));
-            IPEndPoint ip = outVal as System.Net.IPEndPoint;
+            var ip = outVal as System.Net.IPEndPoint;
             NUnit.Framework.Assert.AreEqual(ip.Address, IPAddress.Parse("127.0.0.1"));
             NUnit.Framework.Assert.AreEqual(ip.Port, 12345);
         }
@@ -285,10 +285,10 @@ namespace PinionCoreLibraryTest
         [NUnit.Framework.Test]
         public void TestCommandGuid()
         {
-            Guid id = Guid.NewGuid();
+            var id = Guid.NewGuid();
             object outVal;
             Command.TryConversion(id.ToString(), out outVal, typeof(Guid));
-            Guid id2 = (Guid)outVal;
+            var id2 = (Guid)outVal;
             NUnit.Framework.Assert.AreEqual(id.ToString(), id2.ToString());
         }
         [NUnit.Framework.Test]
@@ -314,21 +314,21 @@ namespace PinionCoreLibraryTest
         public void UnanalyzableCommand()
         {
             var handler = new UnanalyzableCommandHandler();
-            
-            Command command = new Command();
-            command.Register("Unanalyzable.Command.TestRun.Run", handler.Run );
-            command.Run("Unanalyzable.Command.TestRun.Run" , new string[0]);
-            NUnit.Framework.Assert.AreEqual(true , handler.Called );
+
+            var command = new Command();
+            command.Register("Unanalyzable.Command.TestRun.Run", handler.Run);
+            command.Run("Unanalyzable.Command.TestRun.Run", new string[0]);
+            NUnit.Framework.Assert.AreEqual(true, handler.Called);
 
         }
         [NUnit.Framework.Test]
         public void CommandReturnTest()
         {
-            Command command = new Command();
-            command.Register<int,int,int>("add" , _AddTest  );
-            var rets = command.Run("add" , new[] { "1", "1" });
+            var command = new Command();
+            command.Register<int, int, int>("add", _AddTest);
+            var rets = command.Run("add", new[] { "1", "1" });
             var val = (int)rets.First();
-            NUnit.Framework.Assert.AreEqual(2 , val);
+            NUnit.Framework.Assert.AreEqual(2, val);
         }
 
         private int _AddTest(int arg1, int arg2)

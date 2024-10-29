@@ -1,4 +1,4 @@
-using PinionCore.Collection;
+﻿using PinionCore.Collection;
 
 namespace PinionCoreLibraryTest
 {

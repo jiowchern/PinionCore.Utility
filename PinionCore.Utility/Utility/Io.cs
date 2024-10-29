@@ -1,4 +1,4 @@
-using System.IO;
+﻿using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Xml.Serialization;
@@ -23,9 +23,9 @@ namespace PinionCore.Utility
         }
         private static string _WriteXml<T>(T obj)
         {
-            using (StringWriter stream = new StringWriter())
+            using (var stream = new StringWriter())
             {
-                XmlSerializer x = new XmlSerializer(typeof(T));
+                var x = new XmlSerializer(typeof(T));
                 x.Serialize(stream, obj);
                 return stream.ToString();
             }
@@ -33,9 +33,9 @@ namespace PinionCore.Utility
 
         private static void _WriteBinrary<T>(T obj, string path)
         {
-            BinaryFormatter formatter = new BinaryFormatter();
+            var formatter = new BinaryFormatter();
 
-            FileStream fs = new FileStream(path, FileMode.Create);
+            var fs = new FileStream(path, FileMode.Create);
 
             formatter.Serialize(fs, obj);
 
@@ -50,20 +50,20 @@ namespace PinionCore.Utility
 
         private static T _ReadXmlStream<T>(byte[] buffer)
         {
-            using (StringReader stream = new StringReader(Encoding.Default.GetString(buffer)))
+            using (var stream = new StringReader(Encoding.Default.GetString(buffer)))
             {
-                XmlSerializer ser = new XmlSerializer(typeof(T));
+                var ser = new XmlSerializer(typeof(T));
                 return (T)ser.Deserialize(stream);
             }
         }
 
         private static T _ReadBinraryStream<T>(byte[] stream)
         {
-            BinaryFormatter formmater = new BinaryFormatter();
+            var formmater = new BinaryFormatter();
 
-            MemoryStream ms = new MemoryStream(stream);
+            var ms = new MemoryStream(stream);
 
-            T obj = (T)formmater.Deserialize(ms);
+            var obj = (T)formmater.Deserialize(ms);
 
             ms.Close();
             return obj;
@@ -77,11 +77,11 @@ namespace PinionCore.Utility
 
         private static T _ReadBinrary<T>(string path)
         {
-            BinaryFormatter formmater = new BinaryFormatter();
+            var formmater = new BinaryFormatter();
 
-            FileStream fs = new FileStream(path, FileMode.Open);
+            var fs = new FileStream(path, FileMode.Open);
 
-            T obj = (T)formmater.Deserialize(fs);
+            var obj = (T)formmater.Deserialize(fs);
 
             fs.Close();
             return obj;

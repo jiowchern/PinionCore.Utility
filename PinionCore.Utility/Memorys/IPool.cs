@@ -1,4 +1,4 @@
-namespace PinionCore.Memorys
+﻿namespace PinionCore.Memorys
 {
     public interface IPool
     {

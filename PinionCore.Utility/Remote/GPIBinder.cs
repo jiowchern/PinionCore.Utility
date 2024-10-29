@@ -1,9 +1,9 @@
-using PinionCore.Remote.Extension;
-using PinionCore.Utility;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using PinionCore.Remote.Extension;
+using PinionCore.Utility;
 
 namespace PinionCore.Remote
 {
@@ -97,7 +97,7 @@ namespace PinionCore.Remote
 
         private void _Notice_Supply(T obj)
         {
-            int sn = _Checkin(obj);
+            var sn = _Checkin(obj);
             _Register(obj, sn);
 
             if (SupplyEvent != null)
@@ -113,7 +113,7 @@ namespace PinionCore.Remote
                 UnsupplyEvent(obj);
             }
 
-            int sn = _Checkout(obj);
+            var sn = _Checkout(obj);
             _Unregister(sn);
         }
 
@@ -146,7 +146,7 @@ namespace PinionCore.Remote
 
         private int _Checkin(T obj)
         {
-            int sn = _GetSn();
+            var sn = _GetSn();
             _GPIs.Add(
                 new Source
                 {

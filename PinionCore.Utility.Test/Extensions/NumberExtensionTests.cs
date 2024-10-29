@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 
 namespace PinionCore.Extensions.Tests
 {
@@ -8,10 +8,10 @@ namespace PinionCore.Extensions.Tests
         [NUnit.Framework.Test]
         public void Count()
         {
-            int count = 5;            
+            var count = 5;
             var numbers = count.GetSeries().ToArray();
             NUnit.Framework.Assert.AreEqual(4, numbers[4]);
-            
+
         }
     }
 }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 
 namespace PinionCore.Utility
@@ -13,7 +13,7 @@ namespace PinionCore.Utility
 
         public LogFileRecorder(string name)
         {
-            string path = string.Format("{0}_{1}.log", name, DateTime.Now.ToString("yyyy_MM_dd_hh_mm_ss"));
+            var path = string.Format("{0}_{1}.log", name, DateTime.Now.ToString("yyyy_MM_dd_hh_mm_ss"));
             _File = new FileStream(path, FileMode.Create);
             _Buffer = new BufferedStream(_File);
             _Writer = new StreamWriter(_Buffer);

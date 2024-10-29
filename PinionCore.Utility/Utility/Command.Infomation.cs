@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace PinionCore.Utility
 {
@@ -10,12 +10,12 @@ namespace PinionCore.Utility
     {
         private class Infomation
         {
-            public readonly Func<string[],object> Handler;
+            public readonly Func<string[], object> Handler;
 
             public readonly string Name;
             internal readonly Guid Id;
 
-            public Infomation(string name, Func<string[],object> handler)
+            public Infomation(string name, Func<string[], object> handler)
             {
                 Name = name;
                 Handler = handler;

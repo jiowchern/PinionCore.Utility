@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace PinionCore.Utility
@@ -24,13 +24,13 @@ namespace PinionCore.Utility
             {
                 // aaaaa-12345.dwdwdqwdwqd [dwdq,dwqdwq,dwq,www] [ret]
                 //string expansion = @"^\s*(?<command>\w+-?\d*\.?\w*)\s*\[\s*(?<args>.+?)\]\s*\[\s*(?<ret>.+?)\s*\]|^\s*(?<command>\w+-?\d*\.?\w*)\s*\[\s*(?<args>.+?)\]";
-                string expansion = @"(?<command>[\w\.-]+)\s+\[(?<args>[\w,\s]*)\]\s*\[\s*(?<ret>\w*)\s*\]|(?<command>[\w\.-]+)\s+\[(?<args>[\w,\s]*)\]";
-                Regex regex = new Regex(expansion);
+                var expansion = @"(?<command>[\w\.-]+)\s+\[(?<args>[\w,\s]*)\]\s*\[\s*(?<ret>\w*)\s*\]|(?<command>[\w\.-]+)\s+\[(?<args>[\w,\s]*)\]";
+                var regex = new Regex(expansion);
                 Match match = regex.Match(message);
                 if (match.Success)
                 {
                     Group command = match.Groups["command"];
-                    
+
                     Group args = match.Groups["args"];
                     Group ret = match.Groups["ret"];
                     Command = command.Value;
@@ -62,12 +62,12 @@ namespace PinionCore.Utility
 
             private string[] _AnalyzeArgs(string message)
             {
-                List<string> args = new List<string>();
+                var args = new List<string>();
 
                 // \s*(\w+)\s*,?
                 // ^\s*(?<command>\w+)\s*\[\s*(?<args>.+)\]|^\s*(?<command>\w+)\s*
                 const string expansion = @"\s*(?<Arg>\w+)\s*,?";
-                Regex regex = new Regex(expansion);
+                var regex = new Regex(expansion);
                 MatchCollection matchs = regex.Matches(message);
                 foreach (Match match in matchs)
                 {

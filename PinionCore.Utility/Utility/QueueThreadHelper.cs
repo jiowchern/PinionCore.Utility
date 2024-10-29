@@ -1,4 +1,4 @@
-namespace PinionCore.Utility
+﻿namespace PinionCore.Utility
 {
     public static class QueueThreadHelper
     {
@@ -19,7 +19,7 @@ namespace PinionCore.Utility
 
         public static T SafeDequeue<T>(this System.Collections.Generic.Queue<T> Queue)
         {
-            T item = default(T);
+            var item = default(T);
             lock (Queue)
             {
                 if (Queue.Count > 0)

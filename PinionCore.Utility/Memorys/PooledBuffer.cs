@@ -1,7 +1,6 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Net.Http.Headers;
 
 namespace PinionCore.Memorys
 {
@@ -14,7 +13,7 @@ namespace PinionCore.Memorys
         public readonly object _Sync;
 
         public readonly byte[] Page;
-        internal PooledBuffer(ChunkPool chunkPool, ArraySegment<byte> segment )
+        internal PooledBuffer(ChunkPool chunkPool, ArraySegment<byte> segment)
         {
             _Sync = new object();
             _chunkPool = chunkPool;
@@ -26,10 +25,10 @@ namespace PinionCore.Memorys
 
         private void _SetCount(int count)
         {
-            if(count > _Base.Count)
+            if (count > _Base.Count)
                 throw new ArgumentOutOfRangeException(nameof(count));
 
-            _Buffer = new ArraySegment<byte>(_Base.Array, _Base.Offset, count);   
+            _Buffer = new ArraySegment<byte>(_Base.Array, _Base.Offset, count);
         }
 
         ~PooledBuffer()
@@ -60,7 +59,7 @@ namespace PinionCore.Memorys
                 if (_IsDisposed)
                     throw new ObjectDisposedException(nameof(PooledBuffer));
             }
-                
+
 
             return _Buffer;
         }
@@ -85,9 +84,9 @@ namespace PinionCore.Memorys
 
                         throw e;
                     }
-                    
+
                 }
-                
+
             }
             set
             {
@@ -106,15 +105,15 @@ namespace PinionCore.Memorys
                     catch (Exception e)
                     {
 
-                        throw e ;
+                        throw e;
                     }
-                    
+
                 }
-                    
+
             }
         }
 
-      
+
 
         public IEnumerator<byte> GetEnumerator()
         {
@@ -123,12 +122,12 @@ namespace PinionCore.Memorys
                 if (_IsDisposed)
                     throw new ObjectDisposedException(nameof(PooledBuffer));
 
-                for (int i = 0; i < Count; i++)
+                for (var i = 0; i < Count; i++)
                 {
                     yield return _Buffer.Array[_Buffer.Offset + i];
                 }
             }
-            
+
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -136,7 +135,7 @@ namespace PinionCore.Memorys
             return GetEnumerator();
         }
 
-        
+
 
         internal void Reset(int count)
         {
@@ -145,7 +144,7 @@ namespace PinionCore.Memorys
                 _IsDisposed = false;
                 _SetCount(count);
             }
-                
+
         }
     }
 }

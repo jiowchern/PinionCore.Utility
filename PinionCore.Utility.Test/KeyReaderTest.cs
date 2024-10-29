@@ -1,4 +1,4 @@
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace PinionCoreLibraryTest
 {
@@ -9,8 +9,8 @@ namespace PinionCoreLibraryTest
         [NUnit.Framework.Test]
         public void TestSignle()
         {
-            string message = "";
-            PinionCore.Utility.KeyReader reader = new PinionCore.Utility.KeyReader('\r');
+            var message = "";
+            var reader = new PinionCore.Utility.KeyReader('\r');
             reader.DoneEvent += (chars) =>
             {
                 message = new string(chars);
@@ -25,8 +25,8 @@ namespace PinionCoreLibraryTest
         [NUnit.Framework.Test]
         public void TestMuti()
         {
-            string message = "";
-            PinionCore.Utility.KeyReader reader = new PinionCore.Utility.KeyReader('\r');
+            var message = "";
+            var reader = new PinionCore.Utility.KeyReader('\r');
             reader.DoneEvent += (chars) =>
             {
                 message = new string(chars);

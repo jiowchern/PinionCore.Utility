@@ -1,5 +1,5 @@
+﻿using System.Collections.Generic;
 using PinionCore.Utility;
-using System.Collections.Generic;
 
 namespace PinionCore.Remote
 {
@@ -27,7 +27,7 @@ namespace PinionCore.Remote
 
         GPIBinder<T> IGPIBinderFactory.Create<T>(INotifier<T> notice)
         {
-            GPIBinder<T> binder = new GPIBinder<T>(notice, _Command);
+            var binder = new GPIBinder<T>(notice, _Command);
             _Binders.Add(
                 new Data
                 {

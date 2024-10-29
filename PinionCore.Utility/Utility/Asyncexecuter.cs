@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,7 +31,7 @@ namespace PinionCore.Utility
             _ResetEvent = new ManualResetEvent(true);
             _Enable = true;
             _Tasks = new System.Collections.Concurrent.ConcurrentQueue<Action>();
-            _Task = new System.Threading.Tasks.Task(_Run , TaskCreationOptions.LongRunning);
+            _Task = new System.Threading.Tasks.Task(_Run, TaskCreationOptions.LongRunning);
             _Task.Start();
         }
 

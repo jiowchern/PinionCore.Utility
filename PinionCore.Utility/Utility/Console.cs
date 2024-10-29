@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace PinionCore.Utility
@@ -97,7 +97,7 @@ namespace PinionCore.Utility
 
         private void _OnRegister(string command, Command.CommandParameter ret, Command.CommandParameter[] args)
         {
-            string argString = string.Empty;
+            var argString = string.Empty;
             foreach (Command.CommandParameter arg in args)
             {
                 argString += (string.IsNullOrEmpty(arg.Description)
@@ -115,10 +115,10 @@ namespace PinionCore.Utility
 
         private void _Run(string[] command_paraments)
         {
-            Queue<string> cmdArgs = new Queue<string>(command_paraments);
+            var cmdArgs = new Queue<string>(command_paraments);
             if (cmdArgs.Count > 0)
             {
-                string cmd = cmdArgs.Dequeue();
+                var cmd = cmdArgs.Dequeue();
 
                 try
                 {

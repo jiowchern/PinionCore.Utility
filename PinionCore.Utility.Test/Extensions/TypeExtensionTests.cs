@@ -1,5 +1,5 @@
+﻿using System.Linq;
 using PinionCore.Utility;
-using System.Linq;
 
 namespace PinionCore.Extensions.Tests
 {
@@ -8,7 +8,7 @@ namespace PinionCore.Extensions.Tests
         [NUnit.Framework.Test]
         public void FindHullTest1()
         {
-            Vector2[] points = new Vector2[]
+            var points = new Vector2[]
             {
                 new Vector2(497.5674f , 125.8552f),
                 new Vector2(497.5874f , 125.3556f),
@@ -20,7 +20,7 @@ namespace PinionCore.Extensions.Tests
                 new Vector2(498.0863f , 125.3916f),
                 new Vector2(498.0663f , 125.8912f)
             };
-            for (int i = 0; i < 1000000; i++)
+            for (var i = 0; i < 1000000; i++)
             {
                 points.FindHull().ToArray();
             }
@@ -29,7 +29,7 @@ namespace PinionCore.Extensions.Tests
         [NUnit.Framework.Test]
         public void FindHullTest2()
         {
-            Vector2[] points = new Vector2[]
+            var points = new Vector2[]
             {
                 new Vector2(303.4322f , 68.75738f),
                 new Vector2(303.4522f , 68.25784f),
@@ -41,7 +41,7 @@ namespace PinionCore.Extensions.Tests
                 new Vector2(303.9524f , 68.26188f),
                 new Vector2(303.9324f , 68.7614f)
             };
-            for (int i = 0; i < 1000000; i++)
+            for (var i = 0; i < 1000000; i++)
             {
                 points.FindHull().ToArray();
             }

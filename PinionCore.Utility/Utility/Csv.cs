@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -29,16 +29,16 @@ namespace PinionCore.Utility
 
         public void Parse(string row, ref T value)
         {
-            string[] cols = _Parse(row);
+            var cols = _Parse(row);
 
             if (cols.Length != _Propertys.Length)
             {
                 throw new Exception("csv parse error , Col Length != Property Length.");
             }
 
-            for (int i = 0; i < cols.Length; ++i)
+            for (var i = 0; i < cols.Length; ++i)
             {
-                string name = _Propertys[i];
+                var name = _Propertys[i];
 
                 PropertyInfo info = _Find(name);
                 if (info.CanWrite == false)
@@ -84,25 +84,25 @@ namespace PinionCore.Utility
         public static T[] Parse<T>(string text, string separator, string paragraph)
             where T : new()
         {
-            List<T> values = new List<T>();
-            string[] lines = CSV._ToLine(text, paragraph);
+            var values = new List<T>();
+            var lines = CSV._ToLine(text, paragraph);
             if (lines.Length == 0)
             {
                 throw new Exception("CSV Parse error , text lines 0");
             }
 
-            CSV<T> csv = new CSV<T>(lines[0], separator);
-            for (int i = 1; i < lines.Length; ++i)
+            var csv = new CSV<T>(lines[0], separator);
+            for (var i = 1; i < lines.Length; ++i)
             {
-                string row = lines[i];
-                T value = new T();
+                var row = lines[i];
+                var value = new T();
                 try
                 {
                     csv.Parse(row, ref value);
                 }
                 catch (Exception e)
                 {
-                    Exception ex = new Exception(string.Format("cav parse error at Col{0}", i), e);
+                    var ex = new Exception(string.Format("cav parse error at Col{0}", i), e);
 
                     throw ex;
                 }
@@ -120,20 +120,20 @@ namespace PinionCore.Utility
 
         public static IEnumerable<Row> Read(string path, string token)
         {
-            StreamReader streamReader = new StreamReader(path);
-            string allText = streamReader.ReadToEnd();
+            var streamReader = new StreamReader(path);
+            var allText = streamReader.ReadToEnd();
             streamReader.Close();
 
             /*System.Text.RegularExpressions.Regex regLine = new System.Text.RegularExpressions.Regex(@"[^\r\n]+[\r\n]");
             System.Text.RegularExpressions.Regex regField = new System.Text.RegularExpressions.Regex(@"([^\t\n\r]+)[\r\n]|([^\t\n\r]*)[\t]");
             System.Text.RegularExpressions.MatchCollection lines = regLine.Matches(text);*/
-            string[] textArr = allText.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            var textArr = allText.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             string[] descArr = null;
             CSV.TryParseLine(textArr[0], ref descArr);
 
-            int i = 0;
-            string lineText = string.Empty;
-            foreach (string text in textArr)
+            var i = 0;
+            var lineText = string.Empty;
+            foreach (var text in textArr)
             {
                 if (i == 0)
                 {
@@ -181,7 +181,7 @@ namespace PinionCore.Utility
                 return false;
             }
 
-            for (int i = 0; i < resArr.Length; i++)
+            for (var i = 0; i < resArr.Length; i++)
             {
                 resArr[i] = resArr[i].Trim('"');
             }

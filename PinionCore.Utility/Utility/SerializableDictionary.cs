@@ -1,4 +1,4 @@
-#region Test_Region
+﻿#region Test_Region
 
 using System;
 using System.Collections.Generic;
@@ -31,13 +31,13 @@ namespace PinionCore.Utility
 
             public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
             {
-                Map<TKey, TVal> qn = new Map<TKey, TVal>();
+                var qn = new Map<TKey, TVal>();
                 if (value != null)
                 {
-                    object[] parts = (object[])value;
-                    foreach (object part in parts)
+                    var parts = (object[])value;
+                    foreach (var part in parts)
                     {
-                        KeyValuePair<TKey, TVal> kv = (KeyValuePair<TKey, TVal>)part;
+                        var kv = (KeyValuePair<TKey, TVal>)part;
                         qn.Add(kv.Key, kv.Value);
                     }
 
@@ -63,14 +63,14 @@ namespace PinionCore.Utility
                 object value,
                 Type destinationType)
             {
-                object[] objs = new object[0];
+                var objs = new object[0];
                 if (value != null)
                 {
                     if (destinationType == typeof(Map<TKey, TVal>))
                     {
-                        Map<TKey, TVal> qn = (Map<TKey, TVal>)value;
+                        var qn = (Map<TKey, TVal>)value;
                         objs = new object[qn.Count];
-                        int idx = 0;
+                        var idx = 0;
                         foreach (KeyValuePair<TKey, TVal> page in qn)
                         {
                             objs[idx] = page;
@@ -87,7 +87,7 @@ namespace PinionCore.Utility
 
         public static Map<TKey, TVal> ToMap(Dictionary<TKey, TVal> value)
         {
-            Map<TKey, TVal> map = new Map<TKey, TVal>();
+            var map = new Map<TKey, TVal>();
             foreach (KeyValuePair<TKey, TVal> pair in value)
             {
                 map.Add(pair.Key, pair.Value);
@@ -165,10 +165,10 @@ namespace PinionCore.Utility
 
         protected Map(SerializationInfo info, StreamingContext context)
         {
-            int itemCount = info.GetInt32("ItemCount");
-            for (int i = 0; i < itemCount; i++)
+            var itemCount = info.GetInt32("ItemCount");
+            for (var i = 0; i < itemCount; i++)
             {
-                KeyValuePair<TKey, TVal> kvp = (KeyValuePair<TKey, TVal>)info.GetValue(string.Format("Item{0}", i), typeof(KeyValuePair<TKey, TVal>));
+                var kvp = (KeyValuePair<TKey, TVal>)info.GetValue(string.Format("Item{0}", i), typeof(KeyValuePair<TKey, TVal>));
                 Add(kvp.Key, kvp.Value);
             }
         }
@@ -177,7 +177,7 @@ namespace PinionCore.Utility
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue("ItemCount", Count);
-            int itemIdx = 0;
+            var itemIdx = 0;
             foreach (KeyValuePair<TKey, TVal> kvp in this)
             {
                 info.AddValue(string.Format("Item{0}", itemIdx), kvp, typeof(KeyValuePair<TKey, TVal>));
@@ -225,10 +225,10 @@ namespace PinionCore.Utility
             {
                 reader.ReadStartElement(Map<TKey, TVal>.ItemNodeName);
                 reader.ReadStartElement(Map<TKey, TVal>.KeyNodeName);
-                TKey key = (TKey)KeySerializer.Deserialize(reader);
+                var key = (TKey)KeySerializer.Deserialize(reader);
                 reader.ReadEndElement();
                 reader.ReadStartElement(Map<TKey, TVal>.ValueNodeName);
-                TVal value = (TVal)ValueSerializer.Deserialize(reader);
+                var value = (TVal)ValueSerializer.Deserialize(reader);
                 reader.ReadEndElement();
                 reader.ReadEndElement();
                 Add(key, value);

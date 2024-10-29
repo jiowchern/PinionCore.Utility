@@ -1,4 +1,4 @@
-using PinionCore.Collection;
+﻿using PinionCore.Collection;
 
 namespace PinionCore.Utility
 {
@@ -20,7 +20,7 @@ namespace PinionCore.Utility
     {
         readonly System.Collections.Concurrent.ConcurrentQueue<IStatus> _StandBys;
 
-        
+
 
         public IStatus Current { get; private set; }
 
@@ -68,7 +68,7 @@ namespace PinionCore.Utility
         public void Termination()
         {
 
-                        
+
             if (Current != null)
             {
                 Current.Leave();

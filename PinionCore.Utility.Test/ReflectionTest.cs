@@ -1,5 +1,5 @@
+﻿using System;
 using PinionCore.Utility.Reflection;
-using System;
 
 namespace PinionCore.Utility.Test
 {
@@ -14,7 +14,7 @@ namespace PinionCore.Utility.Test
         [NUnit.Framework.Test]
         public void GetMethod()
         {
-            TypeMethodCatcher catcher = new TypeMethodCatcher((System.Linq.Expressions.Expression<Action<Test>>)(ins => ins.Method1()));
+            var catcher = new TypeMethodCatcher((System.Linq.Expressions.Expression<Action<Test>>)(ins => ins.Method1()));
             NUnit.Framework.Assert.AreEqual("Method1", catcher.Method.Name);
         }
     }

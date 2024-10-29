@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -38,20 +38,20 @@ namespace PinionCore.Utility
         }
 
 
-        public System.Guid Register(string command, Func<string[],object> func, Type return_type, Type[] param_types)
+        public System.Guid Register(string command, Func<string[], object> func, Type return_type, Type[] param_types)
         {
             return _Register(command, func, return_type, param_types);
         }
-        private System.Guid _Register(string command, Func<string[],object> func, Type return_type, Type[] param_types)
+        private System.Guid _Register(string command, Func<string[], object> func, Type return_type, Type[] param_types)
         {
-            Analysis analysis = new Analysis(command);
+            var analysis = new Analysis(command);
             Guid id = _AddCommand(analysis.Command, func);
             _SendRegister(analysis, return_type, param_types);
             return id;
         }
         public void Register(string command, Action executer)
         {
-            Func<string[],object> func = args =>
+            Func<string[], object> func = args =>
             {
                 if (args.Length != 0)
                 {
@@ -68,7 +68,7 @@ namespace PinionCore.Utility
 
         public void Register<T1>(string command, Action<T1> executer)
         {
-            Func<string[],object> func = args =>
+            Func<string[], object> func = args =>
             {
                 if (args.Length != 1)
                 {
@@ -77,7 +77,7 @@ namespace PinionCore.Utility
 
                 object arg0;
                 Command.TryConversion(args[0], out arg0, typeof(T1));
-                T1 val = (T1)arg0;
+                var val = (T1)arg0;
 
 
 
@@ -174,9 +174,9 @@ namespace PinionCore.Utility
                 });
         }
 
-        
 
-        
+
+
 
         public void Register<TR>(string command, Func<TR> executer, Action<TR> value)
         {
@@ -187,7 +187,7 @@ namespace PinionCore.Utility
                     throw new ArgumentException("The number of command arguments is 0");
                 }
 
-                object ret = executer.Method.Invoke(executer.Target, new object[0]);
+                var ret = executer.Method.Invoke(executer.Target, new object[0]);
                 value.Method.Invoke(value.Target, new object[] { ret });
                 return ret;
             };
@@ -196,7 +196,7 @@ namespace PinionCore.Utility
 
         }
 
-        
+
         public void Register<T1, TR>(string command, Func<T1, TR> executer, Action<TR> value)
         {
             Func<string[], object> func = args =>
@@ -208,7 +208,7 @@ namespace PinionCore.Utility
 
                 object arg0;
                 Command.TryConversion(args[0], out arg0, typeof(T1));
-                object ret = executer.Method.Invoke(executer.Target, new object[] { arg0 });
+                var ret = executer.Method.Invoke(executer.Target, new object[] { arg0 });
                 value.Method.Invoke(value.Target, new object[] { ret });
                 return ret;
             };
@@ -221,7 +221,7 @@ namespace PinionCore.Utility
 
         }
 
-        
+
 
         public void Register<T1, T2, TR>(string command, Func<T1, T2, TR> executer, Action<TR> value)
         {
@@ -237,7 +237,7 @@ namespace PinionCore.Utility
                 object arg1;
                 Command.TryConversion(args[1], out arg1, typeof(T2));
 
-                object ret = executer.Method.Invoke(executer.Target, new object[] { arg0, arg1 });
+                var ret = executer.Method.Invoke(executer.Target, new object[] { arg0, arg1 });
                 value.Method.Invoke(value.Target, new object[] { ret });
                 return ret;
             };
@@ -251,7 +251,7 @@ namespace PinionCore.Utility
 
         }
 
-        
+
         public void Register<T1, T2, T3, TR>(string command, Func<T1, T2, T3, TR> executer, Action<TR> value)
         {
             Func<string[], object> func = args =>
@@ -268,7 +268,7 @@ namespace PinionCore.Utility
                 object arg2;
                 Command.TryConversion(args[2], out arg2, typeof(T3));
 
-                object ret = executer.Method.Invoke(executer.Target, new[] { arg0, arg1, arg2 });
+                var ret = executer.Method.Invoke(executer.Target, new[] { arg0, arg1, arg2 });
                 value.Method.Invoke(value.Target, new[] { ret });
                 return ret;
             };
@@ -282,7 +282,7 @@ namespace PinionCore.Utility
 
         }
 
-        
+
         public void Register<T1, T2, T3, T4, TR>(string command, Func<T1, T2, T3, T4, TR> executer, Action<TR> value)
         {
             Func<string[], object> func = args =>
@@ -301,7 +301,7 @@ namespace PinionCore.Utility
                 object arg3;
                 Command.TryConversion(args[3], out arg3, typeof(T4));
 
-                object ret = executer.Method.Invoke(executer.Target, new[] { arg0, arg1, arg2, arg3 });
+                var ret = executer.Method.Invoke(executer.Target, new[] { arg0, arg1, arg2, arg3 });
                 value.Method.Invoke(value.Target, new[] { ret });
                 return ret;
             };
@@ -317,7 +317,7 @@ namespace PinionCore.Utility
 
         public void Unregister(string command)
         {
-            Analysis analysis = new Analysis(command);
+            var analysis = new Analysis(command);
             if (_Commands.RemoveAll(cmd => cmd.Name == analysis.Command) > 0)
             {
                 UnregisterEvent(analysis.Command);
@@ -359,8 +359,8 @@ namespace PinionCore.Utility
                         Match m = Regex.Match(in_string, @"(\d+\.\d+\.\d+\.\d+):(\d+)");
                         if (m.Success)
                         {
-                            string address = m.Groups[1].Value;
-                            string port = m.Groups[2].Value;
+                            var address = m.Groups[1].Value;
+                            var port = m.Groups[2].Value;
                             out_value = new IPEndPoint(IPAddress.Parse(address), int.Parse(port));
                         }
                         else
@@ -394,9 +394,9 @@ namespace PinionCore.Utility
             // throw new NotImplementedException();
         }
 
-        private System.Guid _AddCommand(string command, Func<string[],object> func)
+        private System.Guid _AddCommand(string command, Func<string[], object> func)
         {
-            Infomation info = new Infomation(command, func);
+            var info = new Infomation(command, func);
             _Commands.Add(info);
 
             return info.Id;
@@ -405,7 +405,7 @@ namespace PinionCore.Utility
         public object[] Run(string command, string[] args)
         {
             IEnumerable<Infomation> commandInfomations = from ci in _Commands where ci.Name.ToLower() == command.ToLower() select ci;
-            List<Infomation> infos = new List<Infomation>();
+            var infos = new List<Infomation>();
 
             foreach (Infomation commandInfomation in commandInfomations)
             {
@@ -422,7 +422,7 @@ namespace PinionCore.Utility
         private void _SendRegister(Analysis analysis, Type ret, Type[] args)
         {
             Type[] parameterTypes = args.ToArray();
-            string[] parameterDescs = analysis.Parameters.ToArray();
+            var parameterDescs = analysis.Parameters.ToArray();
             RegisterEvent(
                 analysis.Command,
                 new CommandParameter(ret, analysis.Return),
@@ -431,9 +431,9 @@ namespace PinionCore.Utility
 
         private CommandParameter[] _BuildCommandParameters(Type[] parameterTypes, string[] parameterDescs)
         {
-            int count = parameterTypes.Length;
-            CommandParameter[] cps = new CommandParameter[count];
-            for (int i = 0; i < count; ++i)
+            var count = parameterTypes.Length;
+            var cps = new CommandParameter[count];
+            for (var i = 0; i < count; ++i)
             {
                 cps[i] = new CommandParameter(
                     parameterTypes[i],
@@ -457,13 +457,13 @@ namespace PinionCore.Utility
                 throw new ArgumentException();
             }
 
-            MethodCallExpression methodCall = exp.Body as MethodCallExpression;
+            var methodCall = exp.Body as MethodCallExpression;
             System.Reflection.MethodInfo method = methodCall.Method;
 
-            string[] argNames = (from par in exp.Parameters.Skip(1) select par.Name).ToArray();
+            var argNames = (from par in exp.Parameters.Skip(1) select par.Name).ToArray();
             Type[] argTypes = (from par in exp.Parameters.Skip(1) select par.Type).ToArray();
 
-            string commandString = string.Format("{0} [{1}  ] [{2} ]", method.Name, string.Join(",", argNames.ToArray()), "return_" + method.ReturnType.Name);
+            var commandString = string.Format("{0} [{1}  ] [{2} ]", method.Name, string.Join(",", argNames.ToArray()), "return_" + method.ReturnType.Name);
             _Register(commandString, func, method.ReturnType, argTypes.ToArray());
         }
     }

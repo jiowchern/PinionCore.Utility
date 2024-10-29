@@ -1,6 +1,6 @@
-using PinionCore.Utility;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using PinionCore.Utility;
 
 namespace PinionCoreLibraryTest
 {
@@ -10,7 +10,7 @@ namespace PinionCoreLibraryTest
         [NUnit.Framework.Test]
         public void TestWrite()
         {
-            List<string> messages = new List<string>();
+            var messages = new List<string>();
 
             Singleton<Log>.Instance.RecordEvent += message =>
             {
@@ -35,11 +35,11 @@ namespace PinionCoreLibraryTest
                 }
             }
 
-            string r1 = Regex.Match(messages[0], @"\[\d+/\d+/\d+_\d+:\d+:\d+\]\[Info\](\d+)").Groups[1].Value;
-            string r2 = Regex.Match(messages[1], @"\[\d+/\d+/\d+_\d+:\d+:\d+\]\[Info\](\d+)").Groups[1].Value;
-            string r3 = Regex.Match(messages[2], @"\[\d+/\d+/\d+_\d+:\d+:\d+\]\[Info\](\d+)").Groups[1].Value;
-            string r4 = Regex.Match(messages[3], @"\[\d+/\d+/\d+_\d+:\d+:\d+\]\[Info\](\d+)").Groups[1].Value;
-            string r5 = Regex.Match(messages[4], @"\[\d+/\d+/\d+_\d+:\d+:\d+\]\[Info\](\d+)").Groups[1].Value;
+            var r1 = Regex.Match(messages[0], @"\[\d+/\d+/\d+_\d+:\d+:\d+\]\[Info\](\d+)").Groups[1].Value;
+            var r2 = Regex.Match(messages[1], @"\[\d+/\d+/\d+_\d+:\d+:\d+\]\[Info\](\d+)").Groups[1].Value;
+            var r3 = Regex.Match(messages[2], @"\[\d+/\d+/\d+_\d+:\d+:\d+\]\[Info\](\d+)").Groups[1].Value;
+            var r4 = Regex.Match(messages[3], @"\[\d+/\d+/\d+_\d+:\d+:\d+\]\[Info\](\d+)").Groups[1].Value;
+            var r5 = Regex.Match(messages[4], @"\[\d+/\d+/\d+_\d+:\d+:\d+\]\[Info\](\d+)").Groups[1].Value;
 
 
             NUnit.Framework.Assert.AreEqual("123", r1);

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -23,7 +23,7 @@ namespace PinionCore.Utility
                                       .FirstOrDefault();
             if (memberInfo != null)
             {
-                EnumDescriptionAttribute attribute =
+                var attribute =
                     memberInfo.GetCustomAttributes(typeof(EnumDescriptionAttribute), false).FirstOrDefault() as
                     EnumDescriptionAttribute;
                 if (attribute != null)
@@ -47,11 +47,11 @@ namespace PinionCore.Utility
 
         public static IEnumerable<Enum> GetFlags(this Enum enum_instance)
         {
-            ulong ienum = Convert.ToUInt64(enum_instance);
+            var ienum = Convert.ToUInt64(enum_instance);
             IEnumerable<Enum> availableSuits = Enum.GetValues(enum_instance.GetType()).Cast<Enum>();
             foreach (Enum suit in availableSuits)
             {
-                ulong iflag = Convert.ToUInt64(suit);
+                var iflag = Convert.ToUInt64(suit);
                 if ((ienum & iflag) > 0)
                 {
                     yield return suit;
@@ -61,12 +61,12 @@ namespace PinionCore.Utility
 
         public static IEnumerable<bool> ToFlags(this Enum enum_instance)
         {
-            ulong ienum = Convert.ToUInt64(enum_instance);
+            var ienum = Convert.ToUInt64(enum_instance);
             IEnumerable<Enum> availableSuits = Enum.GetValues(enum_instance.GetType()).Cast<Enum>();
             foreach (Enum suit in availableSuits)
             {
-                ulong iflag = Convert.ToUInt64(suit);
-                ulong result = ienum & iflag;
+                var iflag = Convert.ToUInt64(suit);
+                var result = ienum & iflag;
                 yield return result > 0;
             }
         }

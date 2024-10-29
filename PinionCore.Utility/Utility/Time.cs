@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace PinionCore.Utility
 {
@@ -49,7 +49,7 @@ namespace PinionCore.Utility
 
         protected bool _Update(long delta)
         {
-            long newTime = _Current + delta;
+            var newTime = _Current + delta;
 
             if (newTime > _Interval)
             {
@@ -103,7 +103,7 @@ namespace PinionCore.Utility
 
         public void Update()
         {
-            long current = DateTime.Now.Ticks;
+            var current = DateTime.Now.Ticks;
             Delta = current - _Current;
             _Real += Delta;
 

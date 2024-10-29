@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace PinionCore.Utility
 {
@@ -8,7 +8,7 @@ namespace PinionCore.Utility
         IReadOnlyDictionary<TItem1, TItem2> Item2s { get; }
         IReadOnlyDictionary<TItem2, TItem1> Item1s { get; }
     }
-    public class BilateralMap<TItem1, TItem2>  : IReadOnlyBilateralMap<TItem1, TItem2>
+    public class BilateralMap<TItem1, TItem2> : IReadOnlyBilateralMap<TItem1, TItem2>
     {
         private readonly Dictionary<TItem1, TItem2> _Item2s;
         private readonly Dictionary<TItem2, TItem1> _Item1s;

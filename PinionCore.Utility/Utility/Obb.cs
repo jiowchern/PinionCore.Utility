@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 
 
@@ -71,10 +71,10 @@ namespace PinionCore.Utility
             // axis, axisX and axisY are unit vector
 
             // projected axisX to axis
-            float projectionAxisX = dot(axis, axisX);
+            var projectionAxisX = dot(axis, axisX);
 
             // projected axisY to axis
-            float projectionAxisY = dot(axis, axisY);
+            var projectionAxisY = dot(axis, axisY);
 
             return halfWidth * projectionAxisX + halfHeight * projectionAxisY;
         }
@@ -99,7 +99,7 @@ namespace PinionCore.Utility
                 obb.axisY
             };
 
-            for (int i = 0; i < axes.Length; i++)
+            for (var i = 0; i < axes.Length; i++)
             {
                 // compare OBB1 radius projection add OBB2 radius projection to centerDistance projection
                 if (getProjectionRadius(axes[i]) + obb.getProjectionRadius(axes[i]) <= dot(centerDistanceVertor, axes[i]))
@@ -128,7 +128,7 @@ namespace PinionCore.Utility
         {
             this.rotation = rotation;
 
-            float t = (float)(-(rotation - 180) * Math.PI / 180);
+            var t = (float)(-(rotation - 180) * Math.PI / 180);
 
             axisX[0] = (float)Math.Cos(t);
             axisX[1] = (float)Math.Sin(t);

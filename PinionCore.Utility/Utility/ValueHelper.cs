@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -16,7 +16,7 @@ namespace PinionCore.Utility
 
         public IEnumerator<T> GetEnumItems<T>() where T : class
         {
-            foreach (object item in Enum.GetValues(typeof(T)))
+            foreach (var item in Enum.GetValues(typeof(T)))
             {
                 yield return item as T;
             }
@@ -59,9 +59,9 @@ namespace PinionCore.Utility
             {
                 Type elementType = type.GetElementType();
 
-                Array array = obj as Array;
-                Array copied = Array.CreateInstance(elementType, array.Length);
-                for (int i = 0; i < array.Length; i++)
+                var array = obj as Array;
+                var copied = Array.CreateInstance(elementType, array.Length);
+                for (var i = 0; i < array.Length; i++)
                 {
                     copied.SetValue(ValueHelper._CopyProcess(array.GetValue(i)), i);
                 }
@@ -71,13 +71,13 @@ namespace PinionCore.Utility
 
             if (type.IsClass)
             {
-                object toret = Activator.CreateInstance(obj.GetType());
+                var toret = Activator.CreateInstance(obj.GetType());
                 FieldInfo[] fields = type.GetFields(
                     BindingFlags.Public |
                     BindingFlags.NonPublic | BindingFlags.Instance);
                 foreach (FieldInfo field in fields)
                 {
-                    object fieldValue = field.GetValue(obj);
+                    var fieldValue = field.GetValue(obj);
                     if (fieldValue == null)
                     {
                         continue;
@@ -127,16 +127,16 @@ namespace PinionCore.Utility
 
             if (type.IsArray)
             {
-                Type elementType = Type.GetType(
+                var elementType = Type.GetType(
                     type.FullName.Replace("[]", string.Empty));
-                Array array = obj as Array;
+                var array = obj as Array;
 
                 // Array copied = Array.CreateInstance(elementType, array.Length);
-                Array copied = obj1 as Array;
+                var copied = obj1 as Array;
                 if (copied.Length != array.Length)
                     return false;
 
-                for (int i = 0; i < array.Length; i++)
+                for (var i = 0; i < array.Length; i++)
                 {
                     if (ValueHelper._EqualProcess(array.GetValue(i), copied.GetValue(i)) == false)
                     {
@@ -154,7 +154,7 @@ namespace PinionCore.Utility
                     BindingFlags.NonPublic | BindingFlags.Instance);
                 foreach (FieldInfo field in fields)
                 {
-                    object fieldValue = field.GetValue(obj);
+                    var fieldValue = field.GetValue(obj);
                     if (ValueHelper._EqualProcess(field.GetValue(obj), field.GetValue(obj1)) == false)
                     {
                         return false;

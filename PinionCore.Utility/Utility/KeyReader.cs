@@ -1,4 +1,4 @@
-namespace PinionCore.Utility
+﻿namespace PinionCore.Utility
 {
     public class KeyReader
     {
@@ -23,7 +23,7 @@ namespace PinionCore.Utility
             {
                 lock (_Chars)
                 {
-                    char[] chrs = _Chars.ToArray();
+                    var chrs = _Chars.ToArray();
                     _Chars.Clear();
                     DoneEvent(chrs);
                 }
@@ -32,7 +32,7 @@ namespace PinionCore.Utility
         }
         internal void Push(System.Collections.Generic.IEnumerable<char> chars)
         {
-            foreach (char c in chars)
+            foreach (var c in chars)
             {
                 Push(c);
             }

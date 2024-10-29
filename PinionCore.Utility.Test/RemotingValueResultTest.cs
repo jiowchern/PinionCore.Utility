@@ -1,18 +1,18 @@
+﻿using System.Timers;
 using PinionCore.Remote;
-using System.Timers;
 
 namespace PinionCoreLibraryTest
 {
 
     public class RemotingValueResultTest
     {
-        [NUnit.Framework.Test,NUnit.Framework.Timeout(5000)]
-        
+        [NUnit.Framework.Test, NUnit.Framework.Timeout(5000)]
+
 
         public void TestRemotingValueResult()
         {
-            Value<bool> val = new Value<bool>();
-            Timer timer = new Timer(1);
+            var val = new Value<bool>();
+            var timer = new Timer(1);
             timer.Start();
             timer.Elapsed += (object sender, ElapsedEventArgs e) => { val.SetValue(true); };
 

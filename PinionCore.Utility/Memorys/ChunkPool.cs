@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +14,7 @@ namespace PinionCore.Memorys
         private readonly List<byte[]> _pages;
         private readonly object _pageLock = new object();
         int _DefaultAllocationThreshold;
-       
+
         int Chankable.BufferSize => _bufferSize;
 
         int Chankable.AvailableCount => _availableBuffers.Count;
@@ -32,12 +32,12 @@ namespace PinionCore.Memorys
         }
 
         public Buffer Alloc(int count)
-        {            
+        {
             GeneratePage();
-                
+
             if (!_availableBuffers.TryTake(out PooledBuffer buffer))
-            {                
-                System.Threading.Interlocked.Increment(ref _DefaultAllocationThreshold);                                    
+            {
+                System.Threading.Interlocked.Increment(ref _DefaultAllocationThreshold);
                 return new DirectBuffer(count);
             }
             buffer.Reset(count);
@@ -51,18 +51,18 @@ namespace PinionCore.Memorys
             {
                 if (_availableBuffers.Count > _DefaultAllocationThreshold)
                     return;
-                int pageSize = _bufferSize * _buffersPerPage;
+                var pageSize = _bufferSize * _buffersPerPage;
                 page = new byte[pageSize];
-                _pages.Add(page);                
+                _pages.Add(page);
             }
 
-            for (int i = 0; i < _buffersPerPage; i++)
+            for (var i = 0; i < _buffersPerPage; i++)
             {
-                int offset = i * _bufferSize;
+                var offset = i * _bufferSize;
                 var segment = new ArraySegment<byte>(page, offset, _bufferSize);
                 var buffer = new PooledBuffer(this, segment);
                 _availableBuffers.Add(buffer);
-                
+
             }
 
         }

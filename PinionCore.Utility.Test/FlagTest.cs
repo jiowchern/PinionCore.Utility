@@ -1,5 +1,5 @@
+﻿using System.Linq;
 using PinionCore.Utility;
-using System.Linq;
 
 namespace PinionCoreLibraryTest
 {
@@ -18,7 +18,7 @@ namespace PinionCoreLibraryTest
         [NUnit.Framework.Test]
         public void TestToArray()
         {
-            Flag<TESTENUM> flags = new Flag<TESTENUM>();
+            var flags = new Flag<TESTENUM>();
             flags[TESTENUM._1] = true;
             flags[TESTENUM._2] = false;
             flags[TESTENUM._3] = true;
@@ -32,7 +32,7 @@ namespace PinionCoreLibraryTest
         [NUnit.Framework.Test]
         public void TestCustomFlag1()
         {
-            Flag<TESTENUM> flags = new Flag<TESTENUM>();
+            var flags = new Flag<TESTENUM>();
             flags[TESTENUM._1] = false;
             flags[TESTENUM._2] = true;
             flags[TESTENUM._3] = false;
@@ -44,7 +44,7 @@ namespace PinionCoreLibraryTest
         [NUnit.Framework.Test]
         public void TestCustomFlag2()
         {
-            Flag<TESTENUM> flags = new Flag<TESTENUM>(TESTENUM._1, TESTENUM._3);
+            var flags = new Flag<TESTENUM>(TESTENUM._1, TESTENUM._3);
 
             NUnit.Framework.Assert.AreEqual(false, flags[TESTENUM._2]);
             NUnit.Framework.Assert.AreEqual(true, flags[TESTENUM._3]);
@@ -68,8 +68,8 @@ namespace PinionCoreLibraryTest
         [NUnit.Framework.Test]
         public void TestCustomFlagConvert()
         {
-            Flag<TESTENUM> flags = new Flag<TESTENUM>(TESTENUM._1, TESTENUM._3);
-            object[] objs = (from e in flags select (object)e).ToArray();
+            var flags = new Flag<TESTENUM>(TESTENUM._1, TESTENUM._3);
+            var objs = (from e in flags select (object)e).ToArray();
 
             Flag<TESTENUM> flag2 = objs;
 

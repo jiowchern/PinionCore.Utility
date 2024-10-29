@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -53,16 +53,16 @@ namespace PinionCore.Utility
 
         public void Send(string command_feedstock)
         {
-            string pattern = @"(\w+)\.(\w+)([\w\s\.]*)";
-            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+            var pattern = @"(\w+)\.(\w+)([\w\s\.]*)";
+            var rgx = new Regex(pattern, RegexOptions.IgnoreCase);
             MatchCollection matches = rgx.Matches(command_feedstock);
             GroupCollection firstGroup = (from Match m in matches select m.Groups).FirstOrDefault();
             if (firstGroup != null)
             {
-                string[] commandAndArgs = (from Group value in firstGroup select value.Value).ToArray();
+                var commandAndArgs = (from Group value in firstGroup select value.Value).ToArray();
                 if (commandAndArgs.Count() > 1)
                 {
-                    string name = commandAndArgs[1];
+                    var name = commandAndArgs[1];
 
                     var first = (from ch in _CommandInvoker
                                  where ch.Name == name
@@ -74,8 +74,8 @@ namespace PinionCore.Utility
 
                     if (first != null)
                     {
-                        string command = commandAndArgs[2];
-                        object[] args = CommandSender._GetParams(first.type, command, commandAndArgs[3], _CommandParamParsers);
+                        var command = commandAndArgs[2];
+                        var args = CommandSender._GetParams(first.type, command, commandAndArgs[3], _CommandParamParsers);
                         try
                         {
                             first.type.InvokeMember(
@@ -104,18 +104,18 @@ namespace PinionCore.Utility
             string args,
             CommandParamParser[] command_param_parsers)
         {
-            string pattern = @"[\w\.]+";
-            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+            var pattern = @"[\w\.]+";
+            var rgx = new Regex(pattern, RegexOptions.IgnoreCase);
             MatchCollection matches = rgx.Matches(args);
 
             MethodInfo method = type.GetMethod(command, BindingFlags.Public | BindingFlags.Instance);
             if (method != null)
             {
                 ParameterInfo[] parameterInfos = method.GetParameters().ToArray();
-                string[] argments = (from Match match in matches select match.Value).ToArray();
+                var argments = (from Match match in matches select match.Value).ToArray();
 
-                object[] retArgs = new object[parameterInfos.Count()];
-                for (int i = 0; i < parameterInfos.Count(); ++i)
+                var retArgs = new object[parameterInfos.Count()];
+                for (var i = 0; i < parameterInfos.Count(); ++i)
                 {
                     Func<string, object> parser =
                         (from cpp in command_param_parsers where cpp.Type == parameterInfos[i].ParameterType select cpp.Parser)

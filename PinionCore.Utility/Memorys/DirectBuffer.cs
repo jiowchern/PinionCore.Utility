@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -6,25 +6,25 @@ namespace PinionCore.Memorys
 {
     internal class DirectBuffer : Buffer
     {
-        
-        private bool _disposed;
-        
+
+        private readonly bool _disposed;
+
         private readonly object _syncRoot = new object();
         ArraySegment<byte> _Buffer;
         internal DirectBuffer(ArraySegment<byte> buff)
         {
-            _Buffer = buff;            
+            _Buffer = buff;
             Capacity = buff.Count;
             _disposed = false;
-            
+
         }
-        internal DirectBuffer(byte[] buff) : this(new ArraySegment<byte>(buff,0,buff.Length))
+        internal DirectBuffer(byte[] buff) : this(new ArraySegment<byte>(buff, 0, buff.Length))
         {
-            
+
         }
         internal DirectBuffer(int size) : this(new byte[size])
         {
-            
+
         }
 
         public int Capacity { get; }
@@ -72,13 +72,13 @@ namespace PinionCore.Memorys
             }
         }
 
-       
+
         public IEnumerator<byte> GetEnumerator()
         {
             if (_disposed)
                 throw new ObjectDisposedException(nameof(DirectBuffer));
 
-            for (int i = 0; i < Count; i++)
+            for (var i = 0; i < Count; i++)
             {
                 yield return _Buffer.Array[_Buffer.Offset + i];
             }
@@ -89,6 +89,6 @@ namespace PinionCore.Memorys
             return GetEnumerator();
         }
 
-        
+
     }
 }

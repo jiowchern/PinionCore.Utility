@@ -1,5 +1,4 @@
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 
 namespace PinionCore.Serialization
@@ -9,11 +8,11 @@ namespace PinionCore.Serialization
 
         public static readonly byte Endian = 0x80;
 
-        
+
         public static ArraySegment<byte> FindVarint(ref ArraySegment<byte> bytes)
         {
-            
-            for (int i = 0; i < bytes.Count; i++)
+
+            for (var i = 0; i < bytes.Count; i++)
             {
 
                 var value = bytes.Array[bytes.Offset + i];
@@ -32,48 +31,40 @@ namespace PinionCore.Serialization
         }
         public static IEnumerable<Package> FindPackages(ArraySegment<byte> bytes)
         {
-            int offset = bytes.Offset;
-            int end = bytes.Offset + bytes.Count;
+            var offset = bytes.Offset;
+            var end = bytes.Offset + bytes.Count;
 
             while (offset < end)
             {
-                // 使用 BufferToNumber 来解析 varint
                 int dataLength;
-                int bytesRead = BufferToNumber(bytes.Array, offset, out dataLength);
+                var bytesRead = BufferToNumber(bytes.Array, offset, out dataLength);
 
                 if (bytesRead == 0)
                 {
-                    // varint 不完整，无法继续读取
                     yield break;
                 }
                 else if (bytesRead < 0)
                 {
-                    // 发生溢出，停止处理
                     yield break;
                 }
 
-                // 计算数据段的位置和长度
-                int dataOffset = offset + bytesRead;
-                int dataCount = dataLength;
+                var dataOffset = offset + bytesRead;
+                var dataCount = dataLength;
 
                 if (dataOffset + dataCount > end)
                 {
-                    // 剩余的字节不足以组成一个完整的数据段，不返回不完整的对
                     yield break;
                 }
 
-                // 创建 varint 和数据的 ArraySegment
                 var varintSegment = new ArraySegment<byte>(bytes.Array, offset, bytesRead);
                 var dataSegment = new ArraySegment<byte>(bytes.Array, dataOffset, dataCount);
 
-                // 返回完整的 varint-data 对
                 yield return new Package
                 {
                     Head = varintSegment,
                     Body = dataSegment
                 };
 
-                // 更新偏移量，继续处理下一个对
                 offset = dataOffset + dataCount;
             }
         }
@@ -86,7 +77,7 @@ namespace PinionCore.Serialization
         }
         public static int NumberToBuffer(byte[] buffer, int offset, ulong value)
         {
-            int i = 0;
+            var i = 0;
             while (value >= Endian)
             {
                 buffer[offset + i] = (byte)(value | Endian);
@@ -110,16 +101,16 @@ namespace PinionCore.Serialization
         public static int BufferToNumber(PinionCore.Memorys.Buffer buffer, int offset, out int value)
         {
             ulong val;
-            int count = BufferToNumber(buffer, offset, out val);
+            var count = BufferToNumber(buffer, offset, out val);
             value = (int)val;
 
             return count;
         }
         public static int BufferToNumber(PinionCore.Memorys.Buffer buffer, int offset, out ulong value)
-        {            
+        {
             value = 0;
-            int s = 0;
-            for (int i = 0; i < buffer.Count - offset; i++)
+            var s = 0;
+            for (var i = 0; i < buffer.Count - offset; i++)
             {
                 ulong bufferValue = buffer[offset + i];
                 if (bufferValue < Endian)
@@ -141,7 +132,7 @@ namespace PinionCore.Serialization
         public static int BufferToNumber(byte[] buffer, int offset, out int value)
         {
             ulong val;
-            int count = BufferToNumber(buffer, offset, out val);
+            var count = BufferToNumber(buffer, offset, out val);
             value = (int)val;
 
             return count;
@@ -149,8 +140,8 @@ namespace PinionCore.Serialization
         public static int BufferToNumber(byte[] buffer, int offset, out ulong value)
         {
             value = 0;
-            int s = 0;
-            for (int i = 0; i < buffer.Length - offset; i++)
+            var s = 0;
+            for (var i = 0; i < buffer.Length - offset; i++)
             {
                 ulong bufferValue = buffer[offset + i];
                 if (bufferValue < Endian)

@@ -1,4 +1,4 @@
-
+﻿
 
 
 
@@ -59,17 +59,17 @@ namespace PinionCoreLibraryTest
                 ;
             }
 
-            char[] chars1 = _OutMessage.ToCharArray();
-            char[] chars2 = p1.ToCharArray();
+            var chars1 = _OutMessage.ToCharArray();
+            var chars2 = p1.ToCharArray();
 
-            for (int i = 0; i < chars2.Length; ++i)
+            for (var i = 0; i < chars2.Length; ++i)
             {
                 NUnit.Framework.Assert.AreEqual(chars1[i], chars2[i]);
             }
         }
 
         [Then(@"輸出為""(.*)""")]
-        
+
 
         public void 那麼輸出為(string p0)
         {

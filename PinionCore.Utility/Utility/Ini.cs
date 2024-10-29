@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace PinionCore.Utility
@@ -34,18 +34,18 @@ namespace PinionCore.Utility
 
         private Dictionary<string, Dictionary<string, string>> _Build(string data)
         {
-            Dictionary<string, Dictionary<string, string>> dic = new Dictionary<string, Dictionary<string, string>>();
+            var dic = new Dictionary<string, Dictionary<string, string>>();
 
 
             foreach (Match sectionMatch in _GetSectionMatches(data))
             {
-                string section = sectionMatch.Groups[1].Value;
-                string records = sectionMatch.Groups[2].Value;
+                var section = sectionMatch.Groups[1].Value;
+                var records = sectionMatch.Groups[2].Value;
                 IEnumerable<Match> recordMatches = _GetRecordMatches(records);
                 foreach (Match recordMatch in recordMatches)
                 {
-                    string key = recordMatch.Groups[1].Value;
-                    string value = recordMatch.Groups[2].Value;
+                    var key = recordMatch.Groups[1].Value;
+                    var value = recordMatch.Groups[2].Value;
 
                     if (!dic.ContainsKey(section))
                     {
@@ -63,7 +63,7 @@ namespace PinionCore.Utility
 
         private IEnumerable<Match> _GetRecordMatches(string records)
         {
-            Regex commitRegex = new Regex(@"^\s*([\w\s]+?)\s*=\s*([^=]+?)\s*$", RegexOptions.Compiled | RegexOptions.Multiline);
+            var commitRegex = new Regex(@"^\s*([\w\s]+?)\s*=\s*([^=]+?)\s*$", RegexOptions.Compiled | RegexOptions.Multiline);
 
             foreach (Match match in commitRegex.Matches(records))
             {
@@ -75,7 +75,7 @@ namespace PinionCore.Utility
 
         IEnumerable<Match> _GetSectionMatches(string data)
         {
-            Regex sectionRegex = new Regex(@"^\[\s*(.+?)\s*\]\s+([^[]+)", RegexOptions.Compiled | RegexOptions.Multiline);
+            var sectionRegex = new Regex(@"^\[\s*(.+?)\s*\]\s+([^[]+)", RegexOptions.Compiled | RegexOptions.Multiline);
             foreach (Match match in sectionRegex.Matches(data))
             {
                 yield return match;

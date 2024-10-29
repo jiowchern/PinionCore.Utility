@@ -1,9 +1,9 @@
-using System;
+﻿using System;
 using System.Linq;
 
 namespace PinionCore.Utility
 {
-    public class Random 
+    public class Random
     {
         private readonly IRandom _R;
 
@@ -54,9 +54,9 @@ namespace PinionCore.Utility
 
         long IRandom.NextLong(long min, long max)
         {
-            byte[] buf = new byte[8];
+            var buf = new byte[8];
             _Random.NextBytes(buf);
-            long longRand = BitConverter.ToInt64(buf, 0);
+            var longRand = BitConverter.ToInt64(buf, 0);
 
             return Math.Abs(longRand % (max - min)) + min;
         }
@@ -82,7 +82,7 @@ namespace PinionCore.Utility
 
         private float _NextFloat()
         {
-            double val = _Random.NextDouble();
+            var val = _Random.NextDouble();
             return (float)val;
         }
 

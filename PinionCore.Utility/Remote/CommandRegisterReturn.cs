@@ -1,7 +1,7 @@
-using PinionCore.Utility;
-using System;
+﻿using System;
 using System.Linq.Expressions;
 using System.Reflection;
+using PinionCore.Utility;
 
 namespace PinionCore.Remote
 {
@@ -31,15 +31,15 @@ namespace PinionCore.Remote
         {
             if (expression.Body.NodeType == ExpressionType.Call)
             {
-                MethodCallExpression methodCall = expression.Body as MethodCallExpression;
+                var methodCall = expression.Body as MethodCallExpression;
                 MethodInfo method = methodCall.Method;
-                Delegate functiohn = Delegate.CreateDelegate(typeof(Func<TR>), instance, method);
+                var functiohn = Delegate.CreateDelegate(typeof(Func<TR>), instance, method);
                 return (Func<TR>)functiohn;
             }
             if (expression.Body.NodeType == ExpressionType.MemberAccess)
             {
-                MemberExpression outerMember = (MemberExpression)expression.Body;
-                PropertyInfo outerProp = (PropertyInfo)outerMember.Member;
+                var outerMember = (MemberExpression)expression.Body;
+                var outerProp = (PropertyInfo)outerMember.Member;
 
                 return new Func<TR>(() => (TR)outerProp.GetValue(instance, new object[0]));
             }
@@ -74,9 +74,9 @@ namespace PinionCore.Remote
         {
             if (expression.Body.NodeType == ExpressionType.Call)
             {
-                MethodCallExpression methodCall = expression.Body as MethodCallExpression;
+                var methodCall = expression.Body as MethodCallExpression;
                 MethodInfo method = methodCall.Method;
-                Delegate functiohn = Delegate.CreateDelegate(typeof(Func<T1, TR>), instance, method);
+                var functiohn = Delegate.CreateDelegate(typeof(Func<T1, TR>), instance, method);
                 return (Func<T1, TR>)functiohn;
             }
             throw new NotSupportedException(expression.Body.NodeType.ToString());
@@ -111,9 +111,9 @@ namespace PinionCore.Remote
         {
             if (expression.Body.NodeType == ExpressionType.Call)
             {
-                MethodCallExpression methodCall = expression.Body as MethodCallExpression;
+                var methodCall = expression.Body as MethodCallExpression;
                 MethodInfo method = methodCall.Method;
-                Delegate functiohn = Delegate.CreateDelegate(typeof(Func<T1, T2, TR>), instance, method);
+                var functiohn = Delegate.CreateDelegate(typeof(Func<T1, T2, TR>), instance, method);
                 return (Func<T1, T2, TR>)functiohn;
             }
             throw new NotSupportedException(expression.Body.NodeType.ToString());
@@ -147,9 +147,9 @@ namespace PinionCore.Remote
         {
             if (expression.Body.NodeType == ExpressionType.Call)
             {
-                MethodCallExpression methodCall = expression.Body as MethodCallExpression;
+                var methodCall = expression.Body as MethodCallExpression;
                 MethodInfo method = methodCall.Method;
-                Delegate functiohn = Delegate.CreateDelegate(typeof(Func<T1, T2, T3, TR>), instance, method);
+                var functiohn = Delegate.CreateDelegate(typeof(Func<T1, T2, T3, TR>), instance, method);
                 return (Func<T1, T2, T3, TR>)functiohn;
             }
             throw new NotSupportedException(expression.Body.NodeType.ToString());
@@ -185,9 +185,9 @@ namespace PinionCore.Remote
         {
             if (expression.Body.NodeType == ExpressionType.Call)
             {
-                MethodCallExpression methodCall = expression.Body as MethodCallExpression;
+                var methodCall = expression.Body as MethodCallExpression;
                 MethodInfo method = methodCall.Method;
-                Delegate functiohn = Delegate.CreateDelegate(typeof(Func<T1, T2, T3, T4, TR>), instance, method);
+                var functiohn = Delegate.CreateDelegate(typeof(Func<T1, T2, T3, T4, TR>), instance, method);
                 return (Func<T1, T2, T3, T4, TR>)functiohn;
             }
             throw new NotSupportedException(expression.Body.NodeType.ToString());
@@ -221,7 +221,7 @@ namespace PinionCore.Remote
         {
             if (expression.Body.NodeType == ExpressionType.Call)
             {
-                MethodCallExpression methodCall = expression.Body as MethodCallExpression;
+                var methodCall = expression.Body as MethodCallExpression;
                 MethodInfo method = methodCall.Method;
 
                 return new Func<T1, T2, TR>((t1, t2) => { return (TR)method.Invoke(null, new object[] { instance, t1, t2 }); });

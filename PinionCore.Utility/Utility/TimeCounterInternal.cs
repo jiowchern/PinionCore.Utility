@@ -1,15 +1,14 @@
-using System.Diagnostics;
-using System.Threading;
+﻿using System.Diagnostics;
 
 namespace PinionCore.Utility
 {
     public class TimeCounterInternal
     {
         private readonly Stopwatch _Stopwatch;
-        
+
         public TimeCounterInternal()
         {
-            _Stopwatch = Stopwatch.StartNew();        
+            _Stopwatch = Stopwatch.StartNew();
         }
 
 
@@ -19,7 +18,7 @@ namespace PinionCore.Utility
         public long Ticks
         {
             get
-            {                
+            {
                 return _Stopwatch.ElapsedTicks;
             }
         }

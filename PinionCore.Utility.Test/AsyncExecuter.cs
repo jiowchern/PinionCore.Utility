@@ -1,7 +1,4 @@
-using NSubstitute;
-using NUnit.Framework;
-
-using PinionCore.Collection;
+﻿using PinionCore.Collection;
 
 namespace PinionCore.Utility.Tests
 {
@@ -18,15 +15,15 @@ namespace PinionCoreLibraryTest
 
 
 
-            Queue<int> ints = new Queue<int>();
+            var ints = new Queue<int>();
 
 
 
 
-            PinionCore.Utility.AsyncExecuter threadQueue = new PinionCore.Utility.AsyncExecuter();
+            var threadQueue = new PinionCore.Utility.AsyncExecuter();
 
 
-            for (int i = 0; i < 10; ++i)
+            for (var i = 0; i < 10; ++i)
             {
                 threadQueue.Push(new EnqueueHelper(ints, i).Run);
             }
@@ -35,7 +32,7 @@ namespace PinionCoreLibraryTest
 
             threadQueue.Shutdown();
 
-            int[] values = ints.DequeueAll();
+            var values = ints.DequeueAll();
             NUnit.Framework.Assert.AreEqual(0, values[0]);
             NUnit.Framework.Assert.AreEqual(1, values[1]);
             NUnit.Framework.Assert.AreEqual(2, values[2]);

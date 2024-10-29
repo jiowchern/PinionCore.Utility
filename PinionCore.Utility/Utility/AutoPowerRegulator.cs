@@ -1,6 +1,4 @@
-using System.Threading.Tasks;
-
-namespace PinionCore.Utility
+﻿namespace PinionCore.Utility
 {
     public class AutoPowerRegulator
     {
@@ -8,10 +6,10 @@ namespace PinionCore.Utility
         private readonly PowerRegulator _PowerRegulator;
 
         private long _PreviousTicks;
-        
+
         public AutoPowerRegulator(PowerRegulator power_regulator)
         {
-        
+
             _Counter = new TimeCounter();
             _PreviousTicks = _Counter.Ticks;
             _PowerRegulator = power_regulator;
@@ -19,8 +17,8 @@ namespace PinionCore.Utility
 
         public void Operate()
         {
-                    
-            long ticks = _Counter.Ticks;
+
+            var ticks = _Counter.Ticks;
             _PowerRegulator.Operate(ticks - _PreviousTicks).Wait();
             _PreviousTicks = ticks;
         }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -61,7 +61,7 @@ namespace PinionCore.Utility
         }
         public void Update()
         {
-            string[] cmd = _HandlerInput();
+            var cmd = _HandlerInput();
             if (cmd != null)
             {
                 _OutputEvent(cmd);
@@ -109,7 +109,7 @@ namespace PinionCore.Utility
             // Ignore tab key.
             if (keyInfo.Key == ConsoleKey.DownArrow)
             {
-                string message = _Doskey.TryGetNext();
+                var message = _Doskey.TryGetNext();
                 if (message != null)
                 {
                     _ResetLine(chars, message);
@@ -118,7 +118,7 @@ namespace PinionCore.Utility
 
             if (keyInfo.Key == ConsoleKey.UpArrow)
             {
-                string message = _Doskey.TryGetPrev();
+                var message = _Doskey.TryGetPrev();
 
                 if (message != null)
                 {
@@ -151,7 +151,7 @@ namespace PinionCore.Utility
             }
             else if (keyInfo.Key == ConsoleKey.Enter)
             {
-                string commands = new string(chars.Reverse().ToArray());
+                var commands = new string(chars.Reverse().ToArray());
                 commands = commands.Trim();
                 if (commands.Length > 0)
                 {
@@ -183,12 +183,12 @@ namespace PinionCore.Utility
         {
             if (message != null)
             {
-                foreach (char c in chars)
+                foreach (var c in chars)
                 {
                     _Viewer.Write("\b");
                 }
 
-                foreach (char c in chars)
+                foreach (var c in chars)
                 {
                     _Viewer.Write(" ");
                 }
@@ -198,7 +198,7 @@ namespace PinionCore.Utility
 
                 chars.Clear();
 
-                foreach (char c in message)
+                foreach (var c in message)
                 {
                     chars.Push(c);
                 }

@@ -1,8 +1,8 @@
-using PinionCore.Utility;
-using System;
+﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using PinionCore.Utility;
 
 namespace PinionCore.Remote
 {
@@ -24,7 +24,7 @@ namespace PinionCore.Remote
 
         public void Register(int sn, object instance)
         {
-            string command = _BuildName(_Name, sn, _Args);
+            var command = _BuildName(_Name, sn, _Args);
             _RegisterAction(_Command, command, instance);
         }
 
@@ -35,7 +35,7 @@ namespace PinionCore.Remote
 
         public void Unregister(int sn)
         {
-            string command = _BuildName(_Name, sn, _Args);
+            var command = _BuildName(_Name, sn, _Args);
             _Command.Unregister(new Command.Analysis(command).Command);
         }
 
@@ -51,9 +51,9 @@ namespace PinionCore.Remote
             if (exp.Body.NodeType == ExpressionType.Call)
             {
 
-                MethodCallExpression methodCall = exp.Body as MethodCallExpression;
+                var methodCall = exp.Body as MethodCallExpression;
                 MethodInfo method = methodCall.Method;
-                string methodName = method.Name;
+                var methodName = method.Name;
 
 
                 System.Collections.Generic.IEnumerable<string> argNames = from par in exp.Parameters.Skip(1) select par.Name;
@@ -64,8 +64,8 @@ namespace PinionCore.Remote
             }
             if (exp.Body.NodeType == ExpressionType.MemberAccess)
             {
-                MemberExpression outerMember = (MemberExpression)exp.Body;
-                PropertyInfo outerProp = (PropertyInfo)outerMember.Member;
+                var outerMember = (MemberExpression)exp.Body;
+                var outerProp = (PropertyInfo)outerMember.Member;
                 command_name = outerProp.Name;
                 command_args = string.Empty;
                 return;
@@ -103,9 +103,9 @@ namespace PinionCore.Remote
             if (expression.Body.NodeType == ExpressionType.Call)
             {
 
-                MethodCallExpression methodCall = expression.Body as MethodCallExpression;
+                var methodCall = expression.Body as MethodCallExpression;
                 MethodInfo method = methodCall.Method;
-                Delegate functiohn = Delegate.CreateDelegate(typeof(Action), instance, method);
+                var functiohn = Delegate.CreateDelegate(typeof(Action), instance, method);
                 return (Action)functiohn;
             }
             throw new NotSupportedException(expression.Body.NodeType.ToString());
@@ -136,9 +136,9 @@ namespace PinionCore.Remote
             if (expression.Body.NodeType == ExpressionType.Call)
             {
 
-                MethodCallExpression methodCall = expression.Body as MethodCallExpression;
+                var methodCall = expression.Body as MethodCallExpression;
                 MethodInfo method = methodCall.Method;
-                Delegate functiohn = Delegate.CreateDelegate(typeof(Action<T1>), instance, method);
+                var functiohn = Delegate.CreateDelegate(typeof(Action<T1>), instance, method);
                 return (Action<T1>)functiohn;
             }
             throw new NotSupportedException(expression.Body.NodeType.ToString());
@@ -167,9 +167,9 @@ namespace PinionCore.Remote
             if (expression.Body.NodeType == ExpressionType.Call)
             {
 
-                MethodCallExpression methodCall = expression.Body as MethodCallExpression;
+                var methodCall = expression.Body as MethodCallExpression;
                 MethodInfo method = methodCall.Method;
-                Delegate functiohn = Delegate.CreateDelegate(typeof(Action<T1, T2>), instance, method);
+                var functiohn = Delegate.CreateDelegate(typeof(Action<T1, T2>), instance, method);
                 return (Action<T1, T2>)functiohn;
             }
             throw new NotSupportedException(expression.Body.NodeType.ToString());
@@ -202,9 +202,9 @@ namespace PinionCore.Remote
             if (expression.Body.NodeType == ExpressionType.Call)
             {
 
-                MethodCallExpression methodCall = expression.Body as MethodCallExpression;
+                var methodCall = expression.Body as MethodCallExpression;
                 MethodInfo method = methodCall.Method;
-                Delegate functiohn = Delegate.CreateDelegate(typeof(Action<T1, T2, T3>), instance, method);
+                var functiohn = Delegate.CreateDelegate(typeof(Action<T1, T2, T3>), instance, method);
                 return (Action<T1, T2, T3>)functiohn;
             }
             throw new NotSupportedException(expression.Body.NodeType.ToString());
@@ -238,9 +238,9 @@ namespace PinionCore.Remote
             if (expression.Body.NodeType == ExpressionType.Call)
             {
 
-                MethodCallExpression methodCall = expression.Body as MethodCallExpression;
+                var methodCall = expression.Body as MethodCallExpression;
                 MethodInfo method = methodCall.Method;
-                Delegate functiohn = Delegate.CreateDelegate(typeof(Action<T1, T2, T3, T4>), instance, method);
+                var functiohn = Delegate.CreateDelegate(typeof(Action<T1, T2, T3, T4>), instance, method);
                 return (Action<T1, T2, T3, T4>)functiohn;
             }
             throw new NotSupportedException(expression.Body.NodeType.ToString());
@@ -271,7 +271,7 @@ namespace PinionCore.Remote
             if (expression.Body.NodeType == ExpressionType.Call)
             {
 
-                MethodCallExpression methodCall = expression.Body as MethodCallExpression;
+                var methodCall = expression.Body as MethodCallExpression;
                 MethodInfo method = methodCall.Method;
 
                 return new Action<T1, T2>((t1, t2) => { method.Invoke(null, new object[] { instance, t1, t2 }); });

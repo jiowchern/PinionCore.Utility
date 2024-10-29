@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -13,7 +13,7 @@ namespace PinionCore.Utility.Reflection
         {
             if (expression.NodeType != ExpressionType.Lambda)
                 throw new SystemException("must a lambda");
-            MethodCallExpression callExpression = expression.Body as MethodCallExpression;
+            var callExpression = expression.Body as MethodCallExpression;
 
             if (callExpression == null)
                 throw new SystemException("must a call");

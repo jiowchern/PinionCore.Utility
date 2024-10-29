@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 
 namespace PinionCore.Utility
@@ -34,10 +34,10 @@ namespace PinionCore.Utility
 
         public TTarget Get(int chances)
         {
-            int minGate = 0;
+            var minGate = 0;
             foreach (Item data in _Datas)
             {
-                int gate = minGate + data.Scale + 1;
+                var gate = minGate + data.Scale + 1;
 
                 if (minGate <= chances && chances < gate)
                 {

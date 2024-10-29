@@ -1,4 +1,4 @@
-
+﻿
 
 
 using PinionCore.Utility;
@@ -11,7 +11,7 @@ namespace PinionCoreLibraryTest
         [NUnit.Framework.Test]
         public void TestIni()
         {
-            string data = @"[WindowSettings]
+            var data = @"[WindowSettings]
 Window X Pos=0
 Window Y Pos=0
 Window Maximized=false
@@ -22,18 +22,18 @@ Directory=C:\Rosetta Stone\Logs
 [Logging2]
 Directory =
 ";
-            Ini ini = new Ini(data);
+            var ini = new Ini(data);
 
-            string name = ini.Read("WindowSettings", "Window Name");
+            var name = ini.Read("WindowSettings", "Window Name");
             NUnit.Framework.Assert.AreEqual("Jabberwocky", name);
 
-            string max = ini.Read("WindowSettings", "Window Maximized");
+            var max = ini.Read("WindowSettings", "Window Maximized");
             NUnit.Framework.Assert.AreEqual("false", max);
 
-            string dir = ini.Read("Logging", "Directory");
+            var dir = ini.Read("Logging", "Directory");
             NUnit.Framework.Assert.AreEqual(@"C:\Rosetta Stone\Logs", dir);
 
-            string dir2 = ini.Read("Logging2", "Directory");
+            var dir2 = ini.Read("Logging2", "Directory");
             NUnit.Framework.Assert.True(string.IsNullOrWhiteSpace(dir2));
         }
     }

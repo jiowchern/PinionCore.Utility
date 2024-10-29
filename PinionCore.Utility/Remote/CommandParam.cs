@@ -1,7 +1,7 @@
-using PinionCore.Utility;
-using System;
+﻿using System;
 using System.Linq;
 using System.Reflection;
+using PinionCore.Utility;
 
 namespace PinionCore.Remote
 {
@@ -55,7 +55,7 @@ namespace PinionCore.Remote
 
                 if (param.ReturnType != null)
                 {
-                    object returnValue = registerMethod.Invoke(
+                    var returnValue = registerMethod.Invoke(
                         _Command,
                         new[]
                         {
@@ -66,7 +66,7 @@ namespace PinionCore.Remote
                 }
                 else
                 {
-                    object returnValue = registerMethod.Invoke(
+                    var returnValue = registerMethod.Invoke(
                         _Command,
                         new[]
                         {
@@ -76,7 +76,7 @@ namespace PinionCore.Remote
                 }
             }
 
-            
+
             private MethodInfo GetRegister(Type[] arg_types, Type return_type)
             {
                 Type[] genericTypes = return_type != null
@@ -86,7 +86,7 @@ namespace PinionCore.Remote
                                                return_type
                                            }).ToArray()
                                        : arg_types;
-                int paramCount = return_type != null
+                var paramCount = return_type != null
                                      ? 3
                                      : 2;
 
@@ -97,7 +97,7 @@ namespace PinionCore.Remote
                                          where m.Name == "Register"
                                                && genericParameters.Length == genericTypes.Length
                                                && parameters.Length == paramCount
-            
+
                                          select m).Single();
 
                 if (genericTypes.Length > 0)
@@ -108,7 +108,7 @@ namespace PinionCore.Remote
                 return baseMethod;
             }
 
-            
+
         }
     }
 }

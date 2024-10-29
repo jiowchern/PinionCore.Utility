@@ -1,11 +1,10 @@
-using NSubstitute;
-using NUnit.Framework;
+﻿using NSubstitute;
 
 namespace PinionCore.Utility.Tests
 {
 
 
-    
+
     public class StatusMachineTests
     {
         [NUnit.Framework.Test]
@@ -13,7 +12,7 @@ namespace PinionCore.Utility.Tests
         {
 
             IStatus status = NSubstitute.Substitute.For<IStatus>();
-            StatusMachine machine = new PinionCore.Utility.StatusMachine();
+            var machine = new PinionCore.Utility.StatusMachine();
             machine.Push(status);
             machine.Update();
             machine.Termination();
@@ -30,7 +29,7 @@ namespace PinionCore.Utility.Tests
 
             IStatus status1 = NSubstitute.Substitute.For<IStatus>();
             IStatus status2 = NSubstitute.Substitute.For<IStatus>();
-            StatusMachine machine = new PinionCore.Utility.StatusMachine();
+            var machine = new PinionCore.Utility.StatusMachine();
             machine.Push(status1);
             machine.Update();
             machine.Push(status2);

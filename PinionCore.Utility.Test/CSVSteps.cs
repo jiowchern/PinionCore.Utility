@@ -1,4 +1,4 @@
-using PinionCore.Utility;
+﻿using PinionCore.Utility;
 
 
 using TechTalk.SpecFlow;
@@ -40,9 +40,9 @@ namespace PinionCoreLibraryTest
         [When(@"執行解析")]
         public void When執行解析()
         {
-            string text = ScenarioContext.Current.Get<string>("Text");
-            string paragraph = ScenarioContext.Current.Get<string>("Paragraph");
-            string separator = ScenarioContext.Current.Get<string>("Separator");
+            var text = ScenarioContext.Current.Get<string>("Text");
+            var paragraph = ScenarioContext.Current.Get<string>("Paragraph");
+            var separator = ScenarioContext.Current.Get<string>("Separator");
 
             TestData[] testDatas = CSV.Parse<TestData>(text, separator, paragraph);
 

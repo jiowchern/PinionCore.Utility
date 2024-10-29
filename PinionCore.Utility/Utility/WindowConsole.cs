@@ -1,5 +1,5 @@
+﻿using System;
 using PinionCore.Utility.WindowConsoleStand;
-using System;
 
 
 namespace PinionCore.Utility
@@ -30,7 +30,7 @@ namespace PinionCore.Utility
         {
             _AutoPowerRegulator = new AutoPowerRegulator(new PowerRegulator());
             Viewer = new ConsoleViewer();
-            ConsoleInput consoleInput = new ConsoleInput(Viewer);
+            var consoleInput = new ConsoleInput(Viewer);
             _Input = consoleInput;
             _Console = new Console(_Input, Viewer);
             _Updater = new Updater();
@@ -149,7 +149,7 @@ namespace PinionCore.Utility
                     update_handler = _Empty;
 
                 AppDomain.CurrentDomain.UnhandledException += _Dump;
-                bool run = true;
+                var run = true;
                 AppDomain.CurrentDomain.ProcessExit += (sender, e) =>
                 {
                     run = false;

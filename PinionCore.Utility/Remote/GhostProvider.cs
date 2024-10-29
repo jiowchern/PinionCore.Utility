@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,29 +11,29 @@ namespace PinionCore.Remote
 
         private event Action<T> _Unsupply;
 
-        private readonly List<T> _Entitys ;
+        private readonly List<T> _Entitys;
 
-        
 
-        private readonly List<T> _Waits ;
 
-        
+        private readonly List<T> _Waits;
+
+
         public TProvider()
         {
-            _Waits = new List<T>();            
+            _Waits = new List<T>();
             _Entitys = new List<T>();
         }
         event Action<T> INotifier<T>.Supply
         {
             add
             {
-                
+
                 _Supply += value;
 
                 lock (_Entitys)
                 {
                     foreach (T e in _Entitys.ToArray())
-                    {                        
+                    {
                         value(e);
                     }
                 }
@@ -57,7 +57,7 @@ namespace PinionCore.Remote
                 return _Add(entity, entity as IGhost);
             }
             PinionCore.Utility.Log.Instance.WriteInfo($"No loaded ghost was found. {typeof(T)}.{id}");
-            return null;            
+            return null;
         }
 
         void IProvider.Add(IGhost entity)
@@ -74,7 +74,7 @@ namespace PinionCore.Remote
 
         void IProvider.ClearGhosts()
         {
-            
+
 
             if (_Unsupply != null)
             {
@@ -86,7 +86,7 @@ namespace PinionCore.Remote
 
             _Entitys.Clear();
             _Waits.Clear();
-            
+
         }
 
         private IGhost _Add(T entity, IGhost ghost)
@@ -97,16 +97,16 @@ namespace PinionCore.Remote
                     _Entitys.Add(entity);
                 if (_Supply != null)
                 {
-                    
+
                     _Supply.Invoke(entity);
                 }
             }
-            
+
 
             return ghost;
         }
 
-        
+
 
         private void _RemoveWaits(long id)
         {
@@ -122,7 +122,7 @@ namespace PinionCore.Remote
             lock (_Entitys)
             {
                 T entity = (from e in _Entitys where (e as IGhost).GetID() == id select e).FirstOrDefault();
-                if(entity != null)
+                if (entity != null)
                 {
                     _Entitys.Remove(entity);
 
@@ -131,13 +131,13 @@ namespace PinionCore.Remote
                         _Unsupply.Invoke(entity);
                     }
                 }
-                
-                
 
-                
+
+
+
             }
         }
 
-        
+
     }
 }

@@ -1,6 +1,4 @@
-using System;
-
-namespace PinionCore.Memorys
+﻿namespace PinionCore.Memorys
 {
     public static class PoolProvider
     {

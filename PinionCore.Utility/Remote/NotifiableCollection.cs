@@ -1,13 +1,13 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 
 namespace PinionCore.Remote
 {
-    public class NotifiableCollection<T> : INotifier<T>, ICollection<T> , System.Collections.Generic.IReadOnlyCollection<T>
+    public class NotifiableCollection<T> : INotifier<T>, ICollection<T>, System.Collections.Generic.IReadOnlyCollection<T>
     {
         readonly System.Collections.Generic.List<T> _Items;
-        
+
 
         int ICollection<T>.Count => _Items.Count;
 
@@ -43,7 +43,7 @@ namespace PinionCore.Remote
             {
 
                 _SupplyEvent += value;
-                foreach (var item in _Items)
+                foreach (T item in _Items)
                 {
                     value(item);
                 }
@@ -77,7 +77,7 @@ namespace PinionCore.Remote
 
         void ICollection<T>.Clear()
         {
-            foreach (var item in _Items)
+            foreach (T item in _Items)
             {
                 _UnsupplyEvent(item);
             }

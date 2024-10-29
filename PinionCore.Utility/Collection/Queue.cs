@@ -1,4 +1,4 @@
-using System.Threading;
+﻿using System.Threading;
 
 namespace PinionCore.Collection
 {
@@ -20,7 +20,7 @@ namespace PinionCore.Collection
 
         public void Enqueue(T package)
         {
-            bool gotLock = false;
+            var gotLock = false;
             try
             {
                 _Lock.Enter(ref gotLock);
@@ -39,8 +39,8 @@ namespace PinionCore.Collection
         public bool TryDequeue(out T obj)
         {
             obj = default(T);
-            bool result = false;
-            bool gotLock = false;
+            var result = false;
+            var gotLock = false;
             try
             {
                 _Lock.Enter(ref gotLock);
@@ -64,7 +64,7 @@ namespace PinionCore.Collection
 
         public T[] DequeueAll()
         {
-            bool gotLock = false;
+            var gotLock = false;
 
             T[] all;
 

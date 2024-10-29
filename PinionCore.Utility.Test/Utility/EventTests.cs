@@ -1,4 +1,4 @@
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace PinionCore.Utility.Tests
 {
@@ -11,7 +11,7 @@ namespace PinionCore.Utility.Tests
         }
     }
 
-    
+
     public class EventTests
     {
 
@@ -19,9 +19,9 @@ namespace PinionCore.Utility.Tests
         [NUnit.Framework.Test]
         public void InvokeTest1()
         {
-            TestInvoker testEvent = new TestInvoker();
+            var testEvent = new TestInvoker();
             PinionCore.Utility.Notifier notifier = testEvent;
-            bool ok = false;
+            var ok = false;
             notifier.Subscribe += () => ok = true;
             testEvent.Invoke();
 
@@ -31,9 +31,9 @@ namespace PinionCore.Utility.Tests
         [NUnit.Framework.Test]
         public void InvokeTest2()
         {
-            TestInvoker testEvent = new TestInvoker();
+            var testEvent = new TestInvoker();
             PinionCore.Utility.Notifier notifier = testEvent;
-            bool ok = false;
+            var ok = false;
             testEvent.Invoke();
             notifier.Subscribe += () => ok = true;
 

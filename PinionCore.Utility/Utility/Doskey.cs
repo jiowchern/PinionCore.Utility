@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace PinionCore.Utility
 {
@@ -30,7 +30,7 @@ namespace PinionCore.Utility
 
         public string GetPrev()
         {
-            string str = TryGetPrev();
+            var str = TryGetPrev();
             return str == null ? "" : str;
         }
 
@@ -51,7 +51,7 @@ namespace PinionCore.Utility
 
         public string GetNext()
         {
-            string str = TryGetNext();
+            var str = TryGetNext();
             return str == null ? "" : str;
         }
 

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,7 +15,7 @@ namespace PinionCore.Extensions
         public static int Index<T>(this IEnumerable<T> set, Func<T, bool> condition)
         {
             Func<T, bool> instance = condition;
-            int index = 0;
+            var index = 0;
             foreach (T item in set)
             {
                 if (instance(item))

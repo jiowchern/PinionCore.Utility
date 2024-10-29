@@ -1,7 +1,7 @@
-using PinionCore.Utility;
-using System;
+﻿using System;
 using System.Data;
 using System.Linq;
+using PinionCore.Utility;
 
 namespace PinionCore.Extensions
 {
@@ -54,16 +54,16 @@ namespace PinionCore.Extensions
                         rowTypes.Fields.Length));
             }
 
-            string[] defaultValues = new string[rowTypes.Fields.Length];
-            for (int i = 0; i < rowNames.Fields.Length; ++i)
+            var defaultValues = new string[rowTypes.Fields.Length];
+            for (var i = 0; i < rowNames.Fields.Length; ++i)
             {
-                string name = rowNames.Fields[i];
-                string strType = rowTypes.Fields[i];
+                var name = rowNames.Fields[i];
+                var strType = rowTypes.Fields[i];
                 DataTableType result = (from ddt in DataTableType.Types where ddt.Name == strType select ddt).FirstOrDefault();
                 defaultValues[i] = result.Default;
                 if (result != null)
                 {
-                    DataColumn dc = new DataColumn(name, result.Type);
+                    var dc = new DataColumn(name, result.Type);
 
                     dt.Columns.Add(dc);
                 }
@@ -73,19 +73,19 @@ namespace PinionCore.Extensions
                 }
             }
 
-            int rowCount = rowNames.Fields.Length;
+            var rowCount = rowNames.Fields.Length;
             while (iterator.MoveNext())
             {
                 CSV.Row row = iterator.Current;
-                string[] fields = row.Fields;
+                var fields = row.Fields;
 
                 if (fields.Length == rowCount)
                 {
                     DataRow dtRow = dt.NewRow();
-                    int i = 0;
-                    foreach (string name in rowNames.Fields)
+                    var i = 0;
+                    foreach (var name in rowNames.Fields)
                     {
-                        string field = fields[i] == string.Empty
+                        var field = fields[i] == string.Empty
                                         ? defaultValues[i]
                                         : fields[i];
                         dtRow[name] = field;

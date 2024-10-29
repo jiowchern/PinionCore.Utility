@@ -1,4 +1,4 @@
-namespace PinionCoreLibraryTest
+﻿namespace PinionCoreLibraryTest
 {
     using NSubstitute;
     public class StageTest
@@ -9,7 +9,7 @@ namespace PinionCoreLibraryTest
 
             PinionCore.Utility.IBootable stage1 = NSubstitute.Substitute.For<PinionCore.Utility.IBootable>();
             PinionCore.Utility.IBootable stage2 = NSubstitute.Substitute.For<PinionCore.Utility.IBootable>();
-            PinionCore.Utility.StageMachine machine = new PinionCore.Utility.StageMachine();
+            var machine = new PinionCore.Utility.StageMachine();
 
             machine.Push(stage1);
             machine.Push(stage2);

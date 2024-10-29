@@ -1,7 +1,7 @@
-using PinionCore.Utility;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using PinionCore.Utility;
 
 namespace PinionCoreLibraryTest
 {
@@ -42,11 +42,11 @@ namespace PinionCoreLibraryTest
         public void TestEnumDescription()
         {
             TEST t1 = TEST.ENUM1;
-            string desc1 = t1.GetEnumDescription();
+            var desc1 = t1.GetEnumDescription();
             NUnit.Framework.Assert.AreEqual("ENUM1", desc1);
 
             TEST t2 = TEST.ENUM2;
-            string desc2 = t2.GetEnumDescription();
+            var desc2 = t2.GetEnumDescription();
             NUnit.Framework.Assert.AreEqual("ENUM2", desc2);
         }
 
@@ -55,7 +55,7 @@ namespace PinionCoreLibraryTest
         {
             TESTFLAG flags = TESTFLAG.ALL;
 
-            List<string> descs = new List<string>();
+            var descs = new List<string>();
             foreach (TESTFLAG flag in flags.GetFlags())
             {
                 descs.Add(flag.GetEnumDescription());
@@ -72,7 +72,7 @@ namespace PinionCoreLibraryTest
         {
             TESTFLAG flags = TESTFLAG.ENUM1 | TESTFLAG.ENUM3;
 
-            List<string> descs = new List<string>();
+            var descs = new List<string>();
             foreach (TESTFLAG flag in flags.GetFlags())
             {
                 descs.Add(flag.GetEnumDescription());
@@ -85,7 +85,7 @@ namespace PinionCoreLibraryTest
         [NUnit.Framework.Test]
         public void TestForeachEnum1()
         {
-            List<TEST> flags = new List<TEST>();
+            var flags = new List<TEST>();
             foreach (TEST f in EnumHelper.GetEnums<TEST>())
             {
                 flags.Add(f);
@@ -99,7 +99,7 @@ namespace PinionCoreLibraryTest
         [NUnit.Framework.Test]
         public void TestEnumFlags()
         {
-            List<TESTFLAG> flags = new List<TESTFLAG>();
+            var flags = new List<TESTFLAG>();
 
             foreach (TESTFLAG f in EnumHelper.GetEnums<TESTFLAG>())
             {
@@ -117,7 +117,7 @@ namespace PinionCoreLibraryTest
         {
             TESTFLAG flag = TESTFLAG.ENUM2 | TESTFLAG.ENUM3;
             TESTFLAG flagAll = TESTFLAG.ALL;
-            List<TESTFLAG> flags = new List<TESTFLAG>();
+            var flags = new List<TESTFLAG>();
 
             foreach (TESTFLAG f in EnumHelper.GetEnums<TESTFLAG>())
             {
@@ -134,7 +134,7 @@ namespace PinionCoreLibraryTest
         public void TestCompareEnumToBool()
         {
             TESTFLAG flag = TESTFLAG.ENUM2 | TESTFLAG.ENUM3;
-            bool[] flags = flag.ToFlags().ToArray();
+            var flags = flag.ToFlags().ToArray();
             NUnit.Framework.Assert.AreEqual(false, flags[0]);
             NUnit.Framework.Assert.AreEqual(true, flags[1]);
             NUnit.Framework.Assert.AreEqual(true, flags[2]);

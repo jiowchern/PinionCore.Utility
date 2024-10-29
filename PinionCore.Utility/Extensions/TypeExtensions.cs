@@ -1,7 +1,7 @@
-using PinionCore.Utility;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using PinionCore.Utility;
 
 namespace PinionCore.Extensions
 {
@@ -14,10 +14,10 @@ namespace PinionCore.Extensions
                 throw new Exception("invalid points to rect.");
 
             Vector2 first = points.First();
-            float left = first.X;
-            float top = first.Y;
-            float right = first.X;
-            float bottom = first.Y;
+            var left = first.X;
+            var top = first.Y;
+            var right = first.X;
+            var bottom = first.Y;
 
             foreach (Vector2 point in points.Skip(1))
             {
@@ -42,7 +42,7 @@ namespace PinionCore.Extensions
 
         public static IEnumerable<Vector2> FindHull(this IEnumerable<Vector2> points)
         {
-            List<PointToProcess> pointsToProcess = new List<PointToProcess>();
+            var pointsToProcess = new List<PointToProcess>();
 
             // convert input points to points we can process
             foreach (Vector2 point in points)
@@ -51,7 +51,7 @@ namespace PinionCore.Extensions
             }
 
             // find a point, with lowest X and lowest Y
-            int firstCornerIndex = 0;
+            var firstCornerIndex = 0;
             PointToProcess firstCorner = pointsToProcess[0];
 
             for (int i = 1, n = pointsToProcess.Count; i < n; i++)
@@ -70,8 +70,8 @@ namespace PinionCore.Extensions
             // find K (tangent of line's angle) and distance to the first corner
             for (int i = 0, n = pointsToProcess.Count; i < n; i++)
             {
-                float dx = pointsToProcess[i].x - firstCorner.x;
-                float dy = pointsToProcess[i].y - firstCorner.y;
+                var dx = pointsToProcess[i].x - firstCorner.x;
+                var dy = pointsToProcess[i].y - firstCorner.y;
 
                 // don't need square root, since it is not important in our case
                 pointsToProcess[i].Distance = dx * dx + dy * dy;
@@ -82,7 +82,7 @@ namespace PinionCore.Extensions
             // sort points by angle and distance
             pointsToProcess.Sort();
 
-            List<PointToProcess> convexHullTemp = new List<PointToProcess>();
+            var convexHullTemp = new List<PointToProcess>();
 
             // add first corner, which is always on the hull
             convexHullTemp.Add(firstCorner);
@@ -127,7 +127,7 @@ namespace PinionCore.Extensions
             }
 
             // convert points back
-            List<Vector2> convexHull = new List<Vector2>();
+            var convexHull = new List<Vector2>();
 
             foreach (PointToProcess pt in convexHullTemp)
             {
@@ -156,7 +156,7 @@ namespace PinionCore.Extensions
 
             public int CompareTo(object obj)
             {
-                PointToProcess another = (PointToProcess)obj;
+                var another = (PointToProcess)obj;
 
                 return (K < another.K) ? -1 : (K > another.K) ? 1 :
                     ((Distance > another.Distance) ? -1 : (Distance < another.Distance) ? 1 : 0);

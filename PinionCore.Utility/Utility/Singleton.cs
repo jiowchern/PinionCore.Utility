@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace PinionCore.Utility
 {
@@ -9,13 +9,17 @@ namespace PinionCore.Utility
             return new T();
         }
 
-        public static T Instance { get {
+        public static T Instance
+        {
+            get
+            {
                 return _Instance.Value;
 
-            } }
+            }
+        }
         private Singleton()
         {
-        }        
-        private static readonly Lazy<T> _Instance = new Lazy<T>(_New,  System.Threading.LazyThreadSafetyMode.PublicationOnly);
+        }
+        private static readonly Lazy<T> _Instance = new Lazy<T>(_New, System.Threading.LazyThreadSafetyMode.PublicationOnly);
     }
 }

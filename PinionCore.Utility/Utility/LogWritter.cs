@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq.Expressions;
 
 namespace PinionCore.Utility
@@ -27,13 +27,13 @@ namespace PinionCore.Utility
         internal void Write()
         {
 
-            string message = _GetMessage();
+            var message = _GetMessage();
             _AsyncRecord(message);
         }
 
         private string _GetMessage()
         {
-            string message = _Message.Compile()();
+            var message = _Message.Compile()();
 
             if (_Type == TYPE.INFO)
                 return string.Format("[{1}][Info]{0}", message, _Time.ToString(@"yyyy/MM/dd_hh:mm:ss"));

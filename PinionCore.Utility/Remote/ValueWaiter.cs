@@ -1,5 +1,5 @@
+﻿using System.Threading;
 using PinionCore.Utility;
-using System.Threading;
 
 namespace PinionCore.Remote
 {
@@ -24,10 +24,10 @@ namespace PinionCore.Remote
 
         internal void Run(object obj)
         {
-            AutoResetEvent are = (AutoResetEvent)obj;
+            var are = (AutoResetEvent)obj;
 
-            PowerRegulator powerRegulator = new PowerRegulator(10);
-            AutoPowerRegulator autoPowerRegulator = new AutoPowerRegulator(powerRegulator);
+            var powerRegulator = new PowerRegulator(10);
+            var autoPowerRegulator = new AutoPowerRegulator(powerRegulator);
 
             while (_HasValue == false)
             {

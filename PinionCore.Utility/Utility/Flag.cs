@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 
 
@@ -86,8 +86,8 @@ namespace PinionCore.Utility
 
         public static implicit operator Flag<T>(object[] objs)
         {
-            Flag<T> m = new Flag<T>();
-            foreach (object o in objs)
+            var m = new Flag<T>();
+            foreach (var o in objs)
             {
                 m[(T)o] = true;
             }

@@ -1,6 +1,4 @@
-using System;
-
-namespace PinionCoreLibraryTest
+﻿namespace PinionCoreLibraryTest
 {
     internal class UnanalyzableCommandHandler
     {

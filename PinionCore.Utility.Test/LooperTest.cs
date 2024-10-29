@@ -1,4 +1,4 @@
-namespace PinionCore.Utility.Tests
+﻿namespace PinionCore.Utility.Tests
 {
     public class LooperTest
     {
@@ -17,8 +17,8 @@ namespace PinionCore.Utility.Tests
 
             var items = new System.Collections.Generic.List<LooperItem>();
             looper.AddItemEvent += items.Add;
-            looper.RemoveItemEvent += i=>items.Remove(i);
-            int count = 0;
+            looper.RemoveItemEvent += i => items.Remove(i);
+            var count = 0;
             looper.UpdateEvent += () => { count = items.Count; };
             looper.Add(i1);
             looper.Add(i2);

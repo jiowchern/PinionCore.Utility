@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace PinionCore.Extensions
@@ -19,7 +19,7 @@ namespace PinionCore.Extensions
         private static string _ShowMembers(object obj, Type obj_type, string join_token)
         {
             Type type = obj_type;
-            List<string> values = new List<string>();
+            var values = new List<string>();
             if (obj == null)
             {
                 values.Add("null");
@@ -31,11 +31,11 @@ namespace PinionCore.Extensions
             else if (type.IsArray)
             {
 
-                Array array = (Array)obj;
+                var array = (Array)obj;
 
-                foreach (object ele in array)
+                foreach (var ele in array)
                 {
-                    string result = _ShowMembers(ele, type.GetElementType(), join_token);
+                    var result = _ShowMembers(ele, type.GetElementType(), join_token);
                     values.Add(result);
                 }
             }
@@ -43,15 +43,15 @@ namespace PinionCore.Extensions
             {
                 System.Reflection.FieldInfo[] fields = type.GetFields();
                 System.Reflection.PropertyInfo[] properties = type.GetProperties();
-                object user = obj;
+                var user = obj;
 
                 Array.ForEach(fields, field =>
                 {
 
-                    object val = field.GetValue(user);
+                    var val = field.GetValue(user);
                     if (field.FieldType.IsArray)
                     {
-                        string result = _ShowMembers(val, field.FieldType, join_token);
+                        var result = _ShowMembers(val, field.FieldType, join_token);
                         values.Add(field.Name + " : " + result);
                     }
                     else
@@ -69,10 +69,10 @@ namespace PinionCore.Extensions
 
                         if (property.CanRead)
                         {
-                            object val = property.GetValue(user, null);
+                            var val = property.GetValue(user, null);
                             if (property.PropertyType.IsArray)
                             {
-                                string result = _ShowMembers(val, property.PropertyType, join_token);
+                                var result = _ShowMembers(val, property.PropertyType, join_token);
                                 values.Add(property.Name + " : " + result);
                             }
                             else
