@@ -3,7 +3,7 @@
 namespace PinionCore.Remote
 {
     public delegate void CallMethodCallback(MethodInfo info, object[] args, IValue return_value);
-    public delegate void EventNotifyCallback(EventInfo info, long handler_id);
+    public delegate void EventNotifyCallback(int event_id, long handler_id);
 
     public delegate void PassageCallback(object gpi);
     public delegate void PropertyNotifierCallback(PropertyInfo info, PassageCallback passage);
