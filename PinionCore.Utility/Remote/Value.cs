@@ -6,7 +6,7 @@ namespace PinionCore.Remote
 
 
 
-    public sealed class Value<T> : IValue, IAwaitable<T>
+    public sealed class Value<T> : IValue//, IAwaitable<T>
     {
         private event Action<T> _OnValue;
         Action _Continuation;
@@ -40,7 +40,7 @@ namespace PinionCore.Remote
             get { return default(T); }
         }
 
-        bool IAwaitable<T>.IsCompleted => HasValue();
+       // bool IAwaitable<T>.IsCompleted => HasValue();
 
         public Value()
         {
@@ -142,16 +142,16 @@ namespace PinionCore.Remote
             return false;
         }
 
-        public IAwaitable<T> GetAwaiter()
+       /* public IAwaitable<T> GetAwaiter()
         {
             return this;
-        }
+        }*/
 
         bool IValue.SetValue(IGhost ghost)
         {
             return SetValue((T)ghost);
         }
-
+/*
         T IAwaitable<T>.GetResult()
         {
             return GetValue();
@@ -160,6 +160,6 @@ namespace PinionCore.Remote
         void INotifyCompletion.OnCompleted(Action continuation)
         {
             _Continuation = continuation;
-        }
+        }*/
     }
 }
