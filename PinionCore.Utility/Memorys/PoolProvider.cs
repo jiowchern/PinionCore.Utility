@@ -10,7 +10,7 @@
                 new PinionCore.Memorys.ChunkSetting[0]);
         }
 
-        public readonly static Pool Shared = Default();
+        public readonly static Pool Shared = Direct();
         public static Pool Default()
         {
             return new PinionCore.Memorys.Pool(

@@ -42,22 +42,18 @@ namespace PinionCore.Remote
 
        // bool IAwaitable<T>.IsCompleted => HasValue();
 
-        public Value()
+        public Value(bool empty = true)
         {
             _Continuation = () => { };
-            _Empty = true;
+            _Empty = empty;
             _Interface = typeof(T).IsInterface;
         }
 
 
-        public Value(T val) : this()
+        public Value(T val) : this(false)
         {
-            _Empty = false;
-            _Value = val;
-            if (_OnValue != null)
-            {
-                _OnValue(_Value);
-            }
+            
+            _Value = val;            
         }
 
         object IValue.GetObject()
@@ -115,12 +111,17 @@ namespace PinionCore.Remote
 
         public bool SetValue(T val)
         {
-            if (_Empty == false)
+            lock(this)
             {
-                return false;
+                if (_Empty == false)
+                {
+                    return false;
+                }
+                _Empty = false;
+                _Value = val;
             }
-            _Empty = false;
-            _Value = val;
+            
+            
             _Continuation();
             if (_OnValue != null)
             {
