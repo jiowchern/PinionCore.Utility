@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 
 namespace PinionCore.Remote
 {
@@ -9,13 +8,13 @@ namespace PinionCore.Remote
     public sealed class Value<T> : IValue//, IAwaitable<T>
     {
         private event Action<T> _OnValue;
-        Action _Continuation;
+        readonly Action _Continuation;
 
         public event Action<T> OnValue
         {
             add
             {
-                lock(this)
+                lock (this)
                 {
                     _OnValue += value;
 
@@ -24,7 +23,7 @@ namespace PinionCore.Remote
                         value(_Value);
                     }
                 }
-                
+
             }
 
             remove { _OnValue -= value; }
@@ -44,7 +43,7 @@ namespace PinionCore.Remote
             get { return default(T); }
         }
 
-       // bool IAwaitable<T>.IsCompleted => HasValue();
+        // bool IAwaitable<T>.IsCompleted => HasValue();
 
         public Value(bool empty = true)
         {
@@ -56,8 +55,8 @@ namespace PinionCore.Remote
 
         public Value(T val) : this(false)
         {
-            
-            _Value = val;            
+
+            _Value = val;
         }
 
         object IValue.GetObject()
@@ -115,7 +114,7 @@ namespace PinionCore.Remote
 
         public bool SetValue(T val)
         {
-            lock(this)
+            lock (this)
             {
                 if (_Empty == false)
                 {
@@ -124,8 +123,8 @@ namespace PinionCore.Remote
                 _Empty = false;
                 _Value = val;
             }
-            
-            
+
+
             _Continuation();
             if (_OnValue != null)
             {
@@ -147,24 +146,24 @@ namespace PinionCore.Remote
             return false;
         }
 
-       /* public IAwaitable<T> GetAwaiter()
-        {
-            return this;
-        }*/
+        /* public IAwaitable<T> GetAwaiter()
+         {
+             return this;
+         }*/
 
         bool IValue.SetValue(IGhost ghost)
         {
             return SetValue((T)ghost);
         }
-/*
-        T IAwaitable<T>.GetResult()
-        {
-            return GetValue();
-        }
+        /*
+                T IAwaitable<T>.GetResult()
+                {
+                    return GetValue();
+                }
 
-        void INotifyCompletion.OnCompleted(Action continuation)
-        {
-            _Continuation = continuation;
-        }*/
+                void INotifyCompletion.OnCompleted(Action continuation)
+                {
+                    _Continuation = continuation;
+                }*/
     }
 }

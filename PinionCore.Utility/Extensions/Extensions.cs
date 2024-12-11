@@ -7,7 +7,7 @@ namespace PinionCore.Extensions
     {
         public static string ToHex(this System.Collections.Generic.IEnumerable<byte> source)
         {
-            return string.Join(",",source);
+            return string.Join(",", source);
         }
         public static byte[] ToMd5(this string source)
         {
