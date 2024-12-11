@@ -1,14 +1,16 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace PinionCore.Remote
 {
 
 
 
-    public sealed class Value<T> : IValue//, IAwaitable<T>
+    public class Value<T> : IValue, IAwaitable<T> , IWaitableValue<T>
     {
         private event Action<T> _OnValue;
-        readonly Action _Continuation;
+
+        readonly System.Collections.Concurrent.ConcurrentQueue<T> _Invokeds;
 
         public event Action<T> OnValue
         {
@@ -43,11 +45,11 @@ namespace PinionCore.Remote
             get { return default(T); }
         }
 
-        // bool IAwaitable<T>.IsCompleted => HasValue();
+         bool IAwaitable<T>.IsCompleted => HasValue();
 
         public Value(bool empty = true)
         {
-            _Continuation = () => { };
+            _Invokeds = new System.Collections.Concurrent.ConcurrentQueue<T>();
             _Empty = empty;
             _Interface = typeof(T).IsInterface;
         }
@@ -125,7 +127,7 @@ namespace PinionCore.Remote
             }
 
 
-            _Continuation();
+            
             if (_OnValue != null)
             {
                 _OnValue(_Value);
@@ -146,24 +148,43 @@ namespace PinionCore.Remote
             return false;
         }
 
-        /* public IAwaitable<T> GetAwaiter()
+         public IAwaitable<T> GetAwaiter()
          {
              return this;
-         }*/
+         }
 
         bool IValue.SetValue(IGhost ghost)
         {
             return SetValue((T)ghost);
         }
-        /*
-                T IAwaitable<T>.GetResult()
+        
+        T IAwaitable<T>.GetResult()
+        {
+            return GetValue();
+        }
+
+        void INotifyCompletion.OnCompleted(Action continuation)
+        {
+            void Handler(T v)
+            {
+                _Invokeds.Enqueue(v);
+
+                
+                if (_Invokeds.Count > 1)
                 {
-                    return GetValue();
+                    PinionCore.Utility.Log.Instance.WriteInfo($" INotifyCompletion.OnCompleted:{_Invokeds.Count} ");
+
+                    throw new InvalidOperationException("INotifyCompletion.OnCompleted");
                 }
 
-                void INotifyCompletion.OnCompleted(Action continuation)
-                {
-                    _Continuation = continuation;
-                }*/
+                OnValue -= Handler;
+
+                continuation?.Invoke();
+
+            }
+            OnValue += Handler;
+        }
+
+  
     }
 }

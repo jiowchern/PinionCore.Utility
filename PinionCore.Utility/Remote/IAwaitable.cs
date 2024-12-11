@@ -8,5 +8,7 @@ namespace PinionCore.Remote
         bool IsCompleted { get; }
 
         T GetResult();
+
+        
     }
 }
