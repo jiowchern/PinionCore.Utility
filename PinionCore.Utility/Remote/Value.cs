@@ -15,12 +15,16 @@ namespace PinionCore.Remote
         {
             add
             {
-                _OnValue += value;
-
-                if (_Empty == false)
+                lock(this)
                 {
-                    value(_Value);
+                    _OnValue += value;
+
+                    if (_Empty == false)
+                    {
+                        value(_Value);
+                    }
                 }
+                
             }
 
             remove { _OnValue -= value; }
