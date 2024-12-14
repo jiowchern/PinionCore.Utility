@@ -4,9 +4,48 @@ using System.Runtime.CompilerServices;
 namespace PinionCore.Remote
 {
 
+    public class ValueAWaiter<T> : IAwaitable<T>
+    {
+        
+        readonly Value<T> _Value;
+        readonly System.Collections.Concurrent.ConcurrentQueue<T> _Invokeds;
+
+        public ValueAWaiter(Value<T> value)
+        {
+            _Invokeds = new System.Collections.Concurrent.ConcurrentQueue<T>();
+            _Value = value;
+        }
+        bool IAwaitable<T>.IsCompleted => _Value.HasValue();
+
+        T IAwaitable<T>.GetResult()
+        {
+            return _Value.GetValue();
+        }
+
+        void INotifyCompletion.OnCompleted(Action continuation)
+        {
+            void Handler(T v)
+            {
+                _Invokeds.Enqueue(v);
 
 
-    public class Value<T> : IValue, IAwaitable<T> , IWaitableValue<T>
+                if (_Invokeds.Count > 1)
+                {
+                    PinionCore.Utility.Log.Instance.WriteInfo($" INotifyCompletion.OnCompleted:{_Invokeds.Count} ");
+
+                    throw new InvalidOperationException("INotifyCompletion.OnCompleted");
+                }
+
+                _Value.OnValue -= Handler;
+
+                continuation?.Invoke();
+
+            }
+            _Value.OnValue += Handler;
+        }
+    }
+
+    public class Value<T> : IValue,  IWaitableValue<T>
     {
         private event Action<T> _OnValue;
 
@@ -45,7 +84,7 @@ namespace PinionCore.Remote
             get { return default(T); }
         }
 
-         bool IAwaitable<T>.IsCompleted => HasValue();
+         
 
         public Value(bool empty = true)
         {
@@ -136,55 +175,16 @@ namespace PinionCore.Remote
             return true;
         }
 
-        public bool TryGetValue(out T val)
-        {
-            if (_Empty == false)
-            {
-                val = _Value;
-                return true;
-            }
-
-            val = default(T);
-            return false;
-        }
-
-         public IAwaitable<T> GetAwaiter()
-         {
-             return this;
-         }
+         
 
         bool IValue.SetValue(IGhost ghost)
         {
             return SetValue((T)ghost);
         }
-        
-        T IAwaitable<T>.GetResult()
+      
+        public IAwaitable<T> GetAwaiter()
         {
-            return GetValue();
+            return new ValueAWaiter<T>(this);
         }
-
-        void INotifyCompletion.OnCompleted(Action continuation)
-        {
-            void Handler(T v)
-            {
-                _Invokeds.Enqueue(v);
-
-                
-                if (_Invokeds.Count > 1)
-                {
-                    PinionCore.Utility.Log.Instance.WriteInfo($" INotifyCompletion.OnCompleted:{_Invokeds.Count} ");
-
-                    throw new InvalidOperationException("INotifyCompletion.OnCompleted");
-                }
-
-                OnValue -= Handler;
-
-                continuation?.Invoke();
-
-            }
-            OnValue += Handler;
-        }
-
-  
     }
 }
