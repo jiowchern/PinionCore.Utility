@@ -1,4 +1,6 @@
-﻿using System.Timers;
+﻿using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using System.Timers;
 using PinionCore.Remote;
 
 namespace PinionCoreLibraryTest
@@ -19,6 +21,6 @@ namespace PinionCoreLibraryTest
             val.Result();
         }
 
-
+        
     }
 }

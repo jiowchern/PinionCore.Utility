@@ -1,55 +1,15 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
+using System.Diagnostics;
+using System.Dynamic;
 
 namespace PinionCore.Remote
 {
-
-    public class ValueAWaiter<T> : IAwaitable<T>
-    {
-        
-        readonly Value<T> _Value;
-        readonly System.Collections.Concurrent.ConcurrentQueue<T> _Invokeds;
-
-        public ValueAWaiter(Value<T> value)
-        {
-            _Invokeds = new System.Collections.Concurrent.ConcurrentQueue<T>();
-            _Value = value;
-        }
-        bool IAwaitable<T>.IsCompleted => _Value.HasValue();
-
-        T IAwaitable<T>.GetResult()
-        {
-            return _Value.GetValue();
-        }
-
-        void INotifyCompletion.OnCompleted(Action continuation)
-        {
-            void Handler(T v)
-            {
-                _Invokeds.Enqueue(v);
-
-
-                if (_Invokeds.Count > 1)
-                {
-                    PinionCore.Utility.Log.Instance.WriteInfo($" INotifyCompletion.OnCompleted:{_Invokeds.Count} ");
-
-                    throw new InvalidOperationException("INotifyCompletion.OnCompleted");
-                }
-
-                _Value.OnValue -= Handler;
-
-                continuation?.Invoke();
-
-            }
-            _Value.OnValue += Handler;
-        }
-    }
-
-    public class Value<T> : IValue,  IWaitableValue<T>
+    [DebuggerDisplay("{" + nameof(GetDebuggerDisplay) + "(),nq}")]
+    public class Value<T> : IValue, IAwaitableSource<T>
     {
         private event Action<T> _OnValue;
 
-        readonly System.Collections.Concurrent.ConcurrentQueue<T> _Invokeds;
+        
 
         public event Action<T> OnValue
         {
@@ -84,11 +44,11 @@ namespace PinionCore.Remote
             get { return default(T); }
         }
 
-         
+
 
         public Value(bool empty = true)
         {
-            _Invokeds = new System.Collections.Concurrent.ConcurrentQueue<T>();
+        
             _Empty = empty;
             _Interface = typeof(T).IsInterface;
         }
@@ -166,7 +126,7 @@ namespace PinionCore.Remote
             }
 
 
-            
+
             if (_OnValue != null)
             {
                 _OnValue(_Value);
@@ -175,16 +135,110 @@ namespace PinionCore.Remote
             return true;
         }
 
-         
+
 
         bool IValue.SetValue(IGhost ghost)
         {
             return SetValue((T)ghost);
         }
-      
+
         public IAwaitable<T> GetAwaiter()
         {
-            return new ValueAWaiter<T>(this);
+            return new ValueAwaiter<T>(this);
+        }
+
+        private string GetDebuggerDisplay()
+        {
+            return ToString();
+        }
+    }
+    public class Value : IValue, IAwaitableSource
+    {
+        bool _Empty;
+        public Value(bool empty = true)
+        {
+            _OnValue = () => { };
+            _Empty = empty;
+        }
+
+
+        object IValue.GetObject()
+        {
+            return null;
+        }
+
+        Type IValue.GetObjectType()
+        {
+            return typeof(void);
+        }
+
+        bool IValue.IsInterface()
+        {
+            return false;        }
+
+        void IValue.QueryValue(Action<object> action)
+        {
+            if (_Empty == false)
+            {
+                action.Invoke(null);
+            }
+            else
+            {
+                OnValue += () => { action.Invoke(null); };
+            }
+        }
+
+        bool IValue.SetValue(object val)
+        {
+            return _SetValue();
+        }
+
+        private bool _SetValue()
+        {
+            if (_Empty == false)
+            {
+                return false;
+            }
+            _Empty = false;
+            _OnValue();
+            return true;
+        }
+
+        System.Action _OnValue;
+        public event System.Action OnValue
+        {
+            add
+            {
+                lock (this)
+                {
+                    _OnValue += value;
+                    if (_Empty == false)
+                    {
+                        value();
+                    }
+                }
+            }
+            remove { _OnValue -= value; }
+        }
+
+        bool IValue.SetValue(IGhost ghost)
+        {
+            return _SetValue();
+        }
+
+        IAwaitable IAwaitableSource.GetAwaitable()
+        {
+            return new ValueAwaiter(this);
+        }
+
+        internal bool HasValue()
+        {
+            return _Empty == false;
+                 
+        }
+        public IAwaitable GetAwaiter()
+        {
+            return new ValueAwaiter(this);
         }
     }
 }
