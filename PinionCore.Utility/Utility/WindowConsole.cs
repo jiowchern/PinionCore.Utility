@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using PinionCore.Utility.WindowConsoleStand;
 
 
@@ -72,7 +73,7 @@ namespace PinionCore.Utility
 
         bool IUpdatable.Update()
         {
-            _AutoPowerRegulator.Operate();
+            _AutoPowerRegulator.Operate(new CancellationTokenSource());
             _Update();
             _Updater.Working();
             return true;

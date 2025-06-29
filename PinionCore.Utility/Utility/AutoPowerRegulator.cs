@@ -1,4 +1,6 @@
-﻿namespace PinionCore.Utility
+﻿using System.Threading;
+
+namespace PinionCore.Utility
 {
     public class AutoPowerRegulator
     {
@@ -15,11 +17,11 @@
             _PowerRegulator = power_regulator;
         }
 
-        public void Operate()
+        public void Operate(CancellationTokenSource source)
         {
 
             var ticks = _Counter.Ticks;
-            _PowerRegulator.Operate(ticks - _PreviousTicks).Wait();
+            _PowerRegulator.Operate(ticks - _PreviousTicks, source).Wait();
             _PreviousTicks = ticks;
         }
     }

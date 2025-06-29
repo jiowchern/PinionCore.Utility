@@ -31,7 +31,7 @@ namespace PinionCore.Remote
 
             while (_HasValue == false)
             {
-                autoPowerRegulator.Operate();
+                autoPowerRegulator.Operate(new CancellationTokenSource());
             }
 
             are.Set();

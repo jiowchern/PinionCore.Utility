@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace PinionCore.Utility
@@ -49,6 +50,10 @@ namespace PinionCore.Utility
 
         public async Task Operate(long busy)
         {
+            await Operate(busy, new CancellationTokenSource());
+        }
+        public async Task Operate(long busy,CancellationTokenSource source)
+        {
 
             _FPS.Update();
 
@@ -57,7 +62,7 @@ namespace PinionCore.Utility
                 _SpinCount++;
 
                 var ms = (int)TimeSpan.FromTicks(busy - _Busy).TotalMilliseconds;
-                await System.Threading.Tasks.Task.Delay(ms);
+                await System.Threading.Tasks.Task.Delay(ms, source.Token);
             }
             else
             {
