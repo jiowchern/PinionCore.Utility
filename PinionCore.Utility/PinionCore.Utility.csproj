@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>    
+    <TargetFramework>netstandard2.1</TargetFramework>    
     <Product>PinionCore.Utility</Product>
     <Version>0.1.14.14</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
