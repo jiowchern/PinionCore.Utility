@@ -29,7 +29,7 @@ namespace PinionCore.Utility
 
         protected WindowConsole()
         {
-            _AutoPowerRegulator = new AutoPowerRegulator(new PowerRegulator());
+            _AutoPowerRegulator = new AutoPowerRegulator(new PowerRegulator(10));
             Viewer = new ConsoleViewer();
             var consoleInput = new ConsoleInput(Viewer);
             _Input = consoleInput;
@@ -42,7 +42,7 @@ namespace PinionCore.Utility
 
         protected WindowConsole(Console.IViewer viewer, Console.IInput input)
         {
-            _AutoPowerRegulator = new AutoPowerRegulator(new PowerRegulator());
+            _AutoPowerRegulator = new AutoPowerRegulator(new PowerRegulator(10));
             Viewer = viewer;
             _Input = input;
             _Console = new Console(_Input, Viewer);

@@ -38,9 +38,9 @@ namespace PinionCore.Utility
             _LowPower = low_power;
         }
 
-        public PowerRegulator()
+        PowerRegulator()
         {
-
+            _LowPower = 10;
             _SpinCount = 0;
             _WorkCount = 0;
             _Busy = 0;
