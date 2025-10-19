@@ -155,7 +155,7 @@ namespace PinionCore.Remote
     public class Value : IValue, IAwaitableSource
     {
         bool _Empty;
-        public Value(bool empty = true)
+        public Value(bool empty )
         {
             _OnValue = () => { };
             _Empty = empty;
