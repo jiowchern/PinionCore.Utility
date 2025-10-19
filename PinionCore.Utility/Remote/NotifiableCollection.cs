@@ -18,6 +18,7 @@ namespace PinionCore.Remote
         public readonly ICollection<T> Items;
         public readonly IReadOnlyCollection<T> ReadOnlyItems;
         public readonly INotifier<T> Notifier;
+        
         public NotifiableCollection() : this(new System.Collections.Generic.List<T>())
         {
         }
@@ -41,6 +42,7 @@ namespace PinionCore.Remote
         {
             add
             {
+                
 
                 _SupplyEvent += value;
                 foreach (T item in _Items)
@@ -51,6 +53,7 @@ namespace PinionCore.Remote
 
             remove
             {
+                
                 _SupplyEvent -= value;
             }
         }
