@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PinionCore.Remote
 {
-    public class NotifiableCollection<T> : INotifier<T>, ICollection<T>, System.Collections.Generic.IReadOnlyCollection<T>
+    public class Depot<T> : INotifier<T>, ICollection<T>, System.Collections.Generic.IReadOnlyCollection<T>
     {
         readonly System.Collections.Generic.List<T> _Items;
 
@@ -19,10 +19,10 @@ namespace PinionCore.Remote
         public readonly IReadOnlyCollection<T> ReadOnlyItems;
         public readonly INotifier<T> Notifier;
         
-        public NotifiableCollection() : this(new System.Collections.Generic.List<T>())
+        public Depot() : this(new System.Collections.Generic.List<T>())
         {
         }
-        public NotifiableCollection(IEnumerable<T> items)
+        public Depot(IEnumerable<T> items)
         {
             _Items = new System.Collections.Generic.List<T>(items);
             Items = this;
