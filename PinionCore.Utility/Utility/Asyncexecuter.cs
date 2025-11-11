@@ -19,7 +19,6 @@ namespace PinionCore.Extensions
 namespace PinionCore.Utility
 {
 
-
     public class AsyncExecuter
     {
         private readonly System.Collections.Concurrent.ConcurrentQueue<Action> _Tasks;
