@@ -30,13 +30,13 @@ namespace PinionCore.Extensions
             }
             else if (type.IsArray)
             {
-
-                var array = (Array)obj;
-
-                foreach (var ele in array)
+                if (obj is Array array)
                 {
-                    var result = _ShowMembers(ele, type.GetElementType(), join_token);
-                    values.Add(result);
+                    foreach (var ele in array)
+                    {
+                        var result = _ShowMembers(ele, type.GetElementType(), join_token);
+                        values.Add(result);
+                    }
                 }
             }
             else if (type.IsValueType == false)
