@@ -1,9 +1,10 @@
 ﻿using System.Reflection;
+using System.Threading;
 
 namespace PinionCore.Remote
 {
     public delegate void CallMethodCallback(int method_id, object[] args, IValue return_value);
-    public delegate void StreamMethodCallback(int method_id, byte[] buffer, int offset, int count, Value<int> return_value);
+    public delegate void StreamMethodCallback(int method_id, byte[] buffer, int offset, int count, CancellationToken token, Value<int> return_value);
     public delegate void EventNotifyCallback(int event_id, long handler_id);
 
     public delegate void PassageCallback(object gpi);
