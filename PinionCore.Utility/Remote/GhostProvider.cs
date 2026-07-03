@@ -7,9 +7,11 @@ namespace PinionCore.Remote
     public class TProvider<T> : INotifier<T>, IProvider
     {
 
-        private event Action<T> _Supply;
+        // 以 List 儲存 handler 而非多播委派欄位：INotifier<out T> 允許以父介面訂閱，
+        // 此時傳入的委派執行期型別是 Action<父介面>，Delegate.Combine 會因型別不同而擲出例外。
+        private readonly List<Action<T>> _SupplyHandlers;
 
-        private event Action<T> _Unsupply;
+        private readonly List<Action<T>> _UnsupplyHandlers;
 
         private readonly List<T> _Entitys;
 
@@ -22,13 +24,15 @@ namespace PinionCore.Remote
         {
             _Waits = new List<T>();
             _Entitys = new List<T>();
+            _SupplyHandlers = new List<Action<T>>();
+            _UnsupplyHandlers = new List<Action<T>>();
         }
         event Action<T> INotifier<T>.Supply
         {
             add
             {
 
-                _Supply += value;
+                _SupplyHandlers.Add(value);
 
                 lock (_Entitys)
                 {
@@ -39,13 +43,29 @@ namespace PinionCore.Remote
                 }
             }
 
-            remove { _Supply -= value; }
+            remove { _SupplyHandlers.Remove(value); }
         }
 
         event Action<T> INotifier<T>.Unsupply
         {
-            add { _Unsupply += value; }
-            remove { _Unsupply -= value; }
+            add { _UnsupplyHandlers.Add(value); }
+            remove { _UnsupplyHandlers.Remove(value); }
+        }
+
+        void _NotifySupply(T entity)
+        {
+            foreach (Action<T> handler in _SupplyHandlers.ToArray())
+            {
+                handler(entity);
+            }
+        }
+
+        void _NotifyUnsupply(T entity)
+        {
+            foreach (Action<T> handler in _UnsupplyHandlers.ToArray())
+            {
+                handler(entity);
+            }
         }
 
         IGhost IProvider.Ready(long id)
@@ -76,12 +96,9 @@ namespace PinionCore.Remote
         {
 
 
-            if (_Unsupply != null)
+            foreach (T e in _Entitys)
             {
-                foreach (T e in _Entitys)
-                {
-                    _Unsupply.Invoke(e);
-                }
+                _NotifyUnsupply(e);
             }
 
             _Entitys.Clear();
@@ -95,11 +112,7 @@ namespace PinionCore.Remote
             {
                 lock (_Entitys)
                     _Entitys.Add(entity);
-                if (_Supply != null)
-                {
-
-                    _Supply.Invoke(entity);
-                }
+                _NotifySupply(entity);
             }
 
 
@@ -126,10 +139,7 @@ namespace PinionCore.Remote
                 {
                     _Entitys.Remove(entity);
 
-                    if (_Unsupply != null)
-                    {
-                        _Unsupply.Invoke(entity);
-                    }
+                    _NotifyUnsupply(entity);
                 }
 
 

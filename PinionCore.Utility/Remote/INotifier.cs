@@ -6,7 +6,7 @@ namespace PinionCore.Remote
     ///     Remote object notifier.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface INotifier<T>
+    public interface INotifier<out T>
     {
 
         /// <summary>

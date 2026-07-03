@@ -8,6 +8,11 @@ namespace PinionCore.Remote
     {
         readonly System.Collections.Generic.List<T> _Items;
 
+        // 以 List 儲存 handler 而非多播委派欄位：INotifier<out T> 允許以父介面訂閱，
+        // 此時傳入的委派執行期型別是 Action<父介面>，Delegate.Combine 會因型別不同而擲出例外。
+        readonly System.Collections.Generic.List<Action<T>> _SupplyHandlers;
+        readonly System.Collections.Generic.List<Action<T>> _UnsupplyHandlers;
+
 
         int ICollection<T>.Count => _Items.Count;
 
@@ -25,26 +30,18 @@ namespace PinionCore.Remote
         public Depot(IEnumerable<T> items)
         {
             _Items = new System.Collections.Generic.List<T>(items);
+            _SupplyHandlers = new System.Collections.Generic.List<Action<T>>();
+            _UnsupplyHandlers = new System.Collections.Generic.List<Action<T>>();
             Items = this;
             ReadOnlyItems = this;
             Notifier = this;
-
-            _UnsupplyEvent += _Empty;
-            _SupplyEvent += _Empty;
         }
 
-        private void _Empty(T obj)
-        {
-        }
-
-        event Action<T> _SupplyEvent;
         event Action<T> INotifier<T>.Supply
         {
             add
             {
-                
-
-                _SupplyEvent += value;
+                _SupplyHandlers.Add(value);
                 foreach (T item in _Items)
                 {
                     value(item);
@@ -53,36 +50,50 @@ namespace PinionCore.Remote
 
             remove
             {
-                
-                _SupplyEvent -= value;
+                _SupplyHandlers.Remove(value);
             }
         }
 
-        event Action<T> _UnsupplyEvent;
         event Action<T> INotifier<T>.Unsupply
         {
             add
             {
-                _UnsupplyEvent += value;
+                _UnsupplyHandlers.Add(value);
             }
 
             remove
             {
-                _UnsupplyEvent -= value;
+                _UnsupplyHandlers.Remove(value);
+            }
+        }
+
+        void _NotifySupply(T item)
+        {
+            foreach (Action<T> handler in _SupplyHandlers.ToArray())
+            {
+                handler(item);
+            }
+        }
+
+        void _NotifyUnsupply(T item)
+        {
+            foreach (Action<T> handler in _UnsupplyHandlers.ToArray())
+            {
+                handler(item);
             }
         }
 
         void ICollection<T>.Add(T item)
         {
             _Items.Add(item);
-            _SupplyEvent(item);
+            _NotifySupply(item);
         }
 
         void ICollection<T>.Clear()
         {
             foreach (T item in _Items)
             {
-                _UnsupplyEvent(item);
+                _NotifyUnsupply(item);
             }
             _Items.Clear();
 
@@ -103,7 +114,7 @@ namespace PinionCore.Remote
 
             var result = _Items.Remove(item);
             if (result)
-                _UnsupplyEvent(item);
+                _NotifyUnsupply(item);
             return result;
         }
 
