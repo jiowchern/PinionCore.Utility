@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Dynamic;
 
@@ -7,11 +7,12 @@ namespace PinionCore.Remote
     [DebuggerDisplay("{" + nameof(GetDebuggerDisplay) + "(),nq}")]
     public class Value<T> : IValue, IAwaitableSource<T>
     {
-        private event Action<T> _OnValue;
+        // Go 風格結果通道:error 為 null 代表成功
+        private event Action<T, string> _OnValue;
 
-        
 
-        public event Action<T> OnValue
+
+        public event Action<T, string> OnValue
         {
             add
             {
@@ -21,7 +22,7 @@ namespace PinionCore.Remote
 
                     if (_Empty == false)
                     {
-                        value(_Value);
+                        value(_Value, _Error);
                     }
                 }
 
@@ -38,6 +39,8 @@ namespace PinionCore.Remote
 
         private T _Value;
 
+        private string _Error;
+
 
         public static Value<T> Empty
         {
@@ -48,7 +51,7 @@ namespace PinionCore.Remote
 
         public Value(bool empty = true)
         {
-        
+
             _Empty = empty;
             _Interface = typeof(T).IsInterface;
         }
@@ -80,7 +83,7 @@ namespace PinionCore.Remote
             }
             else
             {
-                OnValue += obj => { action.Invoke(obj); };
+                OnValue += (obj, error) => { action.Invoke(obj); };
             }
         }
 
@@ -112,6 +115,11 @@ namespace PinionCore.Remote
             return _Empty == false;
         }
 
+        public string GetError()
+        {
+            return _Error;
+        }
+
 
         public bool SetValue(T val)
         {
@@ -129,7 +137,32 @@ namespace PinionCore.Remote
 
             if (_OnValue != null)
             {
-                _OnValue(_Value);
+                _OnValue(_Value, null);
+            }
+
+            return true;
+        }
+
+        public bool SetError(string message)
+        {
+            if (message == null)
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
+
+            lock (this)
+            {
+                if (_Empty == false)
+                {
+                    return false;
+                }
+                _Empty = false;
+                _Error = message;
+            }
+
+            if (_OnValue != null)
+            {
+                _OnValue(_Value, _Error);
             }
 
             return true;
@@ -155,9 +188,10 @@ namespace PinionCore.Remote
     public class Value : IValue, IAwaitableSource
     {
         bool _Empty;
+        string _Error;
         public Value(bool empty )
         {
-            _OnValue = () => { };
+            _OnValue = (error) => { };
             _Empty = empty;
         }
 
@@ -184,7 +218,7 @@ namespace PinionCore.Remote
             }
             else
             {
-                OnValue += () => { action.Invoke(null); };
+                OnValue += (error) => { action.Invoke(null); };
             }
         }
 
@@ -200,12 +234,34 @@ namespace PinionCore.Remote
                 return false;
             }
             _Empty = false;
-            _OnValue();
+            _OnValue(null);
             return true;
         }
 
-        System.Action _OnValue;
-        public event System.Action OnValue
+        public bool SetError(string message)
+        {
+            if (message == null)
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
+
+            if (_Empty == false)
+            {
+                return false;
+            }
+            _Empty = false;
+            _Error = message;
+            _OnValue(_Error);
+            return true;
+        }
+
+        public string GetError()
+        {
+            return _Error;
+        }
+
+        System.Action<string> _OnValue;
+        public event System.Action<string> OnValue
         {
             add
             {
@@ -214,7 +270,7 @@ namespace PinionCore.Remote
                     _OnValue += value;
                     if (_Empty == false)
                     {
-                        value();
+                        value(_Error);
                     }
                 }
             }
@@ -234,7 +290,7 @@ namespace PinionCore.Remote
         internal bool HasValue()
         {
             return _Empty == false;
-                 
+
         }
         public IAwaitable GetAwaiter()
         {

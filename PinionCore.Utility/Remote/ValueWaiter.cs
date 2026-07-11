@@ -37,7 +37,7 @@ namespace PinionCore.Remote
             are.Set();
         }
 
-        private void _Getted(T obj)
+        private void _Getted(T obj, string error)
         {
             Value = obj;
             _HasValue = true;

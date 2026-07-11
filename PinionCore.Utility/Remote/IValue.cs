@@ -12,6 +12,9 @@ namespace PinionCore.Remote
 
         bool SetValue(IGhost ghost);
 
+        // 以錯誤狀態完成:值為 default,錯誤訊息不得為 null
+        bool SetError(string message);
+
         bool IsInterface();
 
         Type GetObjectType();

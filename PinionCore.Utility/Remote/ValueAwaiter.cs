@@ -24,7 +24,7 @@ namespace PinionCore.Remote
         void INotifyCompletion.OnCompleted(Action continuation)
         {
 
-            void Handler()
+            void Handler(string error)
             {
                 _Value.OnValue -= Handler;
                 continuation?.Invoke();

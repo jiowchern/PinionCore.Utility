@@ -7,7 +7,7 @@ namespace PinionCore.Remote
     {
         public static Action<Value<T>> UnBox<T>(Action<T> callback)
         {
-            return val => { val.OnValue += callback; };
+            return val => { val.OnValue += (v, error) => callback(v); };
         }
 
         public static T Result<T>(this Value<T> value)

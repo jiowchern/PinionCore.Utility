@@ -161,7 +161,7 @@ namespace PinionCore.Remote
                 {
                 },
                 Return = new Action<Value<TR>>(
-                    tr => { tr.OnValue += return_callback; }),
+                    tr => { tr.OnValue += (v, error) => return_callback(v); }),
                 ReturnType = typeof(Value<TR>)
             };
         }
@@ -176,7 +176,7 @@ namespace PinionCore.Remote
                     typeof(T1)
                 },
                 Return = new Action<Value<TR>>(
-                    tr => { tr.OnValue += return_callback; }),
+                    tr => { tr.OnValue += (v, error) => return_callback(v); }),
                 ReturnType = typeof(Value<TR>)
             };
         }
@@ -192,7 +192,7 @@ namespace PinionCore.Remote
                     typeof(T2)
                 },
                 Return = new Action<Value<TR>>(
-                    tr => { tr.OnValue += return_callback; }),
+                    tr => { tr.OnValue += (v, error) => return_callback(v); }),
                 ReturnType = typeof(Value<TR>)
             };
         }
@@ -209,7 +209,7 @@ namespace PinionCore.Remote
                     typeof(T3)
                 },
                 Return = new Action<Value<TR>>(
-                    tr => { tr.OnValue += return_callback; }),
+                    tr => { tr.OnValue += (v, error) => return_callback(v); }),
                 ReturnType = typeof(Value<TR>)
             };
         }
@@ -229,7 +229,7 @@ namespace PinionCore.Remote
                     typeof(T4)
                 },
                 Return = new Action<Value<TR>>(
-                    tr => { tr.OnValue += return_callback; }),
+                    tr => { tr.OnValue += (v, error) => return_callback(v); }),
                 ReturnType = typeof(Value<TR>)
             };
         }

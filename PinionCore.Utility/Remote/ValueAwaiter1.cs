@@ -23,7 +23,7 @@ namespace PinionCore.Remote
 
         void INotifyCompletion.OnCompleted(Action continuation)
         {
-            void Handler(T v)
+            void Handler(T v, string error)
             {
                 _Invokeds.Enqueue(v);
 
