@@ -7,7 +7,7 @@ Common utility library for the [PinionCore](https://github.com/jiowchern/PinionC
 
 | Namespace / Folder | Contents |
 |---|---|
-| `Remote/` | Reactive object supply: `INotifier<out T>` / `Depot<T>` (supply/unsupply object collections), `IAwaitable`, ghost/provider plumbing shared with PinionCore.Remote |
+| `Remote/` | Reactive object supply: `INotifier<out T>` / `Depot<T>` (supply/unsupply object collections), `Spirit<T>` (single-shot disposable object supply returned from methods), `IAwaitable`, ghost/provider plumbing shared with PinionCore.Remote |
 | `Utility/` | `StageMachine` / `StatusMachine` (state machines), `Command` family (console command registration and parsing), `Console` / `ConsoleViewer` / `ConsoleInput`, `Log` / `LogFileRecorder`, `Launcher` / `Bootable`, `Updater`, `PowerRegulator`, `BilateralMap`, misc. helpers |
 | `Memorys/` | Pooled buffers: `Pool` / `ChunkPool` / `PooledBuffer` for allocation-free byte handling |
 | `Serialization/` | `Varint` and `ZigZag` integer encodings |
